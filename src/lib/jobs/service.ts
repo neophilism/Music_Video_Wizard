@@ -130,16 +130,18 @@ export async function cancelGenerationJob(jobId: string): Promise<boolean> {
       }
     });
 
-    if (updated.count > 0) {
-      await tx.generationJobEvent.create({
-        data: {
-          jobId,
-          type: GenerationEventType.CANCELLED,
-          message: "Job cancelled."
-        }
-      });
-    }
+    if (updated.count === 0) return false;
+
+    await tx.generationJobEvent.create({
+      data: {
+        jobId,
+        type: GenerationEventType.CANCELLED,
+        message: "Job cancelled."
+      }
+    });
+
+    return true;
   });
 
-  return true;
+  return cancelled;
 }
