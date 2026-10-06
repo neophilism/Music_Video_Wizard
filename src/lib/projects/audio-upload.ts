@@ -27,7 +27,7 @@ export function detectAudioContainer(
   if (bytes.byteLength < 4) return null;
 
   if (ascii(bytes, 0, 3) === "ID3") return "mp3";
-  if (bytes[0] === 0xff && (bytes[1] & 0xe0) === 0xe0) return "mp3";
+  if (bytes[0]! === 0xff && (bytes[1]! & 0xe0) === 0xe0) return "mp3";
 
   if (
     bytes.byteLength >= 12 &&
@@ -52,7 +52,7 @@ export function detectAudioContainer(
     return "m4a";
   }
 
-  if (bytes[0] === 0xff && (bytes[1] & 0xf6) === 0xf0) {
+  if (bytes[0]! === 0xff && (bytes[1]! & 0xf6) === 0xf0) {
     return "aac";
   }
 
