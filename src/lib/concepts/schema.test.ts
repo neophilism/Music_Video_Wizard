@@ -39,7 +39,7 @@ describe("concept schema", () => {
   });
 
   it("builds a strict structured-output schema", () => {
-    const schema = conceptEnvelopeJsonSchema(4);
+    const schema = conceptEnvelopeJsonSchema();
     expect(schema.properties.concepts.type).toBe("array");
     expect(schema.additionalProperties).toBe(false);
     expect(
