@@ -43,7 +43,7 @@ export class DependencyCycleError extends DependencyGraphError {
 
 async function acquireGraphWriteLock(tx: GraphTransaction): Promise<void> {
   await tx.$queryRaw`
-    SELECT pg_advisory_xact_lock(${GRAPH_LOCK_CLASS}, ${GRAPH_LOCK_KEY})
+    SELECT pg_advisory_xact_lock(${GRAPH_LOCK_CLASS}::int, ${GRAPH_LOCK_KEY}::int)
   `;
 }
 
