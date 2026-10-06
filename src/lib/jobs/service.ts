@@ -110,7 +110,7 @@ export async function cancelGenerationJob(jobId: string): Promise<boolean> {
   if (!queueJob || queueJob.state !== "cancelled") return false;
 
   const now = new Date();
-  await db.$transaction(async (tx) => {
+  const cancelled = await db.$transaction(async (tx) => {
     const updated = await tx.generationJob.updateMany({
       where: {
         id: jobId,
