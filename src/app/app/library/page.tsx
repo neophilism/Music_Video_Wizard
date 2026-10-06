@@ -79,7 +79,7 @@ export default async function CreativeLibraryPage(props: {
             return (
               <Link
                 className="libraryCard"
-                href={\`/app/library/\${libraryItem.id}\`}
+                href={`/app/library/${libraryItem.id}`}
                 key={libraryItem.id}
               >
                 <div className="libraryCardTop">
