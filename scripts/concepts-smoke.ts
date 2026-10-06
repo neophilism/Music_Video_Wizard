@@ -506,14 +506,14 @@ async function main() {
       /Concepts/i
     );
 
-    let completed = await completeConcepts({
+    const completed = await completeConcepts({
       userId,
       projectId,
       conceptSetVersionId: set.id,
       expectedRevision: set.revision
     });
     set = completed.version;
-    let currentProgress =
+    const currentProgress =
       await db.wizardProgress.findUniqueOrThrow({
         where: { projectVersionId },
         include: { steps: true }
