@@ -1386,3 +1386,168 @@ h1 {
     grid-template-columns: 1fr;
   }
 }
+
+
+.creativeBriefEditor {
+  display: grid;
+  gap: 1rem;
+}
+
+.briefEmpty,
+.briefPanel,
+.briefSourceMap,
+.briefAnchorContext,
+.briefCompletionIssues {
+  padding: 1rem;
+  border: 1px solid rgba(255,255,255,.09);
+  border-radius: 12px;
+  background: rgba(255,255,255,.02);
+}
+
+.briefEmpty h2,
+.briefHeader h2,
+.briefPanel h3 {
+  margin: .3rem 0 .55rem;
+}
+
+.briefEmpty p,
+.briefHeader p {
+  color: #b3bccb;
+  line-height: 1.55;
+}
+
+.briefHeader {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  align-items: flex-start;
+}
+
+.briefSourceMap {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: .65rem;
+}
+
+.briefSourceMap > div {
+  padding: .7rem;
+  border-radius: 9px;
+  background: rgba(255,255,255,.035);
+}
+
+.briefSourceMap span,
+.briefSourceMap strong {
+  display: block;
+}
+
+.briefSourceMap span {
+  color: #8f98aa;
+  font-size: .72rem;
+  text-transform: uppercase;
+  letter-spacing: .05em;
+}
+
+.briefSourceMap strong {
+  margin-top: .25rem;
+}
+
+.briefAnchorContext > div {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .4rem;
+  margin-top: .65rem;
+}
+
+.briefAnchorContext span {
+  padding: .4rem .55rem;
+  border-radius: 999px;
+  background: rgba(255,255,255,.045);
+  color: #aeb6c5;
+  font-size: .75rem;
+}
+
+.briefPanelHeading {
+  margin-bottom: .9rem;
+}
+
+.briefPanelHeadingSplit {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  align-items: center;
+}
+
+.briefTwoColumn,
+.briefThreeColumn,
+.briefMixGrid {
+  display: grid;
+  gap: .8rem;
+}
+
+.briefTwoColumn {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.briefThreeColumn {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.briefMixGrid {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.briefNotesGrid {
+  margin-top: .8rem;
+}
+
+.briefFullWidth {
+  display: block;
+  margin-top: .8rem;
+}
+
+.mixTotalValid {
+  color: #bce8c0;
+}
+
+.mixTotalInvalid {
+  color: #f2c29a;
+}
+
+.briefCompletionIssues {
+  border-color: rgba(216,183,95,.24);
+  background: rgba(216,183,95,.045);
+}
+
+.briefCompletionIssues strong {
+  display: block;
+  margin-bottom: .4rem;
+}
+
+.briefCompletionIssues ul {
+  margin: 0;
+  padding-left: 1.2rem;
+  color: #c8bfaa;
+}
+
+@media (max-width: 900px) {
+  .briefSourceMap {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .briefTwoColumn,
+  .briefThreeColumn,
+  .briefMixGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .briefHeader,
+  .briefPanelHeadingSplit {
+    flex-direction: column;
+  }
+}
+
+@media (max-width: 520px) {
+  .briefSourceMap {
+    grid-template-columns: 1fr;
+  }
+}

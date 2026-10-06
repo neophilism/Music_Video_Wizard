@@ -4,7 +4,7 @@ export interface WizardStepDefinition {
   phase: string;
   title: string;
   description: string;
-  editor: "project-setup" | "music-analysis" | "music-map" | null;
+  editor: "project-setup" | "music-analysis" | "music-map" | "creative-brief" | null;
 }
 
 export const WIZARD_STEPS: readonly WizardStepDefinition[] = [
@@ -41,8 +41,8 @@ export const WIZARD_STEPS: readonly WizardStepDefinition[] = [
     phase: "Creative direction",
     title: "Creative brief",
     description:
-      "Define objectives, audience, constraints, references, must-haves, and exclusions.",
-    editor: null
+      "Define objectives, audience, emotional targets, form, tone, imagery, arc, references, and constraints.",
+    editor: "creative-brief"
   },
   {
     key: "concepts",

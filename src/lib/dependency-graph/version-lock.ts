@@ -49,6 +49,9 @@ export async function lockVersionNode(
         musicMapVersion: {
           select: { id: true, lifecycle: true }
         },
+        creativeBriefVersion: {
+          select: { id: true, lifecycle: true }
+        },
         timelineVersion: {
           select: { id: true, lifecycle: true }
         }
@@ -258,6 +261,20 @@ export async function lockVersionNode(
       case DomainVersionKind.MUSIC_MAP:
         return lockOwner(node.musicMapVersion, (id) =>
           tx.musicMapVersion.updateMany({
+            where: {
+              id,
+              lifecycle: VersionLifecycle.DRAFT
+            },
+            data: {
+              lifecycle: VersionLifecycle.LOCKED,
+              lockedAt: now
+            }
+          })
+        );
+
+      case DomainVersionKind.CREATIVE_BRIEF:
+        return lockOwner(node.creativeBriefVersion, (id) =>
+          tx.creativeBriefVersion.updateMany({
             where: {
               id,
               lifecycle: VersionLifecycle.DRAFT

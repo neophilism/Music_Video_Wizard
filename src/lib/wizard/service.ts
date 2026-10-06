@@ -496,9 +496,12 @@ export async function transitionWizardStep(input: {
           "This stage does not have an editor installed in the current build."
         );
       }
-      if (context.definition.editor === "music-map") {
+      if (
+        context.definition.editor === "music-map" ||
+        context.definition.editor === "creative-brief"
+      ) {
         throw new WizardError(
-          "Music Map completion and locking are managed by the Music Map service."
+          "This stage's completion and locking are managed by its stage-specific service."
         );
       }
       if (
