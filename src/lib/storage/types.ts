@@ -1,0 +1,21 @@
+export type AssetKey = string;
+
+export interface StoredAsset {
+  key: AssetKey;
+  size: number;
+  contentType: string;
+  etag?: string;
+}
+
+export interface PutAssetInput {
+  key: AssetKey;
+  body: Uint8Array;
+  contentType: string;
+}
+
+export interface AssetStorage {
+  put(input: PutAssetInput): Promise<StoredAsset>;
+  delete(key: AssetKey): Promise<void>;
+  exists(key: AssetKey): Promise<boolean>;
+  getSignedReadUrl(key: AssetKey, expiresInSeconds: number): Promise<string>;
+}
