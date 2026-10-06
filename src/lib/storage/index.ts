@@ -1,17 +1,27 @@
+import { getEnvironment, type AppEnvironment } from "@/lib/env";
+import { LocalAssetStorage } from "./local";
+import { S3AssetStorage } from "./s3";
 import type { AssetStorage } from "./types";
 
-/**
- * Provider-neutral storage seam.
- *
- * Media assets will become large and long-lived. Product code must depend on
- * this contract rather than a particular cloud SDK so local development,
- * object storage, migrations, and future multi-region strategies remain
- * replaceable without rewriting domain logic.
- */
-export function createAssetStorage(): AssetStorage {
-  throw new Error(
-    "Asset storage provider is not configured yet. Provider implementation belongs in the storage integration milestone."
-  );
+export function createAssetStorage(
+  env: AppEnvironment = getEnvironment()
+): AssetStorage {
+  if (env.ASSET_STORAGE_DRIVER === "local") {
+    return new LocalAssetStorage(
+      env.ASSET_STORAGE_LOCAL_ROOT,
+      env.BETTER_AUTH_URL,
+      env.BETTER_AUTH_SECRET
+    );
+  }
+
+  return new S3AssetStorage({
+    bucket: env.ASSET_STORAGE_BUCKET,
+    region: env.ASSET_STORAGE_REGION,
+    endpoint: env.ASSET_STORAGE_ENDPOINT || undefined,
+    forcePathStyle: env.ASSET_STORAGE_FORCE_PATH_STYLE,
+    accessKeyId: env.ASSET_STORAGE_ACCESS_KEY_ID || undefined,
+    secretAccessKey: env.ASSET_STORAGE_SECRET_ACCESS_KEY || undefined
+  });
 }
 
 export type { AssetKey, AssetStorage, PutAssetInput, StoredAsset } from "./types";
