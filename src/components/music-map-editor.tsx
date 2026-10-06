@@ -1,5 +1,6 @@
 "use client";
 
+import type { Route } from "next";
 import { useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
 
@@ -564,7 +565,7 @@ export function MusicMapEditor(props: {
           type="button"
           onClick={() =>
             router.push(
-              `/app/projects/${props.projectId}/wizard?step=music-analysis`
+              `/app/projects/${props.projectId}/wizard?step=music-analysis` as Route
             )
           }
         >
