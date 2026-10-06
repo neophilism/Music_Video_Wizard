@@ -12,21 +12,45 @@ jobs:
   validate:
     runs-on: ubuntu-latest
     timeout-minutes: 15
+    services:
+      postgres:
+        image: postgres:17-alpine
+        env:
+          POSTGRES_DB: music_video_wizard_ci
+          POSTGRES_USER: ci
+          POSTGRES_PASSWORD: ci
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U ci -d music_video_wizard_ci"
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 10
     env:
-      DATABASE_URL: postgresql://ci:ci@localhost:5432/ci
+      DATABASE_URL: postgresql://ci:ci@localhost:5432/music_video_wizard_ci
       BETTER_AUTH_SECRET: 0123456789abcdef0123456789abcdef
       BETTER_AUTH_URL: http://localhost:3000
       ASSET_STORAGE_DRIVER: local
       ASSET_STORAGE_BUCKET: ci-assets
+      JOB_QUEUE_SCHEMA: pgboss
+      JOB_RETRY_LIMIT: 3
+      JOB_RETRY_DELAY_SECONDS: 1
+      JOB_RETRY_DELAY_MAX_SECONDS: 5
+      JOB_EXPIRE_SECONDS: 600
+      JOB_HEARTBEAT_SECONDS: 10
+      JOB_WORKER_CONCURRENCY: 2
+      JOB_WORKSPACE_CONCURRENCY: 1
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
-          node-version: 22
+          node-version: 22.12.0
       - run: npm install
       - run: npm run db:validate
       - run: npm run db:generate
+      - run: npm run db:deploy
       - run: npm run typecheck
       - run: npm run lint
       - run: npm test
+      - run: npm run test:queue
       - run: npm run build
