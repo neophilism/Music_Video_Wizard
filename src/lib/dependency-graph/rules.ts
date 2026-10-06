@@ -13,6 +13,7 @@ export function impactActionForKind(
     case DomainVersionKind.SEQUENCE:
     case DomainVersionKind.SHOT:
     case DomainVersionKind.CREATIVE_MODULE:
+    case DomainVersionKind.CREATIVE_KIT:
       return "REVIEW";
   }
 }

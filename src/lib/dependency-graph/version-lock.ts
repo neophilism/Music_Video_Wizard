@@ -40,6 +40,9 @@ export async function lockVersionNode(
         creativeModuleVersion: {
           select: { id: true, lifecycle: true }
         },
+        creativeKitVersion: {
+          select: { id: true, lifecycle: true }
+        },
         timelineVersion: {
           select: { id: true, lifecycle: true }
         }
@@ -56,6 +59,33 @@ export async function lockVersionNode(
 
     const kind = node.kind;
     const now = new Date();
+
+    if (kind === DomainVersionKind.CREATIVE_KIT) {
+      const unlockedKitItem = await tx.creativeKitItem.findFirst({
+        where: {
+          creativeKitVersion: { nodeId },
+          creativeModuleVersion: {
+            lifecycle: { not: VersionLifecycle.LOCKED }
+          }
+        },
+        select: {
+          slot: true,
+          creativeModuleVersionId: true
+        }
+      });
+
+      if (unlockedKitItem) {
+        throw new DependencyGraphError(
+          'Cannot lock creative kit ' +
+            nodeId +
+            ' while slot "' +
+            unlockedKitItem.slot +
+            '" points to unlocked creative module version ' +
+            unlockedKitItem.creativeModuleVersionId +
+            "."
+        );
+      }
+    }
 
     if (
       kind === DomainVersionKind.PROJECT ||
@@ -180,6 +210,20 @@ export async function lockVersionNode(
       case DomainVersionKind.CREATIVE_MODULE:
         return lockOwner(node.creativeModuleVersion, (id) =>
           tx.creativeModuleVersion.updateMany({
+            where: {
+              id,
+              lifecycle: VersionLifecycle.DRAFT
+            },
+            data: {
+              lifecycle: VersionLifecycle.LOCKED,
+              lockedAt: now
+            }
+          })
+        );
+
+      case DomainVersionKind.CREATIVE_KIT:
+        return lockOwner(node.creativeKitVersion, (id) =>
+          tx.creativeKitVersion.updateMany({
             where: {
               id,
               lifecycle: VersionLifecycle.DRAFT

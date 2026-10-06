@@ -21,7 +21,8 @@
     "test:queue": "tsx scripts/job-queue-smoke.ts",
     "test:graph": "tsx scripts/dependency-graph-smoke.ts",
     "test:inheritance": "tsx scripts/creative-inheritance-smoke.ts",
-    "test:library": "tsx scripts/creative-library-smoke.ts"
+    "test:library": "tsx scripts/creative-library-smoke.ts",
+    "test:kits": "tsx scripts/creative-kits-smoke.ts"
   },
   "dependencies": {
     "@prisma/client": "^6.16.2",

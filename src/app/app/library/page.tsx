@@ -40,9 +40,14 @@ export default async function CreativeLibraryPage(props: {
             reuse exact versions across projects.
           </p>
         </div>
-        <Link className="primaryButton linkButton" href="/app/library/new">
-          New library item
-        </Link>
+        <div className="headerActions">
+          <Link className="secondaryButton linkButton" href="/app/kits">
+            Creative Kits
+          </Link>
+          <Link className="primaryButton linkButton" href="/app/library/new">
+            New library item
+          </Link>
+        </div>
       </header>
 
       <form className="libraryFilters" method="get">
