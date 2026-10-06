@@ -14,6 +14,8 @@ jobs:
     timeout-minutes: 15
     env:
       DATABASE_URL: postgresql://ci:ci@localhost:5432/ci
+      BETTER_AUTH_SECRET: 0123456789abcdef0123456789abcdef
+      BETTER_AUTH_URL: http://localhost:3000
       ASSET_STORAGE_DRIVER: local
       ASSET_STORAGE_BUCKET: ci-assets
     steps:
@@ -23,6 +25,8 @@ jobs:
           node-version: 22
       - run: npm install
       - run: npm run db:validate
+      - name: Print initial migration SQL for review
+        run: npm run db:diff-initial
       - run: npm run db:generate
       - run: npm run typecheck
       - run: npm run lint
