@@ -74,22 +74,22 @@ export default async function CreativeLibraryPage(props: {
         </section>
       ) : (
         <section className="libraryGrid">
-          {modules.map((module) => {
-            const latest = module.versions[0];
+          {modules.map((libraryItem) => {
+            const latest = libraryItem.versions[0];
             return (
               <Link
                 className="libraryCard"
-                href={"/app/library/" + module.id}
-                key={module.id}
+                href={"/app/library/" + libraryItem.id}
+                key={libraryItem.id}
               >
                 <div className="libraryCardTop">
-                  <span>{module.kind.replaceAll("_", " ")}</span>
-                  <span>{module._count.versions} version{module._count.versions === 1 ? "" : "s"}</span>
+                  <span>{libraryItem.kind.replaceAll("_", " ")}</span>
+                  <span>{libraryItem._count.versions} version{libraryItem._count.versions === 1 ? "" : "s"}</span>
                 </div>
-                <h2>{module.name}</h2>
-                <p>{module.description || "No description"}</p>
+                <h2>{libraryItem.name}</h2>
+                <p>{libraryItem.description || "No description"}</p>
                 <div className="tagRow">
-                  {module.tags.slice(0, 6).map((tag) => (
+                  {libraryItem.tags.slice(0, 6).map((tag) => (
                     <span key={tag}>#{tag}</span>
                   ))}
                 </div>
