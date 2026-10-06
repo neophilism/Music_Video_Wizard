@@ -208,20 +208,30 @@ async function semanticSnapshot(tx: Tx, mapVersionId: string) {
     barGridMs: parseNumberArray(version.barGridMs),
     durationMs: version.durationMs,
     notes: version.notes,
-    anchors: version.anchors.map((anchor) => ({
-      sourceKey: anchor.sourceKey,
-      kind: anchor.kind,
-      source: anchor.source,
-      decision: anchor.decision,
-      label: anchor.label,
-      startMs: anchor.startMs,
-      endMs: anchor.endMs,
-      sourceStartMs: anchor.sourceStartMs,
-      sourceEndMs: anchor.sourceEndMs,
-      sourceConfidence: anchor.sourceConfidence,
-      position: anchor.position,
-      metadata: anchor.metadata
-    }))
+    anchors: version.anchors.map((anchor) =>
+      anchor.decision === MusicMapAnchorDecision.REJECTED
+        ? {
+            sourceKey: anchor.sourceKey,
+            kind: anchor.kind,
+            source: anchor.source,
+            decision: anchor.decision,
+            position: anchor.position
+          }
+        : {
+            sourceKey: anchor.sourceKey,
+            kind: anchor.kind,
+            source: anchor.source,
+            decision: anchor.decision,
+            label: anchor.label,
+            startMs: anchor.startMs,
+            endMs: anchor.endMs,
+            sourceStartMs: anchor.sourceStartMs,
+            sourceEndMs: anchor.sourceEndMs,
+            sourceConfidence: anchor.sourceConfidence,
+            position: anchor.position,
+            metadata: anchor.metadata
+          }
+    )
   };
 }
 
