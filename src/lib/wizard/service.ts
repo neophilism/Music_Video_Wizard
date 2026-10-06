@@ -768,17 +768,26 @@ export async function saveManagedWizardStepInTransaction(
       })
     : [];
 
+  const shouldOpen =
+    !step.payloadFingerprint ||
+    materialChange ||
+    step.status === WizardStepStatus.NOT_STARTED;
+
   await tx.wizardStepState.update({
     where: { id: step.id },
     data: {
-      status: WizardStepStatus.IN_PROGRESS,
       payload: input.payload,
       payloadFingerprint: input.semanticFingerprint,
       contentRevision: { increment: 1 },
       lastSavedAt: new Date(),
-      completedAt: null,
-      needsReviewAt: null,
-      reviewReason: null
+      ...(shouldOpen
+        ? {
+            status: WizardStepStatus.IN_PROGRESS,
+            completedAt: null,
+            needsReviewAt: null,
+            reviewReason: null
+          }
+        : {})
     }
   });
 
