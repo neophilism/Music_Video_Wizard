@@ -135,7 +135,7 @@ export async function createCreativeModule(input: {
   );
 
   return db.$transaction(async (tx) => {
-    const module = await tx.creativeModule.create({
+    const libraryItem = await tx.creativeModule.create({
       data: {
         workspaceId: workspace.id,
         kind: input.metadata.kind,
@@ -146,7 +146,7 @@ export async function createCreativeModule(input: {
     });
 
     const created = await createVersionRecords(tx, {
-      creativeModuleId: module.id,
+      creativeModuleId: libraryItem.id,
       versionNumber: 1,
       workspaceId: workspace.id,
       userId: input.userId,
@@ -154,7 +154,7 @@ export async function createCreativeModule(input: {
     });
 
     return {
-      moduleId: module.id,
+      moduleId: libraryItem.id,
       versionId: created.version.id,
       nodeId: created.node.id,
       versionNumber: 1
@@ -175,7 +175,7 @@ export async function createCreativeModuleVersion(input: {
 
   return db.$transaction(
     async (tx) => {
-      const module = await tx.creativeModule.findFirst({
+      const libraryItem = await tx.creativeModule.findFirst({
         where: {
           id: input.moduleId,
           workspaceId: workspace.id,
@@ -184,7 +184,7 @@ export async function createCreativeModuleVersion(input: {
         select: { id: true }
       });
 
-      if (!module) {
+      if (!libraryItem) {
         throw new CreativeLibraryError("Creative Library item not found.");
       }
 
