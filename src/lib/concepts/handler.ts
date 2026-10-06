@@ -155,9 +155,10 @@ export async function handleConceptGeneration(
       system: prompt.system,
       prompt: prompt.prompt,
       schemaName: "music_video_concepts",
-      jsonSchema: conceptEnvelopeJsonSchema(
-        request.count
-      ) as unknown as Record<string, unknown>,
+      jsonSchema: conceptEnvelopeJsonSchema() as unknown as Record<
+        string,
+        unknown
+      >,
       maxOutputTokens: 18000,
       signal: context.signal
     });
