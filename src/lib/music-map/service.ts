@@ -1232,16 +1232,19 @@ export async function getMusicMapState(input: {
     : null;
 
   const versions =
-    project.musicMap?.versions.map((version) => ({
-      ...version,
-      sourceAnalysisVersionNumber:
-        version.sourceAnalysisVersion.versionNumber,
-      beatGridMs: parseNumberArray(version.beatGridMs),
-      barGridMs: parseNumberArray(version.barGridMs),
-      analysis: musicAnalysisResultSchema.parse(
-        version.sourceAnalysisVersion.result
-      )
-    })) ?? [];
+    project.musicMap?.versions.map((version) => {
+      const { sourceAnalysisVersion, anchors, ...mapVersion } = version;
+      return {
+        ...mapVersion,
+        sourceAnalysisVersionNumber: sourceAnalysisVersion.versionNumber,
+        beatGridMs: parseNumberArray(version.beatGridMs),
+        barGridMs: parseNumberArray(version.barGridMs),
+        anchors: anchors.map(({ createdAt: _createdAt, updatedAt: _updatedAt, ...anchor }) => anchor),
+        analysis: musicAnalysisResultSchema.parse(
+          sourceAnalysisVersion.result
+        )
+      };
+    }) ?? [];
 
   return {
     latestAnalysis,
