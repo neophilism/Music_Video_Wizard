@@ -207,7 +207,7 @@ async function main() {
         engineKey: "librosa",
         engineVersion: "1.0.0",
         durationMs: 60000,
-        result,
+        result: JSON.parse(JSON.stringify(result)),
         createdByUserId: userId,
         lockedAt: new Date()
       }
