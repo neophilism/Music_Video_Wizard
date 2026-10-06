@@ -18,7 +18,10 @@ import {
   queuedConceptGenerationSchema
 } from "./input";
 import { buildConceptPrompt } from "./prompt";
-import { persistConceptGeneration } from "./service";
+import {
+  ConceptError,
+  persistConceptGeneration
+} from "./service";
 import { creativeBriefDraftSchema } from "@/lib/creative-brief/input";
 
 export async function handleConceptGeneration(
@@ -198,8 +201,8 @@ export async function handleConceptGeneration(
     };
   } catch (error) {
     if (
-      error instanceof TextProviderError &&
-      error.permanent
+      (error instanceof TextProviderError && error.permanent) ||
+      error instanceof ConceptError
     ) {
       throw new PermanentGenerationError(error.message);
     }
