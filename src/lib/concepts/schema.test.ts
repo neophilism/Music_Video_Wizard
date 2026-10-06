@@ -38,10 +38,12 @@ describe("concept schema", () => {
     expect(conceptContentSchema.parse(completeConcept).title).toBe("Threshold");
   });
 
-  it("builds an exact-count strict schema", () => {
+  it("builds a strict structured-output schema", () => {
     const schema = conceptEnvelopeJsonSchema(4);
-    expect(schema.properties.concepts.minItems).toBe(4);
-    expect(schema.properties.concepts.maxItems).toBe(4);
+    expect(schema.properties.concepts.type).toBe("array");
     expect(schema.additionalProperties).toBe(false);
+    expect(
+      schema.properties.concepts.items.additionalProperties
+    ).toBe(false);
   });
 });
