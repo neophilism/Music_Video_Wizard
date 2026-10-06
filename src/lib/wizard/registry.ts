@@ -1,0 +1,171 @@
+export interface WizardStepDefinition {
+  key: string;
+  ordinal: number;
+  phase: string;
+  title: string;
+  description: string;
+  editor: "project-setup" | null;
+}
+
+export const WIZARD_STEPS: readonly WizardStepDefinition[] = [
+  {
+    key: "project-setup",
+    ordinal: 0,
+    phase: "Foundation",
+    title: "Project setup",
+    description:
+      "Confirm the finished master, project identity, aspect ratio, and delivery frame rate.",
+    editor: "project-setup"
+  },
+  {
+    key: "music-analysis",
+    ordinal: 10,
+    phase: "Understand the music",
+    title: "Music analysis",
+    description:
+      "Derive objective timing, beat, section, energy, and structural information from the finished song.",
+    editor: null
+  },
+  {
+    key: "music-map",
+    ordinal: 20,
+    phase: "Understand the music",
+    title: "Music map",
+    description:
+      "Turn analysis into a navigable musical map for creative and editorial decisions.",
+    editor: null
+  },
+  {
+    key: "creative-brief",
+    ordinal: 30,
+    phase: "Creative direction",
+    title: "Creative brief",
+    description:
+      "Define objectives, audience, constraints, references, must-haves, and exclusions.",
+    editor: null
+  },
+  {
+    key: "concepts",
+    ordinal: 40,
+    phase: "Creative direction",
+    title: "Concepts",
+    description:
+      "Develop and compare complete music-video concepts before committing to one direction.",
+    editor: null
+  },
+  {
+    key: "treatment",
+    ordinal: 50,
+    phase: "Creative direction",
+    title: "Treatment",
+    description:
+      "Turn the selected concept into the complete visual and dramatic treatment.",
+    editor: null
+  },
+  {
+    key: "creative-language",
+    ordinal: 60,
+    phase: "Creative direction",
+    title: "Creative language",
+    description:
+      "Set reusable aesthetics, characters, locations, lighting, camera, motion, performance, editing, and exclusions.",
+    editor: null
+  },
+  {
+    key: "song-map",
+    ordinal: 70,
+    phase: "Plan the video",
+    title: "Song-to-picture plan",
+    description:
+      "Map the treatment and creative language across the song before individual shots are designed.",
+    editor: null
+  },
+  {
+    key: "storyboard",
+    ordinal: 80,
+    phase: "Plan the video",
+    title: "Storyboard",
+    description:
+      "Design the complete visual sequence against the music with explicit timing and transition intent.",
+    editor: null
+  },
+  {
+    key: "shot-specifications",
+    ordinal: 90,
+    phase: "Plan the video",
+    title: "Shot specifications",
+    description:
+      "Specify every shot precisely enough to drive reproducible image and video generation.",
+    editor: null
+  },
+  {
+    key: "initial-frames",
+    ordinal: 100,
+    phase: "Generate",
+    title: "Initial frames",
+    description:
+      "Create and approve the starting image for each planned generated shot.",
+    editor: null
+  },
+  {
+    key: "video-clips",
+    ordinal: 110,
+    phase: "Generate",
+    title: "Video clips",
+    description:
+      "Generate the required moving-image clips from approved frames and shot specifications.",
+    editor: null
+  },
+  {
+    key: "first-cut",
+    ordinal: 120,
+    phase: "Assemble",
+    title: "Automatic first cut",
+    description:
+      "Compile the complete first edit automatically from the approved plan, timing, clips, transitions, and music.",
+    editor: null
+  },
+  {
+    key: "refinement",
+    ordinal: 130,
+    phase: "Refine",
+    title: "Refinement",
+    description:
+      "Retiming, replacement, regeneration, transition changes, and manual editorial refinement after the complete first cut exists.",
+    editor: null
+  },
+  {
+    key: "finish-export",
+    ordinal: 140,
+    phase: "Deliver",
+    title: "Finish & export",
+    description:
+      "Finalize the master, verify delivery settings, render, export, and preserve the reproducible project archive.",
+    editor: null
+  }
+] as const;
+
+const STEP_BY_KEY = new Map(WIZARD_STEPS.map((step) => [step.key, step]));
+
+export function getWizardStepDefinition(
+  stepKey: string
+): WizardStepDefinition | null {
+  return STEP_BY_KEY.get(stepKey) ?? null;
+}
+
+export function requireWizardStepDefinition(
+  stepKey: string
+): WizardStepDefinition {
+  const step = getWizardStepDefinition(stepKey);
+  if (!step) {
+    throw new Error("Unknown wizard step: " + stepKey);
+  }
+  return step;
+}
+
+export function downstreamWizardSteps(
+  stepKey: string
+): readonly WizardStepDefinition[] {
+  const step = requireWizardStepDefinition(stepKey);
+  return WIZARD_STEPS.filter((candidate) => candidate.ordinal > step.ordinal);
+}

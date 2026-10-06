@@ -128,6 +128,13 @@ enum TimelineItemOrigin {
   MANUAL
 }
 
+enum WizardStepStatus {
+  NOT_STARTED
+  IN_PROGRESS
+  COMPLETED
+  NEEDS_REVIEW
+}
+
 model User {
   id            String   @id @default(uuid()) @db.Uuid
   email         String   @unique
@@ -279,9 +286,49 @@ model ProjectVersion {
   audioMasterAssetVersion AssetVersion? @relation("ProjectVersionAudioMaster", fields: [audioMasterAssetVersionId], references: [id], onDelete: Restrict)
   sequences        ProjectVersionSequence[]
   basisForTimelines TimelineVersion[] @relation("TimelineBasisProjectVersion")
+  wizardProgress     WizardProgress?
 
   @@unique([projectId, versionNumber])
   @@index([projectId, lifecycle])
+}
+
+
+model WizardProgress {
+  id               String   @id @default(uuid()) @db.Uuid
+  projectVersionId String   @unique @db.Uuid
+  currentStepKey   String   @default("project-setup")
+  revision         Int      @default(0)
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+
+  projectVersion ProjectVersion  @relation(fields: [projectVersionId], references: [id], onDelete: Cascade)
+  steps          WizardStepState[]
+
+  @@index([updatedAt])
+}
+
+model WizardStepState {
+  id                 String           @id @default(uuid()) @db.Uuid
+  wizardProgressId   String           @db.Uuid
+  stepKey            String
+  ordinal            Int
+  status             WizardStepStatus @default(NOT_STARTED)
+  payload            Json?
+  payloadFingerprint String?
+  contentRevision    Int              @default(0)
+  lastSavedAt        DateTime?
+  completedAt        DateTime?
+  lockedAt           DateTime?
+  needsReviewAt      DateTime?
+  reviewReason       String?          @db.Text
+  createdAt          DateTime         @default(now())
+  updatedAt          DateTime         @updatedAt
+
+  wizardProgress WizardProgress @relation(fields: [wizardProgressId], references: [id], onDelete: Cascade)
+
+  @@unique([wizardProgressId, stepKey])
+  @@unique([wizardProgressId, ordinal])
+  @@index([wizardProgressId, status])
 }
 
 model Sequence {
