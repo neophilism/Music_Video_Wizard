@@ -2,7 +2,7 @@
 
 The product owns the creative specification. External media models are replaceable execution providers.
 
-No project, shot, creative module, storyboard, generation recipe, or timeline may depend on a provider-specific SDK shape.
+No project, concept, shot, creative module, storyboard, generation recipe, or timeline may depend on a provider-specific SDK shape.
 
 ## Adapter boundary
 
@@ -23,6 +23,14 @@ At minimum the contracts must describe capabilities such as:
 - cancellation when the upstream API supports it.
 
 Provider and model identifiers remain data on `GenerationJob`, not product architecture.
+
+## Text generation
+
+Creative-planning text generation uses the same adapter principle.
+
+The initial text adapter uses OpenAI's Responses API with strict structured output. The configured model is data on the durable GenerationJob; the default configuration introduced with concept development is `gpt-6-sol`, but the ConceptSet / ConceptOption domain never depends on that model or on an OpenAI response shape.
+
+Concept generation is disabled explicitly when no text provider is configured. The application must never substitute fake concept output.
 
 ## Initial image provider: OpenAI
 

@@ -26,7 +26,8 @@
     "test:wizard": "tsx scripts/wizard-shell-smoke.ts",
     "test:analysis": "tsx scripts/music-analysis-smoke.ts",
     "test:map": "tsx scripts/music-map-smoke.ts",
-    "test:brief": "tsx scripts/creative-brief-smoke.ts"
+    "test:brief": "tsx scripts/creative-brief-smoke.ts",
+    "test:concepts": "tsx scripts/concepts-smoke.ts"
   },
   "dependencies": {
     "@prisma/client": "^6.16.2",

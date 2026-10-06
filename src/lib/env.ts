@@ -30,6 +30,8 @@ const environmentSchema = z
     AUDIO_ANALYSIS_FFMPEG: z.string().min(1).default("ffmpeg"),
     AUDIO_TRANSCRIPTION_PROVIDER: z.enum(["none", "openai"]).default("none"),
     AUDIO_TRANSCRIPTION_MODEL: z.string().min(1).default("gpt-transcribe"),
+    TEXT_GENERATION_PROVIDER: z.enum(["none", "openai"]).default("none"),
+    TEXT_GENERATION_MODEL: z.string().min(1).default("gpt-6-sol"),
     OPENAI_API_KEY: z.string().optional().or(z.literal("")),
     OPENAI_BASE_URL: z.string().url().default("https://api.openai.com")
   })
@@ -45,14 +47,15 @@ const environmentSchema = z
     }
 
     if (
-      env.AUDIO_TRANSCRIPTION_PROVIDER === "openai" &&
+      (env.AUDIO_TRANSCRIPTION_PROVIDER === "openai" ||
+        env.TEXT_GENERATION_PROVIDER === "openai") &&
       !env.OPENAI_API_KEY
     ) {
       ctx.addIssue({
         code: "custom",
         path: ["OPENAI_API_KEY"],
         message:
-          "OPENAI_API_KEY is required when AUDIO_TRANSCRIPTION_PROVIDER=openai"
+          "OPENAI_API_KEY is required when an OpenAI audio or text provider is enabled"
       });
     }
   });
