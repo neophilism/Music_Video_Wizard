@@ -19,7 +19,6 @@ import {
   ensureWizardProgress,
   prepareAutomaticWizardStepInTransaction,
   saveManagedWizardStepInTransaction,
-  WizardError,
   WizardLockedError
 } from "@/lib/wizard/service";
 import { creativeBriefDraftSchema } from "@/lib/creative-brief/input";
