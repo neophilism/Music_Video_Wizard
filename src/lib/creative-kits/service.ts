@@ -5,7 +5,10 @@ import {
   VersionLifecycle
 } from "@prisma/client";
 import { db } from "@/lib/db";
-import { setCreativeBindingInTransaction } from "@/lib/creative-inheritance/bindings";
+import {
+  loadCreativeScopeContext,
+  setCreativeBindingInTransaction
+} from "@/lib/creative-inheritance/bindings";
 import { fingerprintJson } from "@/lib/dependency-graph/fingerprint";
 import { registerDependencyEdgeInTransaction } from "@/lib/dependency-graph/service";
 import { lockVersionNode } from "@/lib/dependency-graph/version-lock";
@@ -298,6 +301,18 @@ export async function applyCreativeKitVersion(input: {
   const mode = input.mode ?? "overwrite";
 
   return db.$transaction(async (tx) => {
+    const scope = await loadCreativeScopeContext(tx, input.scopeNodeId);
+    if (scope.lifecycle !== VersionLifecycle.DRAFT) {
+      throw new CreativeKitError(
+        "Creative Kits can only be applied to DRAFT scope versions."
+      );
+    }
+    if (scope.workspaceId !== workspace.id) {
+      throw new CreativeKitError(
+        "Creative Kits cannot be applied across workspaces."
+      );
+    }
+
     const kitVersion = await tx.creativeKitVersion.findFirst({
       where: {
         id: input.versionId,
