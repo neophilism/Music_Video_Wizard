@@ -64,7 +64,7 @@ async function main() {
       name: "Foreign style",
       kind: CreativeModuleKind.VISUAL_AESTHETIC
     }
-  ];
+  ] as const;
 
   try {
     await db.workspace.createMany({
