@@ -26,6 +26,7 @@ enum DomainVersionKind {
   CREATIVE_MODULE
   CREATIVE_KIT
   MUSIC_ANALYSIS
+  MUSIC_MAP
   ASSET
   TIMELINE
 }
@@ -136,6 +137,30 @@ enum WizardStepStatus {
   NEEDS_REVIEW
 }
 
+enum MusicMapAnchorKind {
+  SECTION
+  INTRO
+  OUTRO
+  BEAT
+  BAR
+  DROP
+  TRANSITION
+  VOCAL_PASSAGE
+  INSTRUMENTAL_BREAK
+  CUSTOM
+}
+
+enum MusicMapAnchorSource {
+  ANALYSIS
+  USER
+}
+
+enum MusicMapAnchorDecision {
+  PENDING
+  ACCEPTED
+  REJECTED
+}
+
 model User {
   id            String   @id @default(uuid()) @db.Uuid
   email         String   @unique
@@ -154,6 +179,7 @@ model User {
   creativeModuleVersionsCreated CreativeModuleVersion[] @relation("CreativeModuleVersionCreator")
   creativeKitVersionsCreated    CreativeKitVersion[]    @relation("CreativeKitVersionCreator")
   musicAnalysisVersionsCreated  MusicAnalysisVersion[]  @relation("MusicAnalysisVersionCreator")
+  musicMapVersionsCreated       MusicMapVersion[]       @relation("MusicMapVersionCreator")
   assetVersionsCreated          AssetVersion[]          @relation("AssetVersionCreator")
   generationJobsRequested       GenerationJob[]         @relation("GenerationJobRequester")
   timelineVersionsCreated       TimelineVersion[]       @relation("TimelineVersionCreator")
@@ -259,6 +285,7 @@ model Project {
   assets    Asset[]
   timelines Timeline[]
   musicAnalysis MusicAnalysis?
+  musicMap      MusicMap?
   generationJobs GenerationJob[]
 
   @@index([workspaceId, updatedAt])
@@ -663,10 +690,81 @@ model MusicAnalysisVersion {
   audioAssetVersion AssetVersion      @relation(fields: [audioAssetVersionId], references: [id], onDelete: Restrict)
   generationJob     GenerationJob?    @relation(fields: [generationJobId], references: [id], onDelete: SetNull)
   createdBy         User?             @relation("MusicAnalysisVersionCreator", fields: [createdByUserId], references: [id], onDelete: SetNull)
+  musicMapVersions MusicMapVersion[]
 
   @@unique([musicAnalysisId, versionNumber])
   @@index([audioAssetVersionId, createdAt])
   @@index([musicAnalysisId, createdAt])
+}
+
+
+model MusicMap {
+  id        String   @id @default(uuid()) @db.Uuid
+  projectId String   @unique @db.Uuid
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  project  Project           @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  versions MusicMapVersion[]
+}
+
+model MusicMapVersion {
+  id                      String           @id @default(uuid()) @db.Uuid
+  musicMapId              String           @db.Uuid
+  nodeId                  String           @unique @db.Uuid
+  versionNumber           Int
+  lifecycle               VersionLifecycle @default(DRAFT)
+  sourceAnalysisVersionId String           @db.Uuid
+  revision                Int              @default(0)
+  tempoBpm                Float?
+  meterNumerator          Int              @default(4)
+  meterDenominator        Int              @default(4)
+  beatOffsetMs            Int              @default(0)
+  barPhase                Int              @default(0)
+  beatGridSource          String           @default("analysis")
+  beatGridMs              Json
+  barGridMs               Json
+  durationMs              Int
+  notes                   String?          @db.Text
+  createdByUserId         String?          @db.Uuid
+  createdAt               DateTime         @default(now())
+  lockedAt                DateTime?
+
+  musicMap              MusicMap             @relation(fields: [musicMapId], references: [id], onDelete: Cascade)
+  node                  DomainVersionNode    @relation(fields: [nodeId], references: [id])
+  sourceAnalysisVersion MusicAnalysisVersion @relation(fields: [sourceAnalysisVersionId], references: [id], onDelete: Restrict)
+  createdBy             User?                @relation("MusicMapVersionCreator", fields: [createdByUserId], references: [id], onDelete: SetNull)
+  anchors               MusicMapAnchor[]
+
+  @@unique([musicMapId, versionNumber])
+  @@index([musicMapId, lifecycle])
+  @@index([sourceAnalysisVersionId])
+}
+
+model MusicMapAnchor {
+  id                String                 @id @default(uuid()) @db.Uuid
+  musicMapVersionId String                 @db.Uuid
+  sourceKey         String?
+  kind              MusicMapAnchorKind
+  source            MusicMapAnchorSource
+  decision          MusicMapAnchorDecision @default(PENDING)
+  label             String
+  startMs           Int
+  endMs             Int?
+  sourceStartMs     Int?
+  sourceEndMs       Int?
+  sourceConfidence  Float?
+  position          Int
+  metadata          Json?
+  createdAt         DateTime               @default(now())
+  updatedAt         DateTime               @updatedAt
+
+  musicMapVersion MusicMapVersion @relation(fields: [musicMapVersionId], references: [id], onDelete: Cascade)
+
+  @@unique([musicMapVersionId, sourceKey])
+  @@unique([musicMapVersionId, position])
+  @@index([musicMapVersionId, kind, decision])
+  @@index([musicMapVersionId, startMs])
 }
 
 model GenerationJob {
@@ -850,6 +948,7 @@ model DomainVersionNode {
   creativeModuleVersion CreativeModuleVersion?
   creativeKitVersion    CreativeKitVersion?
   musicAnalysisVersion  MusicAnalysisVersion?
+  musicMapVersion       MusicMapVersion?
   assetVersion          AssetVersion?
   timelineVersion       TimelineVersion?
 

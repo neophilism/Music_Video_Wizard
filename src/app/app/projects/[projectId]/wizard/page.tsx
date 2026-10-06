@@ -5,12 +5,14 @@ import { redirect } from "next/navigation";
 import { auth } from "@/lib/auth";
 import { ProjectSetupEditor } from "@/components/project-setup-editor";
 import { MusicAnalysisEditor } from "@/components/music-analysis-editor";
+import { MusicMapEditor } from "@/components/music-map-editor";
 import { WizardNavigation } from "@/components/wizard-navigation";
 import { WizardStageShell } from "@/components/wizard-stage-placeholder";
 import { db } from "@/lib/db";
 import { createAssetStorage } from "@/lib/storage";
 import { projectSetupDraftSchema } from "@/lib/wizard/input";
 import { getMusicAnalysisState } from "@/lib/music-analysis/service";
+import { getMusicMapState } from "@/lib/music-map/service";
 import { getWizardView } from "@/lib/wizard/service";
 
 export default async function ProjectWizardPage(props: {
@@ -58,6 +60,14 @@ export default async function ProjectWizardPage(props: {
   const musicAnalysisState =
     selected.definition.editor === "music-analysis"
       ? await getMusicAnalysisState({
+          userId: session.user.id,
+          projectId
+        })
+      : null;
+
+  const musicMapState =
+    selected.definition.editor === "music-map"
+      ? await getMusicMapState({
           userId: session.user.id,
           projectId
         })
@@ -177,6 +187,31 @@ export default async function ProjectWizardPage(props: {
               />
             </section>
           </>
+        ) : selected.definition.editor === "music-map" &&
+          musicMapState ? (
+          <section className="dashboardCard wizardEditorCard">
+            <MusicMapEditor
+              projectId={projectId}
+              hasAnalysis={Boolean(musicMapState.latestAnalysis)}
+              latestAnalysisVersionNumber={
+                musicMapState.latestAnalysis?.versionNumber ?? null
+              }
+              needsRebase={musicMapState.needsRebase}
+              initialMap={
+                musicMapState.latest
+                  ? {
+                      ...musicMapState.latest,
+                      lockedAt:
+                        musicMapState.latest.lockedAt?.toISOString() ?? null,
+                      createdAt:
+                        musicMapState.latest.createdAt.toISOString()
+                    }
+                  : null
+              }
+              wizardStatus={selected.state.status}
+              wizardLocked={Boolean(selected.state.lockedAt)}
+            />
+          </section>
         ) : (
           <section className="dashboardCard wizardEditorCard">
             <WizardStageShell

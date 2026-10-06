@@ -11,6 +11,7 @@ export function impactActionForKind(
     case DomainVersionKind.TIMELINE:
       return "RECOMPILE";
     case DomainVersionKind.PROJECT:
+    case DomainVersionKind.MUSIC_MAP:
     case DomainVersionKind.SEQUENCE:
     case DomainVersionKind.SHOT:
     case DomainVersionKind.CREATIVE_MODULE:

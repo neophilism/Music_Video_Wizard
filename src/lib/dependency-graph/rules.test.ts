@@ -19,7 +19,8 @@ describe("impactActionForKind", () => {
     DomainVersionKind.SEQUENCE,
     DomainVersionKind.SHOT,
     DomainVersionKind.CREATIVE_MODULE,
-    DomainVersionKind.CREATIVE_KIT
+    DomainVersionKind.CREATIVE_KIT,
+    DomainVersionKind.MUSIC_MAP
   ])("marks semantic node %s for review", (kind) => {
     expect(impactActionForKind(kind)).toBe("REVIEW");
   });
