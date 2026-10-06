@@ -125,4 +125,4 @@ ALTER TABLE "ConceptOption" ADD CONSTRAINT "ConceptOption_createdByUserId_fkey" 
 ALTER TABLE "ConceptOptionLineage" ADD CONSTRAINT "ConceptOptionLineage_childConceptId_fkey" FOREIGN KEY ("childConceptId") REFERENCES "ConceptOption"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "ConceptOptionLineage" ADD CONSTRAINT "ConceptOptionLineage_parentConceptId_fkey" FOREIGN KEY ("parentConceptId") REFERENCES "ConceptOption"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "ConceptOptionLineage" ADD CONSTRAINT "ConceptOptionLineage_parentConceptId_fkey" FOREIGN KEY ("parentConceptId") REFERENCES "ConceptOption"("id") ON DELETE CASCADE ON UPDATE CASCADE;
