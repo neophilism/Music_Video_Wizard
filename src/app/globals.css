@@ -535,3 +535,88 @@ h1 {
     grid-template-columns: 1fr;
   }
 }
+
+
+.kitSearch {
+  grid-template-columns: minmax(0, 1fr) auto;
+}
+
+.kitItems {
+  display: grid;
+  gap: 1rem;
+}
+
+.kitItems .sectionHeading {
+  align-items: flex-start;
+  gap: 1rem;
+}
+
+.kitItems .sectionHeading > div {
+  max-width: 720px;
+}
+
+.kitItems .sectionHeading .dashboardNote {
+  margin-bottom: 0;
+}
+
+.kitItemRow {
+  display: grid;
+  grid-template-columns: minmax(170px, .8fr) minmax(260px, 1.7fr) auto;
+  gap: .8rem;
+  align-items: end;
+  padding: 1rem;
+  border: 1px solid rgba(255,255,255,.1);
+  border-radius: 12px;
+  background: rgba(255,255,255,.025);
+}
+
+.kitRemoveButton {
+  margin-bottom: 1px;
+}
+
+.kitVersionItems {
+  display: grid;
+  gap: .65rem;
+  margin-top: 1.2rem;
+}
+
+.kitVersionItem {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  padding: .9rem 1rem;
+  border-radius: 10px;
+  background: rgba(255,255,255,.045);
+}
+
+.kitVersionItem strong {
+  display: block;
+}
+
+.kitVersionItem p {
+  margin: .25rem 0 0;
+  color: #c9ceda;
+}
+
+.kitVersionItem > span {
+  color: #939bac;
+  font-size: .78rem;
+  text-align: right;
+}
+
+@media (max-width: 760px) {
+  .kitItemRow,
+  .kitSearch {
+    grid-template-columns: 1fr;
+  }
+
+  .kitVersionItem {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .kitVersionItem > span {
+    text-align: left;
+  }
+}

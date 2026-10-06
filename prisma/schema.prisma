@@ -24,6 +24,7 @@ enum DomainVersionKind {
   SEQUENCE
   SHOT
   CREATIVE_MODULE
+  CREATIVE_KIT
   ASSET
   TIMELINE
 }
@@ -143,6 +144,7 @@ model User {
   sequenceVersionsCreated       SequenceVersion[]       @relation("SequenceVersionCreator")
   shotVersionsCreated           ShotVersion[]           @relation("ShotVersionCreator")
   creativeModuleVersionsCreated CreativeModuleVersion[] @relation("CreativeModuleVersionCreator")
+  creativeKitVersionsCreated    CreativeKitVersion[]    @relation("CreativeKitVersionCreator")
   assetVersionsCreated          AssetVersion[]          @relation("AssetVersionCreator")
   generationJobsRequested       GenerationJob[]         @relation("GenerationJobRequester")
   timelineVersionsCreated       TimelineVersion[]       @relation("TimelineVersionCreator")
@@ -213,6 +215,7 @@ model Workspace {
   memberships     WorkspaceMembership[]
   projects        Project[]
   creativeModules CreativeModule[]
+  creativeKits    CreativeKit[]
   assets          Asset[]
   generationJobs  GenerationJob[]
 }
@@ -439,6 +442,7 @@ model CreativeModuleVersion {
   createdBy      User?              @relation("CreativeModuleVersionCreator", fields: [createdByUserId], references: [id], onDelete: SetNull)
   references     CreativeModuleReference[]
   bindings       CreativeBinding[]
+  kitItems       CreativeKitItem[]
 
   @@unique([creativeModuleId, versionNumber])
   @@index([creativeModuleId, lifecycle])
@@ -469,6 +473,58 @@ model CreativeBinding {
   creativeModuleVersion CreativeModuleVersion @relation(fields: [creativeModuleVersionId], references: [id], onDelete: Restrict)
 
   @@unique([scopeNodeId, slot])
+  @@index([creativeModuleVersionId])
+}
+
+
+model CreativeKit {
+  id          String    @id @default(uuid()) @db.Uuid
+  workspaceId String    @db.Uuid
+  name        String
+  description String?   @db.Text
+  tags        String[]  @default([])
+  archivedAt  DateTime?
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  workspace Workspace            @relation(fields: [workspaceId], references: [id])
+  versions  CreativeKitVersion[]
+
+  @@index([workspaceId, updatedAt])
+}
+
+model CreativeKitVersion {
+  id              String           @id @default(uuid()) @db.Uuid
+  creativeKitId   String           @db.Uuid
+  nodeId          String           @unique @db.Uuid
+  versionNumber   Int
+  lifecycle       VersionLifecycle @default(DRAFT)
+  notes           String?          @db.Text
+  createdByUserId String?          @db.Uuid
+  createdAt       DateTime         @default(now())
+  lockedAt        DateTime?
+
+  creativeKit CreativeKit       @relation(fields: [creativeKitId], references: [id])
+  node        DomainVersionNode @relation(fields: [nodeId], references: [id])
+  createdBy   User?             @relation("CreativeKitVersionCreator", fields: [createdByUserId], references: [id], onDelete: SetNull)
+  items       CreativeKitItem[]
+
+  @@unique([creativeKitId, versionNumber])
+  @@index([creativeKitId, lifecycle])
+}
+
+model CreativeKitItem {
+  id                      String @id @default(uuid()) @db.Uuid
+  creativeKitVersionId    String @db.Uuid
+  creativeModuleVersionId String @db.Uuid
+  slot                    String
+  position                Int    @default(0)
+
+  creativeKitVersion    CreativeKitVersion    @relation(fields: [creativeKitVersionId], references: [id], onDelete: Cascade)
+  creativeModuleVersion CreativeModuleVersion @relation(fields: [creativeModuleVersionId], references: [id], onDelete: Restrict)
+
+  @@unique([creativeKitVersionId, slot])
+  @@unique([creativeKitVersionId, position])
   @@index([creativeModuleVersionId])
 }
 
@@ -700,6 +756,7 @@ model DomainVersionNode {
   sequenceVersion       SequenceVersion?
   shotVersion           ShotVersion?
   creativeModuleVersion CreativeModuleVersion?
+  creativeKitVersion    CreativeKitVersion?
   assetVersion          AssetVersion?
   timelineVersion       TimelineVersion?
 

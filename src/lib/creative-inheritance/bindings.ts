@@ -15,7 +15,7 @@ import {
   normalizeCreativeSlot
 } from "./resolver";
 
-type BindingTransaction = Prisma.TransactionClient;
+export type BindingTransaction = Prisma.TransactionClient;
 
 interface CreativeScopeContext {
   kind: DomainVersionKind;
@@ -149,112 +149,122 @@ async function removeBindingDependencyIfUnused(
   });
 }
 
+export async function setCreativeBindingInTransaction(
+  tx: BindingTransaction,
+  input: {
+    scopeNodeId: string;
+    slot: string;
+    creativeModuleVersionId: string;
+  }
+) {
+  const slot = normalizeCreativeSlot(input.slot);
+  const scope = await loadCreativeScopeContext(tx, input.scopeNodeId);
+  if (scope.lifecycle !== VersionLifecycle.DRAFT) {
+    throw new CreativeInheritanceError(
+      "Creative bindings can only be changed on DRAFT scope versions."
+    );
+  }
+
+  const moduleVersion = await tx.creativeModuleVersion.findUnique({
+    where: { id: input.creativeModuleVersionId },
+    select: {
+      id: true,
+      nodeId: true,
+      lifecycle: true,
+      creativeModule: {
+        select: {
+          workspaceId: true
+        }
+      }
+    }
+  });
+
+  if (!moduleVersion) {
+    throw new CreativeInheritanceError(
+      "Creative module version not found: " +
+        input.creativeModuleVersionId
+    );
+  }
+
+  if (moduleVersion.lifecycle === VersionLifecycle.SUPERSEDED) {
+    throw new CreativeInheritanceError(
+      "A superseded creative module version cannot receive a new binding."
+    );
+  }
+
+  if (moduleVersion.creativeModule.workspaceId !== scope.workspaceId) {
+    throw new CreativeInheritanceError(
+      "Creative modules cannot be bound across workspaces."
+    );
+  }
+
+  const existing = await tx.creativeBinding.findUnique({
+    where: {
+      scopeNodeId_slot: {
+        scopeNodeId: input.scopeNodeId,
+        slot
+      }
+    },
+    select: {
+      creativeModuleVersionId: true,
+      creativeModuleVersion: {
+        select: { nodeId: true }
+      }
+    }
+  });
+
+  const binding = await tx.creativeBinding.upsert({
+    where: {
+      scopeNodeId_slot: {
+        scopeNodeId: input.scopeNodeId,
+        slot
+      }
+    },
+    create: {
+      scopeNodeId: input.scopeNodeId,
+      slot,
+      creativeModuleVersionId: input.creativeModuleVersionId
+    },
+    update: {
+      creativeModuleVersionId: input.creativeModuleVersionId
+    }
+  });
+
+  await registerDependencyEdgeInTransaction(tx, {
+    upstreamNodeId: moduleVersion.nodeId,
+    downstreamNodeId: input.scopeNodeId,
+    relation: DependencyRelation.REFERENCES,
+    reason:
+      'Creative binding: slot "' +
+      slot +
+      '" controls the ' +
+      scope.kind.toLowerCase() +
+      " scope."
+  });
+
+  if (
+    existing &&
+    existing.creativeModuleVersionId !== input.creativeModuleVersionId
+  ) {
+    await removeBindingDependencyIfUnused(
+      tx,
+      input.scopeNodeId,
+      existing.creativeModuleVersionId,
+      existing.creativeModuleVersion.nodeId
+    );
+  }
+
+  return binding;
+}
+
 export async function setCreativeBinding(input: {
   scopeNodeId: string;
   slot: string;
   creativeModuleVersionId: string;
 }) {
-  const slot = normalizeCreativeSlot(input.slot);
-
-  return db.$transaction(async (tx) => {
-    const scope = await loadCreativeScopeContext(tx, input.scopeNodeId);
-    if (scope.lifecycle !== VersionLifecycle.DRAFT) {
-      throw new CreativeInheritanceError(
-        "Creative bindings can only be changed on DRAFT scope versions."
-      );
-    }
-
-    const moduleVersion = await tx.creativeModuleVersion.findUnique({
-      where: { id: input.creativeModuleVersionId },
-      select: {
-        id: true,
-        nodeId: true,
-        lifecycle: true,
-        creativeModule: {
-          select: {
-            workspaceId: true
-          }
-        }
-      }
-    });
-
-    if (!moduleVersion) {
-      throw new CreativeInheritanceError(
-        "Creative module version not found: " +
-          input.creativeModuleVersionId
-      );
-    }
-
-    if (moduleVersion.lifecycle === VersionLifecycle.SUPERSEDED) {
-      throw new CreativeInheritanceError(
-        "A superseded creative module version cannot receive a new binding."
-      );
-    }
-
-    if (moduleVersion.creativeModule.workspaceId !== scope.workspaceId) {
-      throw new CreativeInheritanceError(
-        "Creative modules cannot be bound across workspaces."
-      );
-    }
-
-    const existing = await tx.creativeBinding.findUnique({
-      where: {
-        scopeNodeId_slot: {
-          scopeNodeId: input.scopeNodeId,
-          slot
-        }
-      },
-      select: {
-        creativeModuleVersionId: true,
-        creativeModuleVersion: {
-          select: { nodeId: true }
-        }
-      }
-    });
-
-    const binding = await tx.creativeBinding.upsert({
-      where: {
-        scopeNodeId_slot: {
-          scopeNodeId: input.scopeNodeId,
-          slot
-        }
-      },
-      create: {
-        scopeNodeId: input.scopeNodeId,
-        slot,
-        creativeModuleVersionId: input.creativeModuleVersionId
-      },
-      update: {
-        creativeModuleVersionId: input.creativeModuleVersionId
-      }
-    });
-
-    await registerDependencyEdgeInTransaction(tx, {
-      upstreamNodeId: moduleVersion.nodeId,
-      downstreamNodeId: input.scopeNodeId,
-      relation: DependencyRelation.REFERENCES,
-      reason:
-        'Creative binding: slot "' +
-        slot +
-        '" controls the ' +
-        scope.kind.toLowerCase() +
-        " scope."
-    });
-
-    if (
-      existing &&
-      existing.creativeModuleVersionId !== input.creativeModuleVersionId
-    ) {
-      await removeBindingDependencyIfUnused(
-        tx,
-        input.scopeNodeId,
-        existing.creativeModuleVersionId,
-        existing.creativeModuleVersion.nodeId
-      );
-    }
-
-    return binding;
-  });
+  return db.$transaction((tx) =>
+    setCreativeBindingInTransaction(tx, input)
+  );
 }
 
 export async function removeCreativeBinding(input: {
