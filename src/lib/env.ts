@@ -25,7 +25,13 @@ const environmentSchema = z
     JOB_EXPIRE_SECONDS: z.coerce.number().int().min(60).max(86400).default(21600),
     JOB_HEARTBEAT_SECONDS: z.coerce.number().int().min(10).max(3600).default(30),
     JOB_WORKER_CONCURRENCY: z.coerce.number().int().positive().max(64).default(4),
-    JOB_WORKSPACE_CONCURRENCY: z.coerce.number().int().positive().max(32).default(2)
+    JOB_WORKSPACE_CONCURRENCY: z.coerce.number().int().positive().max(32).default(2),
+    AUDIO_ANALYSIS_PYTHON: z.string().min(1).default("python3"),
+    AUDIO_ANALYSIS_FFMPEG: z.string().min(1).default("ffmpeg"),
+    AUDIO_TRANSCRIPTION_PROVIDER: z.enum(["none", "openai"]).default("none"),
+    AUDIO_TRANSCRIPTION_MODEL: z.string().min(1).default("gpt-transcribe"),
+    OPENAI_API_KEY: z.string().optional().or(z.literal("")),
+    OPENAI_BASE_URL: z.string().url().default("https://api.openai.com")
   })
   .superRefine((env, ctx) => {
     const hasAccessKey = Boolean(env.ASSET_STORAGE_ACCESS_KEY_ID);
@@ -35,6 +41,18 @@ const environmentSchema = z
         code: "custom",
         path: ["ASSET_STORAGE_ACCESS_KEY_ID"],
         message: "S3 access key and secret key must be supplied together"
+      });
+    }
+
+    if (
+      env.AUDIO_TRANSCRIPTION_PROVIDER === "openai" &&
+      !env.OPENAI_API_KEY
+    ) {
+      ctx.addIssue({
+        code: "custom",
+        path: ["OPENAI_API_KEY"],
+        message:
+          "OPENAI_API_KEY is required when AUDIO_TRANSCRIPTION_PROVIDER=openai"
       });
     }
   });

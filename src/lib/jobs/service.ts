@@ -17,6 +17,7 @@ export interface GenerationJobInputReference {
 }
 
 export interface EnqueueGenerationJobInput {
+  jobId?: string;
   workspaceId: string;
   projectId?: string;
   kind: GenerationKind;
@@ -26,12 +27,16 @@ export interface EnqueueGenerationJobInput {
   requestedByUserId?: string;
   inputs?: GenerationJobInputReference[];
   retryLimit?: number;
+  prepare?: (
+    tx: Prisma.TransactionClient,
+    jobId: string
+  ) => Promise<unknown>;
 }
 
 export async function enqueueGenerationJob(input: EnqueueGenerationJobInput) {
   const env = getEnvironment();
   const boss = await getJobQueue();
-  const jobId = randomUUID();
+  const jobId = input.jobId ?? randomUUID();
   const retryLimit = input.retryLimit ?? env.JOB_RETRY_LIMIT;
   const maxAttempts = retryLimit + 1;
 
@@ -77,6 +82,10 @@ export async function enqueueGenerationJob(input: EnqueueGenerationJobInput) {
         }
       }
     });
+
+    if (input.prepare) {
+      await input.prepare(tx, jobId);
+    }
 
     const queueId = await boss.send(
       GENERATION_QUEUE,

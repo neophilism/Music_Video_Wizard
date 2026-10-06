@@ -3,8 +3,11 @@ import { DomainVersionKind } from "@prisma/client";
 import { impactActionForKind } from "./rules";
 
 describe("impactActionForKind", () => {
-  it("regenerates derived media assets", () => {
-    expect(impactActionForKind(DomainVersionKind.ASSET)).toBe("REGENERATE");
+  it.each([
+    DomainVersionKind.ASSET,
+    DomainVersionKind.MUSIC_ANALYSIS
+  ])("regenerates derived node %s", (kind) => {
+    expect(impactActionForKind(kind)).toBe("REGENERATE");
   });
 
   it("recompiles timelines", () => {

@@ -1,3 +1,8 @@
+import { createWriteStream } from "node:fs";
+import { mkdir } from "node:fs/promises";
+import path from "node:path";
+import { Readable } from "node:stream";
+import { pipeline } from "node:stream/promises";
 import {
   DeleteObjectCommand,
   HeadObjectCommand,
@@ -85,6 +90,25 @@ export class S3AssetStorage implements AssetStorage {
       if (status === 404) return false;
       throw error;
     }
+  }
+
+  async downloadToFile(
+    key: string,
+    destinationPath: string
+  ): Promise<void> {
+    const response = await this.client.send(
+      new GetObjectCommand({
+        Bucket: this.options.bucket,
+        Key: key
+      })
+    );
+
+    if (!(response.Body instanceof Readable)) {
+      throw new Error("S3 asset body is not a Node readable stream.");
+    }
+
+    await mkdir(path.dirname(destinationPath), { recursive: true });
+    await pipeline(response.Body, createWriteStream(destinationPath, { flags: "wx" }));
   }
 
   async getSignedReadUrl(

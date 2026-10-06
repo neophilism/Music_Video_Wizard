@@ -380,10 +380,13 @@ export async function saveWizardStepPayload(input: {
     );
   }
 
-  const parsedPayload =
-    definition.editor === "project-setup"
-      ? projectSetupDraftSchema.parse(input.payload)
-      : input.payload;
+  if (definition.editor !== "project-setup") {
+    throw new WizardError(
+      "This wizard stage is managed by its stage-specific service."
+    );
+  }
+
+  const parsedPayload = projectSetupDraftSchema.parse(input.payload);
 
   return db.$transaction(
     async (tx) => {
@@ -491,6 +494,14 @@ export async function transitionWizardStep(input: {
       if (!context.definition.editor) {
         throw new WizardError(
           "This stage does not have an editor installed in the current build."
+        );
+      }
+      if (
+        context.definition.editor === "music-analysis" &&
+        input.action !== "lock"
+      ) {
+        throw new WizardError(
+          "Music analysis completion and re-analysis are managed by the analysis job."
         );
       }
       let impactWarnings: Array<{
@@ -610,4 +621,169 @@ export async function navigateWizard(input: {
   });
 
   return { currentStepKey: input.stepKey };
+}
+
+
+export async function prepareAutomaticWizardStepInTransaction(
+  tx: Prisma.TransactionClient,
+  input: {
+    projectVersionId: string;
+    stepKey: string;
+    payload: Prisma.InputJsonValue;
+    semanticFingerprint?: string;
+  }
+) {
+  const definition = requireRegisteredStep(input.stepKey);
+  if (!definition.editor) {
+    throw new WizardError("Wizard stage has no installed editor.");
+  }
+
+  const progress = await tx.wizardProgress.findUnique({
+    where: { projectVersionId: input.projectVersionId },
+    include: {
+      projectVersion: true,
+      steps: { orderBy: { ordinal: "asc" } }
+    }
+  });
+  if (!progress) {
+    throw new WizardError("Wizard progress not found for project version.");
+  }
+  if (progress.projectVersion.lifecycle !== VersionLifecycle.DRAFT) {
+    throw new WizardLockedError(
+      "This project version is locked and cannot be changed."
+    );
+  }
+
+  const step = progress.steps.find(
+    (candidate) => candidate.stepKey === input.stepKey
+  );
+  if (!step) throw new WizardError("Wizard step state not found.");
+  if (step.lockedAt) {
+    throw new WizardLockedError(
+      "This wizard step is locked and cannot be regenerated."
+    );
+  }
+
+  await tx.wizardStepState.update({
+    where: { id: step.id },
+    data: {
+      status: WizardStepStatus.IN_PROGRESS,
+      payload: input.payload,
+      contentRevision: { increment: 1 },
+      lastSavedAt: new Date(),
+      completedAt: null,
+      needsReviewAt: null,
+      reviewReason: null
+    }
+  });
+
+  await tx.wizardProgress.update({
+    where: { id: progress.id },
+    data: {
+      revision: { increment: 1 },
+      currentStepKey: input.stepKey
+    }
+  });
+
+  return {
+    progressId: progress.id,
+    stepId: step.id,
+    progressRevision: progress.revision + 1
+  };
+}
+
+export async function prepareAutomaticWizardStep(input: {
+  userId: string;
+  projectId: string;
+  stepKey: string;
+  payload: Prisma.InputJsonValue;
+}) {
+  const version = await ensureWizardProgress({
+    userId: input.userId,
+    projectId: input.projectId
+  });
+
+  return db.$transaction((tx) =>
+    prepareAutomaticWizardStepInTransaction(tx, {
+      projectVersionId: version.id,
+      stepKey: input.stepKey,
+      payload: input.payload
+    })
+  );
+}
+
+export async function completeAutomaticWizardStepInTransaction(
+  tx: Prisma.TransactionClient,
+  input: {
+    projectVersionId: string;
+    stepKey: string;
+    payload: Prisma.InputJsonValue;
+    semanticFingerprint?: string;
+  }
+) {
+  const definition = requireRegisteredStep(input.stepKey);
+  const progress = await tx.wizardProgress.findUnique({
+    where: { projectVersionId: input.projectVersionId },
+    include: {
+      steps: {
+        orderBy: { ordinal: "asc" }
+      }
+    }
+  });
+  if (!progress) {
+    throw new WizardError("Wizard progress not found for project version.");
+  }
+
+  const step = progress.steps.find(
+    (candidate) => candidate.stepKey === input.stepKey
+  );
+  if (!step) throw new WizardError("Wizard step state not found.");
+  if (step.lockedAt) {
+    throw new WizardLockedError(
+      "This wizard step is locked and cannot accept a new result."
+    );
+  }
+
+  const fingerprint =
+    input.semanticFingerprint ??
+    fingerprintJson(input.payload as Prisma.JsonValue);
+  const materialChange =
+    Boolean(step.payloadFingerprint) &&
+    step.payloadFingerprint !== fingerprint;
+
+  const impactWarnings = materialChange
+    ? await invalidateTouchedDownstream(tx, {
+        progressId: progress.id,
+        sourceOrdinal: step.ordinal,
+        sourceTitle: definition.title,
+        steps: progress.steps
+      })
+    : [];
+
+  await tx.wizardStepState.update({
+    where: { id: step.id },
+    data: {
+      status: WizardStepStatus.COMPLETED,
+      payload: input.payload,
+      payloadFingerprint: fingerprint,
+      contentRevision: { increment: 1 },
+      lastSavedAt: new Date(),
+      completedAt: new Date(),
+      needsReviewAt: null,
+      reviewReason: null
+    }
+  });
+
+  await tx.wizardProgress.update({
+    where: { id: progress.id },
+    data: {
+      revision: { increment: 1 },
+      currentStepKey: input.stepKey
+    }
+  });
+
+  return {
+    materialChange,
+    impactWarnings
+  };
 }
