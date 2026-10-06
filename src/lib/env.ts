@@ -17,7 +17,15 @@ const environmentSchema = z
       .default("false")
       .transform((value) => value === "true"),
     ASSET_STORAGE_LOCAL_ROOT: z.string().min(1).default(".data/assets"),
-    MAX_AUDIO_UPLOAD_BYTES: z.coerce.number().int().positive().default(536870912)
+    MAX_AUDIO_UPLOAD_BYTES: z.coerce.number().int().positive().default(536870912),
+    JOB_QUEUE_SCHEMA: z.string().regex(/^[A-Za-z_][A-Za-z0-9_]*$/).default("pgboss"),
+    JOB_RETRY_LIMIT: z.coerce.number().int().min(0).max(20).default(3),
+    JOB_RETRY_DELAY_SECONDS: z.coerce.number().int().min(0).max(3600).default(5),
+    JOB_RETRY_DELAY_MAX_SECONDS: z.coerce.number().int().positive().max(86400).default(300),
+    JOB_EXPIRE_SECONDS: z.coerce.number().int().min(60).max(86400).default(21600),
+    JOB_HEARTBEAT_SECONDS: z.coerce.number().int().min(10).max(3600).default(30),
+    JOB_WORKER_CONCURRENCY: z.coerce.number().int().positive().max(64).default(4),
+    JOB_WORKSPACE_CONCURRENCY: z.coerce.number().int().positive().max(32).default(2)
   })
   .superRefine((env, ctx) => {
     const hasAccessKey = Boolean(env.ASSET_STORAGE_ACCESS_KEY_ID);
