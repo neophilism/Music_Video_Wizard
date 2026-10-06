@@ -99,6 +99,42 @@ async function main() {
     console.log("Creative Library smoke test passed.");
   } finally {
     if (workspaceId) {
+      const libraryVersions = await db.creativeModuleVersion.findMany({
+        where: {
+          creativeModule: { workspaceId }
+        },
+        select: {
+          id: true,
+          nodeId: true,
+          creativeModuleId: true
+        }
+      });
+      const nodeIds = libraryVersions.map(({ nodeId }) => nodeId);
+      const moduleIds = [
+        ...new Set(libraryVersions.map(({ creativeModuleId }) => creativeModuleId))
+      ];
+
+      if (nodeIds.length > 0) {
+        await db.dependencyEdge.deleteMany({
+          where: {
+            OR: [
+              { upstreamNodeId: { in: nodeIds } },
+              { downstreamNodeId: { in: nodeIds } }
+            ]
+          }
+        });
+      }
+      await db.creativeModuleVersion.deleteMany({
+        where: { id: { in: libraryVersions.map(({ id }) => id) } }
+      });
+      await db.creativeModule.deleteMany({
+        where: { id: { in: moduleIds } }
+      });
+      if (nodeIds.length > 0) {
+        await db.domainVersionNode.deleteMany({
+          where: { id: { in: nodeIds } }
+        });
+      }
       await db.workspace.deleteMany({ where: { id: workspaceId } });
     }
     await db.user.deleteMany({ where: { id: userId } });
