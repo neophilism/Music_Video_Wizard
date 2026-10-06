@@ -1234,6 +1234,8 @@ export async function getMusicMapState(input: {
   const versions =
     project.musicMap?.versions.map((version) => ({
       ...version,
+      sourceAnalysisVersionNumber:
+        version.sourceAnalysisVersion.versionNumber,
       beatGridMs: parseNumberArray(version.beatGridMs),
       barGridMs: parseNumberArray(version.barGridMs),
       analysis: musicAnalysisResultSchema.parse(
