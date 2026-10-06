@@ -6,6 +6,7 @@ import {
   DomainVersionKind
 } from "@prisma/client";
 import { db } from "@/lib/db";
+import { registerDependencyEdgeInTransaction } from "@/lib/dependency-graph/service";
 import { getEnvironment } from "@/lib/env";
 import { ensurePersonalWorkspace } from "@/lib/workspaces";
 import { createAssetStorage } from "@/lib/storage";
@@ -146,13 +147,11 @@ export async function createProjectWithAudio(
         }
       });
 
-      await tx.dependencyEdge.create({
-        data: {
-          upstreamNodeId: audioNodeId,
-          downstreamNodeId: projectNodeId,
-          relation: DependencyRelation.REFERENCES,
-          reason: "Project version pins its immutable master audio asset version."
-        }
+      await registerDependencyEdgeInTransaction(tx, {
+        upstreamNodeId: audioNodeId,
+        downstreamNodeId: projectNodeId,
+        relation: DependencyRelation.REFERENCES,
+        reason: "Project version pins its immutable master audio asset version."
       });
     });
   } catch (databaseError) {
