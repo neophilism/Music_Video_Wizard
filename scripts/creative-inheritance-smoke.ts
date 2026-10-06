@@ -87,7 +87,7 @@ async function main() {
         { id: projectNodeId, kind: DomainVersionKind.PROJECT },
         { id: sequenceNodeId, kind: DomainVersionKind.SEQUENCE },
         { id: shotNodeId, kind: DomainVersionKind.SHOT },
-        ...moduleDefinitions.map((module) => ({
+        ...moduleDefinitions.map((moduleDefinition) => ({
           id: moduleDefinition.nodeId,
           kind: DomainVersionKind.CREATIVE_MODULE
         }))
