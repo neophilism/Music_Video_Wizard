@@ -13,15 +13,15 @@ export async function GET(
   }
 
   const { moduleId } = await context.params;
-  const module = await getCreativeModule({
+  const libraryItem = await getCreativeModule({
     userId: session.user.id,
     displayName: session.user.name,
     moduleId
   });
 
-  if (!module) {
+  if (!libraryItem) {
     return Response.json({ error: "Not found" }, { status: 404 });
   }
 
-  return Response.json({ module });
+  return Response.json({ module: libraryItem });
 }
