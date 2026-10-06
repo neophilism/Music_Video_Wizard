@@ -53,6 +53,7 @@ interface MusicMapView {
   durationMs: number;
   notes: string | null;
   lockedAt: string | Date | null;
+  createdAt: string | Date;
   anchors: Anchor[];
   analysis: {
     waveform: Array<{
