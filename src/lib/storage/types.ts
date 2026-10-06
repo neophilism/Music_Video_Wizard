@@ -17,5 +17,6 @@ export interface AssetStorage {
   put(input: PutAssetInput): Promise<StoredAsset>;
   delete(key: AssetKey): Promise<void>;
   exists(key: AssetKey): Promise<boolean>;
+  downloadToFile(key: AssetKey, destinationPath: string): Promise<void>;
   getSignedReadUrl(key: AssetKey, expiresInSeconds: number): Promise<string>;
 }

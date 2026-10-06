@@ -43,6 +43,9 @@ export async function lockVersionNode(
         creativeKitVersion: {
           select: { id: true, lifecycle: true }
         },
+        musicAnalysisVersion: {
+          select: { id: true, lifecycle: true }
+        },
         timelineVersion: {
           select: { id: true, lifecycle: true }
         }
@@ -224,6 +227,20 @@ export async function lockVersionNode(
       case DomainVersionKind.CREATIVE_KIT:
         return lockOwner(node.creativeKitVersion, (id) =>
           tx.creativeKitVersion.updateMany({
+            where: {
+              id,
+              lifecycle: VersionLifecycle.DRAFT
+            },
+            data: {
+              lifecycle: VersionLifecycle.LOCKED,
+              lockedAt: now
+            }
+          })
+        );
+
+      case DomainVersionKind.MUSIC_ANALYSIS:
+        return lockOwner(node.musicAnalysisVersion, (id) =>
+          tx.musicAnalysisVersion.updateMany({
             where: {
               id,
               lifecycle: VersionLifecycle.DRAFT

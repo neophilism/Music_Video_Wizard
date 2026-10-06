@@ -4,11 +4,13 @@ import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 import { auth } from "@/lib/auth";
 import { ProjectSetupEditor } from "@/components/project-setup-editor";
+import { MusicAnalysisEditor } from "@/components/music-analysis-editor";
 import { WizardNavigation } from "@/components/wizard-navigation";
 import { WizardStageShell } from "@/components/wizard-stage-placeholder";
 import { db } from "@/lib/db";
 import { createAssetStorage } from "@/lib/storage";
 import { projectSetupDraftSchema } from "@/lib/wizard/input";
+import { getMusicAnalysisState } from "@/lib/music-analysis/service";
 import { getWizardView } from "@/lib/wizard/service";
 
 export default async function ProjectWizardPage(props: {
@@ -51,6 +53,14 @@ export default async function ProjectWizardPage(props: {
   const selectedPayload =
     selected.definition.editor === "project-setup"
       ? projectSetupDraftSchema.parse(selected.state.payload)
+      : null;
+
+  const musicAnalysisState =
+    selected.definition.editor === "music-analysis"
+      ? await getMusicAnalysisState({
+          userId: session.user.id,
+          projectId
+        })
       : null;
 
   return (
@@ -127,6 +137,43 @@ export default async function ProjectWizardPage(props: {
                 initialStatus={selected.state.status}
                 locked={Boolean(selected.state.lockedAt)}
                 downstreamImpact={view.downstreamImpact}
+              />
+            </section>
+          </>
+        ) : selected.definition.editor === "music-analysis" &&
+          musicAnalysisState ? (
+          <>
+            <section className="dashboardCard wizardAudioCard">
+              <p className="dashboardLabel">Immutable master analyzed</p>
+              <p className="dashboardValue">
+                {audio?.asset.name ?? "Audio unavailable"}
+              </p>
+              {audioUrl ? (
+                <audio
+                  className="audioPlayer"
+                  controls
+                  preload="metadata"
+                  src={audioUrl}
+                >
+                  Your browser does not support audio playback.
+                </audio>
+              ) : null}
+            </section>
+
+            <section className="dashboardCard wizardEditorCard">
+              <MusicAnalysisEditor
+                projectId={projectId}
+                result={musicAnalysisState.latest?.result ?? null}
+                analysisVersionNumber={
+                  musicAnalysisState.latest?.versionNumber ?? null
+                }
+                recentJob={musicAnalysisState.recentJob}
+                transcriptionAvailable={
+                  musicAnalysisState.transcriptionAvailable
+                }
+                locked={Boolean(selected.state.lockedAt)}
+                wizardStatus={selected.state.status}
+                wizardRevision={view.progress.revision}
               />
             </section>
           </>

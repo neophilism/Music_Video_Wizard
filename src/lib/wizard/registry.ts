@@ -4,7 +4,7 @@ export interface WizardStepDefinition {
   phase: string;
   title: string;
   description: string;
-  editor: "project-setup" | null;
+  editor: "project-setup" | "music-analysis" | null;
 }
 
 export const WIZARD_STEPS: readonly WizardStepDefinition[] = [
@@ -24,7 +24,7 @@ export const WIZARD_STEPS: readonly WizardStepDefinition[] = [
     title: "Music analysis",
     description:
       "Derive objective timing, beat, section, energy, and structural information from the finished song.",
-    editor: null
+    editor: "music-analysis"
   },
   {
     key: "music-map",

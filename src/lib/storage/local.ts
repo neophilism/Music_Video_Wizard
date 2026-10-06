@@ -1,5 +1,5 @@
 import { createHmac, timingSafeEqual } from "node:crypto";
-import { access, mkdir, readFile, rm, writeFile } from "node:fs/promises";
+import { access, copyFile, mkdir, readFile, rm, writeFile } from "node:fs/promises";
 import path from "node:path";
 import type { AssetStorage, PutAssetInput, StoredAsset } from "./types";
 
@@ -50,6 +50,14 @@ export class LocalAssetStorage implements AssetStorage {
     } catch {
       return false;
     }
+  }
+
+  async downloadToFile(
+    key: string,
+    destinationPath: string
+  ): Promise<void> {
+    await mkdir(path.dirname(destinationPath), { recursive: true });
+    await copyFile(resolvedAssetPath(this.root, key), destinationPath);
   }
 
   async getSignedReadUrl(

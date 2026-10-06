@@ -6,6 +6,7 @@ export function impactActionForKind(
 ): DependencyImpactAction {
   switch (kind) {
     case DomainVersionKind.ASSET:
+    case DomainVersionKind.MUSIC_ANALYSIS:
       return "REGENERATE";
     case DomainVersionKind.TIMELINE:
       return "RECOMPILE";

@@ -1,7 +1,9 @@
 import { startGenerationWorker } from "@/lib/jobs/worker";
 import { stopJobQueue } from "@/lib/jobs/queue";
+import { registerBuiltInGenerationHandlers } from "@/lib/music-analysis/register";
 
 async function main() {
+  registerBuiltInGenerationHandlers();
   const worker = await startGenerationWorker();
   console.log(`Generation worker started: ${worker.workerId}`);
 

@@ -40,11 +40,19 @@ jobs:
       JOB_HEARTBEAT_SECONDS: 10
       JOB_WORKER_CONCURRENCY: 2
       JOB_WORKSPACE_CONCURRENCY: 1
+      AUDIO_ANALYSIS_PYTHON: python
+      AUDIO_ANALYSIS_FFMPEG: ffmpeg
+      AUDIO_TRANSCRIPTION_PROVIDER: none
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
           node-version: 22.12.0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: sudo apt-get update && sudo apt-get install -y ffmpeg
+      - run: python -m pip install --disable-pip-version-check -r analysis/requirements.txt
       - run: npm install
       - run: npm run db:validate
       - run: npm run db:generate
@@ -57,5 +65,6 @@ jobs:
       - run: npm run test:library
       - run: npm run test:kits
       - run: npm run test:wizard
+      - run: npm run test:analysis
       - run: npm run test:queue
       - run: npm run build
