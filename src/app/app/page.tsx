@@ -1,6 +1,8 @@
+import Link from "next/link";
 import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 import { auth } from "@/lib/auth";
+import { db } from "@/lib/db";
 import { ensurePersonalWorkspace } from "@/lib/workspaces";
 import { SignOutButton } from "@/components/sign-out-button";
 
@@ -16,6 +18,24 @@ export default async function AppHomePage() {
     session.user.name
   );
 
+  const projects = await db.project.findMany({
+    where: {
+      workspaceId: workspace.id,
+      archivedAt: null
+    },
+    orderBy: { updatedAt: "desc" },
+    include: {
+      versions: {
+        orderBy: { versionNumber: "desc" },
+        take: 1,
+        select: {
+          aspectRatio: true,
+          frameRate: true
+        }
+      }
+    }
+  });
+
   return (
     <main className="dashboardShell">
       <header className="dashboardHeader">
@@ -23,18 +43,57 @@ export default async function AppHomePage() {
           <p className="eyebrow">Music Video Wizard</p>
           <h1 className="dashboardTitle">Your studio</h1>
         </div>
-        <SignOutButton />
+        <div className="headerActions">
+          <Link className="primaryButton linkButton" href="/app/projects/new">
+            New project
+          </Link>
+          <SignOutButton />
+        </div>
       </header>
 
       <section className="dashboardCard">
-        <p className="dashboardLabel">Signed in as</p>
-        <p className="dashboardValue">{session.user.email}</p>
         <p className="dashboardLabel">Workspace</p>
         <p className="dashboardValue">{workspace.name}</p>
-        <p className="dashboardNote">
-          Project creation arrives in PR 4. Authentication and workspace
-          ownership are active now.
-        </p>
+      </section>
+
+      <section className="projectSection">
+        <div className="sectionHeading">
+          <h2>Projects</h2>
+          <span>{projects.length}</span>
+        </div>
+
+        {projects.length === 0 ? (
+          <div className="emptyState">
+            <h3>No projects yet.</h3>
+            <p>
+              Create your first project by uploading the finished song. The
+              wizard will build creative decisions on top of that master.
+            </p>
+            <Link className="primaryButton linkButton" href="/app/projects/new">
+              Create first project
+            </Link>
+          </div>
+        ) : (
+          <div className="projectGrid">
+            {projects.map((project) => {
+              const version = project.versions[0];
+              return (
+                <Link
+                  className="projectCard"
+                  href={`/app/projects/${project.id}`}
+                  key={project.id}
+                >
+                  <h3>{project.title}</h3>
+                  <p>{project.description || "No description"}</p>
+                  <div className="projectMeta">
+                    <span>{version?.aspectRatio ?? "—"}</span>
+                    <span>{version?.frameRate ?? "—"} fps</span>
+                  </div>
+                </Link>
+              );
+            })}
+          </div>
+        )}
       </section>
     </main>
   );
