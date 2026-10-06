@@ -61,7 +61,7 @@ const alignmentJsonSchema = {
   additionalProperties: false
 } as const;
 
-export function conceptEnvelopeJsonSchema() {
+export function conceptEnvelopeJsonSchema(count: number) {
   const concept = {
     type: "object",
     properties: {
@@ -145,6 +145,8 @@ export function conceptEnvelopeJsonSchema() {
     properties: {
       concepts: {
         type: "array",
+        minItems: count,
+        maxItems: count,
         items: concept
       }
     },
