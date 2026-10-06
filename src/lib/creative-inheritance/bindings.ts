@@ -17,13 +17,13 @@ import {
 
 export type BindingTransaction = Prisma.TransactionClient;
 
-interface CreativeScopeContext {
+export interface CreativeScopeContext {
   kind: DomainVersionKind;
   lifecycle: VersionLifecycle;
   workspaceId: string;
 }
 
-async function loadCreativeScopeContext(
+export async function loadCreativeScopeContext(
   tx: BindingTransaction,
   scopeNodeId: string
 ): Promise<CreativeScopeContext> {
