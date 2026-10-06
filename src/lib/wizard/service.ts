@@ -189,11 +189,15 @@ export async function getWizardView(input: {
 }) {
   const version = await ensureWizardProgress(input);
   const progress = version.wizardProgress!;
+  const fallbackDefinition = WIZARD_STEPS[0];
+  if (!fallbackDefinition) {
+    throw new WizardError("Wizard registry is empty.");
+  }
   const selectedDefinition =
     (input.selectedStepKey &&
       getWizardStepDefinition(input.selectedStepKey)) ||
     getWizardStepDefinition(progress.currentStepKey) ||
-    WIZARD_STEPS[0];
+    fallbackDefinition;
 
   const selectedState = progress.steps.find(
     (step) => step.stepKey === selectedDefinition.key
