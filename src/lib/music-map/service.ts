@@ -1239,7 +1239,22 @@ export async function getMusicMapState(input: {
         sourceAnalysisVersionNumber: sourceAnalysisVersion.versionNumber,
         beatGridMs: parseNumberArray(version.beatGridMs),
         barGridMs: parseNumberArray(version.barGridMs),
-        anchors: anchors.map(({ createdAt: _createdAt, updatedAt: _updatedAt, ...anchor }) => anchor),
+        anchors: anchors.map((anchor) => ({
+          id: anchor.id,
+          musicMapVersionId: anchor.musicMapVersionId,
+          sourceKey: anchor.sourceKey,
+          kind: anchor.kind,
+          source: anchor.source,
+          decision: anchor.decision,
+          label: anchor.label,
+          startMs: anchor.startMs,
+          endMs: anchor.endMs,
+          sourceStartMs: anchor.sourceStartMs,
+          sourceEndMs: anchor.sourceEndMs,
+          sourceConfidence: anchor.sourceConfidence,
+          position: anchor.position,
+          metadata: anchor.metadata
+        })),
         analysis: musicAnalysisResultSchema.parse(
           sourceAnalysisVersion.result
         )
