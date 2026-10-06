@@ -72,3 +72,7 @@ The S3 driver works with AWS S3 and compatible object stores. It supports:
 PR 4 accepts multipart audio through the application server and then writes it through the configured storage adapter. This is a real working upload path.
 
 A later scalability optimization can issue direct multipart/presigned uploads for very large media. That optimization will reuse the same immutable asset/version semantics and storage interface; it does not require redesigning project data.
+
+## API boundary
+
+The authenticated `POST /api/projects` route owns project creation. It accepts project metadata plus the finished audio file, validates both, and invokes the transactional project service. UI code does not write project or asset records directly.
