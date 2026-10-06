@@ -12,19 +12,19 @@ export default async function NewCreativeVersionPage(props: {
   if (!session) redirect("/sign-in");
 
   const { moduleId } = await props.params;
-  const module = await getCreativeModule({
+  const libraryItem = await getCreativeModule({
     userId: session.user.id,
     displayName: session.user.name,
     moduleId
   });
-  if (!module) notFound();
+  if (!libraryItem) notFound();
 
-  const latest = module.versions[0];
+  const latest = libraryItem.versions[0];
 
   return (
     <main className="dashboardShell">
       <div className="pageBack">
-        <Link href={"/app/library/" + module.id}>← {module.name}</Link>
+        <Link href={"/app/library/" + libraryItem.id}>← {libraryItem.name}</Link>
       </div>
       <p className="eyebrow">Creative Library · new version</p>
       <h1 className="dashboardTitle">Refine without rewriting history.</h1>
@@ -35,8 +35,8 @@ export default async function NewCreativeVersionPage(props: {
       <section className="dashboardCard projectFormCard">
         <CreativeModuleForm
           mode="version"
-          moduleId={module.id}
-          endpoint={"/api/creative-library/" + module.id + "/versions"}
+          moduleId={libraryItem.id}
+          endpoint={"/api/creative-library/" + libraryItem.id + "/versions"}
           defaults={{
             definition: latest
               ? JSON.stringify(latest.definition, null, 2)
