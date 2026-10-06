@@ -183,14 +183,24 @@ export async function registerDependencyEdges(
   });
 }
 
-export async function removeDependencyEdge(input: DependencyEdgeInput) {
-  return db.dependencyEdge.deleteMany({
+export async function removeDependencyEdgeInTransaction(
+  tx: GraphTransaction,
+  input: DependencyEdgeInput
+) {
+  await acquireGraphWriteLock(tx);
+  return tx.dependencyEdge.deleteMany({
     where: {
       upstreamNodeId: input.upstreamNodeId,
       downstreamNodeId: input.downstreamNodeId,
       relation: input.relation
     }
   });
+}
+
+export async function removeDependencyEdge(input: DependencyEdgeInput) {
+  return db.$transaction((tx) =>
+    removeDependencyEdgeInTransaction(tx, input)
+  );
 }
 
 export async function analyzeDependencyImpact(

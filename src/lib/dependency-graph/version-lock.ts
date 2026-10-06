@@ -57,6 +57,39 @@ export async function lockVersionNode(
     const kind = node.kind;
     const now = new Date();
 
+    if (
+      kind === DomainVersionKind.PROJECT ||
+      kind === DomainVersionKind.SEQUENCE ||
+      kind === DomainVersionKind.SHOT
+    ) {
+      const unlockedBinding = await tx.creativeBinding.findFirst({
+        where: {
+          scopeNodeId: nodeId,
+          creativeModuleVersion: {
+            lifecycle: {
+              not: VersionLifecycle.LOCKED
+            }
+          }
+        },
+        select: {
+          slot: true,
+          creativeModuleVersionId: true
+        }
+      });
+
+      if (unlockedBinding) {
+        throw new DependencyGraphError(
+          'Cannot lock scope ' +
+            nodeId +
+            ' while creative binding "' +
+            unlockedBinding.slot +
+            '" points to unlocked creative module version ' +
+            unlockedBinding.creativeModuleVersionId +
+            "."
+        );
+      }
+    }
+
     async function lockOwner(
       owner: LockableVersionOwner | null,
       updateById: (id: string) => Promise<{ count: number }>
