@@ -55,7 +55,7 @@ interface ConceptSetView {
   options: ConceptOptionView[];
 }
 
-interface JobView {
+type JobView = {
   id: string;
   status: string;
   progressPercent: number;
