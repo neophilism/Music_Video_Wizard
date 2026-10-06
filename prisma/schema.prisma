@@ -7,6 +7,630 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-// Product-domain models intentionally begin in PR 2.
-// PR 1 establishes the persistent database boundary without prematurely
-// freezing a domain model before its dedicated architectural review.
+enum WorkspaceRole {
+  OWNER
+  ADMIN
+  MEMBER
+}
+
+enum VersionLifecycle {
+  DRAFT
+  LOCKED
+  SUPERSEDED
+}
+
+enum DomainVersionKind {
+  PROJECT
+  SEQUENCE
+  SHOT
+  CREATIVE_MODULE
+  ASSET
+  TIMELINE
+}
+
+enum CreativeModuleKind {
+  VISUAL_AESTHETIC
+  COLOR_LIGHTING
+  CHARACTER
+  WARDROBE
+  LOCATION_WORLD
+  PROP
+  CINEMATOGRAPHY_GRAMMAR
+  COMPOSITION_GRAMMAR
+  MOTION_GRAMMAR
+  PERFORMANCE_GRAMMAR
+  EDITING_GRAMMAR
+  TRANSITION_GRAMMAR
+  PACING_CURVE
+  NARRATIVE_TEMPLATE
+  MOTIF
+  IMAGE_PROMPT_MODULE
+  NEGATIVE_PROMPT_MODULE
+  VIDEO_PROMPT_MODULE
+  GENERATION_RECIPE
+  TYPOGRAPHY_KIT
+  OUTPUT_PRESET
+  STORYBOARD_PATTERN
+  OTHER
+}
+
+enum AssetKind {
+  AUDIO_MASTER
+  REFERENCE_IMAGE
+  STORYBOARD_IMAGE
+  GENERATED_IMAGE
+  GENERATED_VIDEO
+  GRAPHIC
+  TITLE_CARD
+  RENDER_PREVIEW
+  RENDER_MASTER
+  OTHER
+}
+
+enum AssetStatus {
+  PENDING
+  READY
+  FAILED
+  QUARANTINED
+}
+
+enum GenerationKind {
+  IMAGE
+  VIDEO
+  ANALYSIS
+  TEXT
+  RENDER
+  OTHER
+}
+
+enum GenerationStatus {
+  QUEUED
+  RUNNING
+  SUCCEEDED
+  FAILED
+  CANCELLED
+}
+
+enum DependencyRelation {
+  DERIVED_FROM
+  REFERENCES
+  GENERATED_FROM
+  COMPILED_FROM
+  RENDERED_FROM
+}
+
+enum TimelineKind {
+  FIRST_CUT
+  WORKING
+  ALTERNATE
+  EXPORT
+}
+
+enum TimelineTrackKind {
+  VIDEO
+  GRAPHIC
+  TITLE
+}
+
+enum TimelineItemOrigin {
+  AUTOMATIC
+  MANUAL
+}
+
+model User {
+  id          String   @id @default(uuid()) @db.Uuid
+  email       String?  @unique
+  displayName String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  memberships                  WorkspaceMembership[]
+  projectVersionsCreated       ProjectVersion[]        @relation("ProjectVersionCreator")
+  sequenceVersionsCreated      SequenceVersion[]       @relation("SequenceVersionCreator")
+  shotVersionsCreated          ShotVersion[]           @relation("ShotVersionCreator")
+  creativeModuleVersionsCreated CreativeModuleVersion[] @relation("CreativeModuleVersionCreator")
+  assetVersionsCreated         AssetVersion[]          @relation("AssetVersionCreator")
+  generationJobsRequested      GenerationJob[]         @relation("GenerationJobRequester")
+  timelineVersionsCreated      TimelineVersion[]       @relation("TimelineVersionCreator")
+}
+
+model Workspace {
+  id        String   @id @default(uuid()) @db.Uuid
+  name      String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  memberships     WorkspaceMembership[]
+  projects        Project[]
+  creativeModules CreativeModule[]
+  assets          Asset[]
+  generationJobs  GenerationJob[]
+}
+
+model WorkspaceMembership {
+  id          String        @id @default(uuid()) @db.Uuid
+  workspaceId String        @db.Uuid
+  userId      String        @db.Uuid
+  role        WorkspaceRole @default(MEMBER)
+  createdAt   DateTime      @default(now())
+
+  workspace Workspace @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([workspaceId, userId])
+  @@index([userId])
+}
+
+model Project {
+  id          String    @id @default(uuid()) @db.Uuid
+  workspaceId String    @db.Uuid
+  title       String
+  description String?   @db.Text
+  archivedAt  DateTime?
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  workspace Workspace @relation(fields: [workspaceId], references: [id])
+  versions  ProjectVersion[]
+  sequences Sequence[]
+  shots     Shot[]
+  assets    Asset[]
+  timelines Timeline[]
+  generationJobs GenerationJob[]
+
+  @@index([workspaceId, updatedAt])
+}
+
+model ProjectVersion {
+  id                        String           @id @default(uuid()) @db.Uuid
+  projectId                 String           @db.Uuid
+  nodeId                    String           @unique @db.Uuid
+  versionNumber             Int
+  lifecycle                 VersionLifecycle @default(DRAFT)
+  title                     String
+  description               String?          @db.Text
+  aspectRatio               String?
+  outputWidth               Int?
+  outputHeight              Int?
+  frameRate                 Float?
+  audioMasterAssetVersionId String?          @db.Uuid
+  specification             Json?
+  notes                     String?          @db.Text
+  createdByUserId           String?          @db.Uuid
+  createdAt                 DateTime         @default(now())
+  lockedAt                  DateTime?
+
+  project          Project           @relation(fields: [projectId], references: [id])
+  node             DomainVersionNode @relation(fields: [nodeId], references: [id])
+  createdBy        User?             @relation("ProjectVersionCreator", fields: [createdByUserId], references: [id], onDelete: SetNull)
+  audioMasterAssetVersion AssetVersion? @relation("ProjectVersionAudioMaster", fields: [audioMasterAssetVersionId], references: [id], onDelete: Restrict)
+  sequences        ProjectVersionSequence[]
+  basisForTimelines TimelineVersion[] @relation("TimelineBasisProjectVersion")
+
+  @@unique([projectId, versionNumber])
+  @@index([projectId, lifecycle])
+}
+
+model Sequence {
+  id        String   @id @default(uuid()) @db.Uuid
+  projectId String   @db.Uuid
+  createdAt DateTime @default(now())
+
+  project  Project           @relation(fields: [projectId], references: [id])
+  versions SequenceVersion[]
+
+  @@index([projectId])
+}
+
+model SequenceVersion {
+  id              String           @id @default(uuid()) @db.Uuid
+  sequenceId      String           @db.Uuid
+  nodeId          String           @unique @db.Uuid
+  versionNumber   Int
+  lifecycle       VersionLifecycle @default(DRAFT)
+  title           String
+  summary         String?          @db.Text
+  purpose         String?          @db.Text
+  musicStartMs    Int?
+  musicEndMs      Int?
+  structuredSpec  Json?
+  createdByUserId String?          @db.Uuid
+  createdAt       DateTime         @default(now())
+  lockedAt        DateTime?
+
+  sequence   Sequence          @relation(fields: [sequenceId], references: [id])
+  node       DomainVersionNode @relation(fields: [nodeId], references: [id])
+  createdBy  User?             @relation("SequenceVersionCreator", fields: [createdByUserId], references: [id], onDelete: SetNull)
+  projectLinks ProjectVersionSequence[]
+  shotLinks    SequenceVersionShot[]
+
+  @@unique([sequenceId, versionNumber])
+  @@index([sequenceId, lifecycle])
+}
+
+model ProjectVersionSequence {
+  id                String @id @default(uuid()) @db.Uuid
+  projectVersionId  String @db.Uuid
+  sequenceVersionId String @db.Uuid
+  position          Int
+
+  projectVersion  ProjectVersion  @relation(fields: [projectVersionId], references: [id], onDelete: Cascade)
+  sequenceVersion SequenceVersion @relation(fields: [sequenceVersionId], references: [id], onDelete: Restrict)
+
+  @@unique([projectVersionId, position])
+  @@unique([projectVersionId, sequenceVersionId])
+  @@index([sequenceVersionId])
+}
+
+model Shot {
+  id        String   @id @default(uuid()) @db.Uuid
+  projectId String   @db.Uuid
+  createdAt DateTime @default(now())
+
+  project  Project       @relation(fields: [projectId], references: [id])
+  versions ShotVersion[]
+
+  @@index([projectId])
+}
+
+model ShotVersion {
+  id                    String           @id @default(uuid()) @db.Uuid
+  shotId                String           @db.Uuid
+  nodeId                String           @unique @db.Uuid
+  versionNumber         Int
+  lifecycle             VersionLifecycle @default(DRAFT)
+  label                 String?
+  plannedStartMs        Int?
+  plannedEndMs          Int?
+  dramaticPurpose       String?          @db.Text
+  subject               String?          @db.Text
+  locationDescription   String?          @db.Text
+  action                String?          @db.Text
+  composition           String?          @db.Text
+  framing               String?          @db.Text
+  cameraAngle           String?          @db.Text
+  lens                  String?          @db.Text
+  lighting              String?          @db.Text
+  colorTreatment        String?          @db.Text
+  cameraMotion          String?          @db.Text
+  subjectMotion         String?          @db.Text
+  continuityNotes       String?          @db.Text
+  wardrobeNotes         String?          @db.Text
+  propsNotes            String?          @db.Text
+  transitionIn          String?          @db.Text
+  transitionOut         String?          @db.Text
+  imageInstructions     String?          @db.Text
+  videoInstructions     String?          @db.Text
+  negativeInstructions  String?          @db.Text
+  generationHandlesMs   Int?
+  structuredSpec        Json?
+  createdByUserId       String?          @db.Uuid
+  createdAt             DateTime         @default(now())
+  lockedAt              DateTime?
+
+  shot          Shot              @relation(fields: [shotId], references: [id])
+  node          DomainVersionNode @relation(fields: [nodeId], references: [id])
+  createdBy     User?             @relation("ShotVersionCreator", fields: [createdByUserId], references: [id], onDelete: SetNull)
+  sequenceLinks SequenceVersionShot[]
+  timelineItems TimelineItem[]
+
+  @@unique([shotId, versionNumber])
+  @@index([shotId, lifecycle])
+}
+
+model SequenceVersionShot {
+  id                String @id @default(uuid()) @db.Uuid
+  sequenceVersionId String @db.Uuid
+  shotVersionId     String @db.Uuid
+  position          Int
+
+  sequenceVersion SequenceVersion @relation(fields: [sequenceVersionId], references: [id], onDelete: Cascade)
+  shotVersion     ShotVersion     @relation(fields: [shotVersionId], references: [id], onDelete: Restrict)
+
+  @@unique([sequenceVersionId, position])
+  @@unique([sequenceVersionId, shotVersionId])
+  @@index([shotVersionId])
+}
+
+model CreativeModule {
+  id          String             @id @default(uuid()) @db.Uuid
+  workspaceId String             @db.Uuid
+  kind        CreativeModuleKind
+  name        String
+  description String?            @db.Text
+  tags        String[]           @default([])
+  archivedAt  DateTime?
+  createdAt   DateTime           @default(now())
+  updatedAt   DateTime           @updatedAt
+
+  workspace Workspace               @relation(fields: [workspaceId], references: [id])
+  versions  CreativeModuleVersion[]
+
+  @@index([workspaceId, kind])
+  @@index([workspaceId, updatedAt])
+}
+
+model CreativeModuleVersion {
+  id                    String           @id @default(uuid()) @db.Uuid
+  creativeModuleId      String           @db.Uuid
+  nodeId                String           @unique @db.Uuid
+  versionNumber         Int
+  lifecycle             VersionLifecycle @default(DRAFT)
+  definition            Json
+  positivePrompt        String?          @db.Text
+  negativePrompt        String?          @db.Text
+  notes                 String?          @db.Text
+  createdByUserId       String?          @db.Uuid
+  createdAt             DateTime         @default(now())
+  lockedAt              DateTime?
+
+  creativeModule CreativeModule     @relation(fields: [creativeModuleId], references: [id])
+  node           DomainVersionNode  @relation(fields: [nodeId], references: [id])
+  createdBy      User?              @relation("CreativeModuleVersionCreator", fields: [createdByUserId], references: [id], onDelete: SetNull)
+  references     CreativeModuleReference[]
+  bindings       CreativeBinding[]
+
+  @@unique([creativeModuleId, versionNumber])
+  @@index([creativeModuleId, lifecycle])
+}
+
+model CreativeModuleReference {
+  id                      String @id @default(uuid()) @db.Uuid
+  creativeModuleVersionId String @db.Uuid
+  assetVersionId          String @db.Uuid
+  role                    String
+  position                Int    @default(0)
+
+  creativeModuleVersion CreativeModuleVersion @relation(fields: [creativeModuleVersionId], references: [id], onDelete: Cascade)
+  assetVersion          AssetVersion          @relation(fields: [assetVersionId], references: [id], onDelete: Restrict)
+
+  @@unique([creativeModuleVersionId, role, position])
+  @@index([assetVersionId])
+}
+
+model CreativeBinding {
+  id                      String   @id @default(uuid()) @db.Uuid
+  scopeNodeId             String   @db.Uuid
+  creativeModuleVersionId String   @db.Uuid
+  slot                    String
+  createdAt               DateTime @default(now())
+
+  scope                 DomainVersionNode     @relation("CreativeBindingScope", fields: [scopeNodeId], references: [id], onDelete: Cascade)
+  creativeModuleVersion CreativeModuleVersion @relation(fields: [creativeModuleVersionId], references: [id], onDelete: Restrict)
+
+  @@unique([scopeNodeId, slot])
+  @@index([creativeModuleVersionId])
+}
+
+model Asset {
+  id          String    @id @default(uuid()) @db.Uuid
+  workspaceId String    @db.Uuid
+  projectId   String?   @db.Uuid
+  kind        AssetKind
+  name        String?
+  archivedAt  DateTime?
+  createdAt   DateTime  @default(now())
+
+  workspace Workspace @relation(fields: [workspaceId], references: [id])
+  project   Project?  @relation(fields: [projectId], references: [id], onDelete: SetNull)
+  versions  AssetVersion[]
+
+  @@index([workspaceId, kind])
+  @@index([projectId])
+}
+
+model AssetVersion {
+  id              String      @id @default(uuid()) @db.Uuid
+  assetId         String      @db.Uuid
+  nodeId          String      @unique @db.Uuid
+  versionNumber   Int
+  status          AssetStatus @default(PENDING)
+  storageKey      String      @unique
+  contentType     String
+  byteSize        BigInt?
+  checksumSha256  String?
+  width           Int?
+  height          Int?
+  durationMs      Int?
+  frameRate       Float?
+  metadata        Json?
+  createdByUserId String?     @db.Uuid
+  createdAt       DateTime    @default(now())
+  readyAt         DateTime?
+
+  asset      Asset             @relation(fields: [assetId], references: [id])
+  node       DomainVersionNode @relation(fields: [nodeId], references: [id])
+  createdBy  User?             @relation("AssetVersionCreator", fields: [createdByUserId], references: [id], onDelete: SetNull)
+
+  audioMasterForProjectVersions  ProjectVersion[]          @relation("ProjectVersionAudioMaster")
+  audioMasterForTimelineVersions TimelineVersion[]         @relation("TimelineVersionAudioMaster")
+  creativeModuleReferences       CreativeModuleReference[]
+  timelineItems                  TimelineItem[]
+
+  @@unique([assetId, versionNumber])
+  @@index([assetId, status])
+  @@index([checksumSha256])
+}
+
+model GenerationJob {
+  id                String           @id @default(uuid()) @db.Uuid
+  workspaceId       String           @db.Uuid
+  projectId         String?          @db.Uuid
+  kind              GenerationKind
+  status            GenerationStatus @default(QUEUED)
+  providerKey       String
+  modelKey          String?
+  requestSnapshot   Json
+  responseMetadata  Json?
+  errorMessage      String?          @db.Text
+  requestedByUserId String?          @db.Uuid
+  createdAt         DateTime         @default(now())
+  startedAt         DateTime?
+  completedAt       DateTime?
+
+  workspace   Workspace @relation(fields: [workspaceId], references: [id])
+  project     Project?  @relation(fields: [projectId], references: [id], onDelete: SetNull)
+  requestedBy User?     @relation("GenerationJobRequester", fields: [requestedByUserId], references: [id], onDelete: SetNull)
+  inputs      GenerationInput[]
+  outputs     GenerationOutput[]
+
+  @@index([workspaceId, createdAt])
+  @@index([projectId, status])
+  @@index([status, createdAt])
+}
+
+model GenerationInput {
+  id         String @id @default(uuid()) @db.Uuid
+  jobId      String @db.Uuid
+  nodeId     String @db.Uuid
+  role       String
+  position   Int    @default(0)
+
+  job  GenerationJob     @relation(fields: [jobId], references: [id], onDelete: Cascade)
+  node DomainVersionNode @relation("GenerationInputNode", fields: [nodeId], references: [id], onDelete: Restrict)
+
+  @@unique([jobId, role, position])
+  @@index([nodeId])
+}
+
+model GenerationOutput {
+  id       String @id @default(uuid()) @db.Uuid
+  jobId    String @db.Uuid
+  nodeId   String @db.Uuid
+  role     String
+  position Int    @default(0)
+
+  job  GenerationJob     @relation(fields: [jobId], references: [id], onDelete: Cascade)
+  node DomainVersionNode @relation("GenerationOutputNode", fields: [nodeId], references: [id], onDelete: Restrict)
+
+  @@unique([jobId, role, position])
+  @@index([nodeId])
+}
+
+model Timeline {
+  id        String       @id @default(uuid()) @db.Uuid
+  projectId String       @db.Uuid
+  kind      TimelineKind
+  name      String
+  createdAt DateTime     @default(now())
+
+  project  Project           @relation(fields: [projectId], references: [id])
+  versions TimelineVersion[]
+
+  @@index([projectId, kind])
+}
+
+model TimelineVersion {
+  id                        String           @id @default(uuid()) @db.Uuid
+  timelineId                String           @db.Uuid
+  nodeId                    String           @unique @db.Uuid
+  versionNumber             Int
+  lifecycle                 VersionLifecycle @default(DRAFT)
+  basisProjectVersionId     String           @db.Uuid
+  audioMasterAssetVersionId String           @db.Uuid
+  parentTimelineVersionId   String?          @db.Uuid
+  compiledAutomatically     Boolean          @default(false)
+  notes                     String?          @db.Text
+  createdByUserId           String?          @db.Uuid
+  createdAt                 DateTime         @default(now())
+  lockedAt                  DateTime?
+
+  timeline               Timeline          @relation(fields: [timelineId], references: [id])
+  node                   DomainVersionNode @relation(fields: [nodeId], references: [id])
+  basisProjectVersion    ProjectVersion    @relation("TimelineBasisProjectVersion", fields: [basisProjectVersionId], references: [id], onDelete: Restrict)
+  audioMasterAssetVersion AssetVersion     @relation("TimelineVersionAudioMaster", fields: [audioMasterAssetVersionId], references: [id], onDelete: Restrict)
+  createdBy              User?             @relation("TimelineVersionCreator", fields: [createdByUserId], references: [id], onDelete: SetNull)
+  parent                 TimelineVersion?  @relation("TimelineVersionParent", fields: [parentTimelineVersionId], references: [id], onDelete: SetNull)
+  children               TimelineVersion[] @relation("TimelineVersionParent")
+  items                  TimelineItem[]
+  transitions            TimelineTransition[]
+
+  @@unique([timelineId, versionNumber])
+  @@index([timelineId, lifecycle])
+  @@index([basisProjectVersionId])
+  @@index([parentTimelineVersionId])
+}
+
+model TimelineItem {
+  id                String             @id @default(uuid()) @db.Uuid
+  timelineVersionId String             @db.Uuid
+  trackKind         TimelineTrackKind
+  trackIndex        Int                @default(0)
+  position          Int
+  origin            TimelineItemOrigin @default(AUTOMATIC)
+  shotVersionId     String?            @db.Uuid
+  assetVersionId    String?            @db.Uuid
+  timelineStartMs   Int
+  timelineEndMs     Int
+  sourceStartMs     Int                @default(0)
+  sourceEndMs       Int?
+  manualOverride    Boolean            @default(false)
+  parameters        Json?
+
+  timelineVersion TimelineVersion @relation(fields: [timelineVersionId], references: [id], onDelete: Cascade)
+  shotVersion     ShotVersion?    @relation(fields: [shotVersionId], references: [id], onDelete: Restrict)
+  assetVersion    AssetVersion?   @relation(fields: [assetVersionId], references: [id], onDelete: Restrict)
+  transitionsFrom TimelineTransition[] @relation("TransitionFromItem")
+  transitionsTo   TimelineTransition[] @relation("TransitionToItem")
+
+  @@unique([timelineVersionId, trackKind, trackIndex, position])
+  @@index([timelineVersionId, timelineStartMs])
+  @@index([shotVersionId])
+  @@index([assetVersionId])
+}
+
+model TimelineTransition {
+  id                String @id @default(uuid()) @db.Uuid
+  timelineVersionId String @db.Uuid
+  fromItemId        String @db.Uuid
+  toItemId          String @db.Uuid
+  kind              String
+  durationMs        Int
+  parameters        Json?
+
+  timelineVersion TimelineVersion @relation(fields: [timelineVersionId], references: [id], onDelete: Cascade)
+  fromItem        TimelineItem    @relation("TransitionFromItem", fields: [fromItemId], references: [id], onDelete: Cascade)
+  toItem          TimelineItem    @relation("TransitionToItem", fields: [toItemId], references: [id], onDelete: Cascade)
+
+  @@unique([timelineVersionId, fromItemId, toItemId])
+  @@index([fromItemId])
+  @@index([toItemId])
+}
+
+model DomainVersionNode {
+  id          String            @id @default(uuid()) @db.Uuid
+  kind        DomainVersionKind
+  fingerprint String?
+  createdAt   DateTime          @default(now())
+
+  projectVersion        ProjectVersion?
+  sequenceVersion       SequenceVersion?
+  shotVersion           ShotVersion?
+  creativeModuleVersion CreativeModuleVersion?
+  assetVersion          AssetVersion?
+  timelineVersion       TimelineVersion?
+
+  upstreamEdges   DependencyEdge[] @relation("DependencyUpstream")
+  downstreamEdges DependencyEdge[] @relation("DependencyDownstream")
+  creativeBindings CreativeBinding[] @relation("CreativeBindingScope")
+  generationInputs GenerationInput[] @relation("GenerationInputNode")
+  generationOutputs GenerationOutput[] @relation("GenerationOutputNode")
+
+  @@index([kind, createdAt])
+  @@index([fingerprint])
+}
+
+model DependencyEdge {
+  id               String             @id @default(uuid()) @db.Uuid
+  upstreamNodeId   String             @db.Uuid
+  downstreamNodeId String             @db.Uuid
+  relation         DependencyRelation
+  reason           String?            @db.Text
+  createdAt        DateTime           @default(now())
+
+  upstream   DomainVersionNode @relation("DependencyUpstream", fields: [upstreamNodeId], references: [id], onDelete: Cascade)
+  downstream DomainVersionNode @relation("DependencyDownstream", fields: [downstreamNodeId], references: [id], onDelete: Cascade)
+
+  @@unique([upstreamNodeId, downstreamNodeId, relation])
+  @@index([downstreamNodeId])
+}

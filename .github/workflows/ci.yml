@@ -22,6 +22,7 @@ jobs:
         with:
           node-version: 22
       - run: npm install
+      - run: npm run db:validate
       - run: npm run db:generate
       - run: npm run typecheck
       - run: npm run lint
