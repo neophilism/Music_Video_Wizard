@@ -104,6 +104,13 @@ async function loadCreativeScopeContext(
         lifecycle: node.shotVersion.lifecycle,
         workspaceId: node.shotVersion.shot.project.workspaceId
       };
+
+    default: {
+      const exhaustive: never = node.kind;
+      throw new CreativeInheritanceError(
+        "Unsupported creative binding scope kind: " + exhaustive
+      );
+    }
   }
 }
 
