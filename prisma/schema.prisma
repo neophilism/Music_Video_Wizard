@@ -890,7 +890,7 @@ model ConceptOptionLineage {
   createdAt       DateTime           @default(now())
 
   child  ConceptOption @relation("ConceptChild", fields: [childConceptId], references: [id], onDelete: Cascade)
-  parent ConceptOption @relation("ConceptParent", fields: [parentConceptId], references: [id], onDelete: Restrict)
+  parent ConceptOption @relation("ConceptParent", fields: [parentConceptId], references: [id], onDelete: Cascade)
 
   @@unique([childConceptId, parentConceptId, role])
   @@index([parentConceptId])
