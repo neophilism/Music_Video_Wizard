@@ -8,6 +8,12 @@ import {
 
 export const runtime = "nodejs";
 
+function responseBody(bytes: Uint8Array): ArrayBuffer {
+  const copy = new Uint8Array(bytes.byteLength);
+  copy.set(bytes);
+  return copy.buffer;
+}
+
 function parseRange(
   header: string | null,
   totalBytes: number
@@ -74,7 +80,7 @@ export async function GET(request: Request) {
     const range = parseRange(request.headers.get("range"), bytes.byteLength);
 
     if (!range) {
-      return new Response(bytes, {
+      return new Response(responseBody(bytes), {
         headers: {
           "Content-Type": assetVersion.contentType,
           "Content-Length": String(bytes.byteLength),
@@ -85,7 +91,7 @@ export async function GET(request: Request) {
     }
 
     const body = bytes.slice(range.start, range.end + 1);
-    return new Response(body, {
+    return new Response(responseBody(body), {
       status: 206,
       headers: {
         "Content-Type": assetVersion.contentType,
