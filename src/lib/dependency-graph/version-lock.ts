@@ -15,6 +15,11 @@ export interface LockVersionResult {
   alreadyLocked: boolean;
 }
 
+interface LockableVersionOwner {
+  id: string;
+  lifecycle: VersionLifecycle;
+}
+
 export async function lockVersionNode(
   nodeId: string
 ): Promise<LockVersionResult> {
@@ -49,24 +54,23 @@ export async function lockVersionNode(
       );
     }
 
+    const kind = node.kind;
     const now = new Date();
 
     async function lockOwner(
-      owner:
-        | { id: string; lifecycle: VersionLifecycle }
-        | null,
-      update: () => Promise<{ count: number }>
+      owner: LockableVersionOwner | null,
+      updateById: (id: string) => Promise<{ count: number }>
     ): Promise<LockVersionResult> {
       if (!owner) {
         throw new DependencyGraphError(
-          "Node " + nodeId + " is missing its " + node.kind + " version owner."
+          "Node " + nodeId + " is missing its " + kind + " version owner."
         );
       }
 
       if (owner.lifecycle === VersionLifecycle.LOCKED) {
         return {
           nodeId,
-          kind: node.kind,
+          kind,
           locked: false,
           alreadyLocked: true
         };
@@ -82,7 +86,7 @@ export async function lockVersionNode(
         );
       }
 
-      const updated = await update();
+      const updated = await updateById(owner.id);
       if (updated.count !== 1) {
         throw new DependencyGraphError(
           "Version " + nodeId + " changed while it was being locked."
@@ -91,18 +95,18 @@ export async function lockVersionNode(
 
       return {
         nodeId,
-        kind: node.kind,
+        kind,
         locked: true,
         alreadyLocked: false
       };
     }
 
-    switch (node.kind) {
+    switch (kind) {
       case DomainVersionKind.PROJECT:
-        return lockOwner(node.projectVersion, () =>
+        return lockOwner(node.projectVersion, (id) =>
           tx.projectVersion.updateMany({
             where: {
-              id: node.projectVersion!.id,
+              id,
               lifecycle: VersionLifecycle.DRAFT
             },
             data: {
@@ -113,10 +117,10 @@ export async function lockVersionNode(
         );
 
       case DomainVersionKind.SEQUENCE:
-        return lockOwner(node.sequenceVersion, () =>
+        return lockOwner(node.sequenceVersion, (id) =>
           tx.sequenceVersion.updateMany({
             where: {
-              id: node.sequenceVersion!.id,
+              id,
               lifecycle: VersionLifecycle.DRAFT
             },
             data: {
@@ -127,10 +131,10 @@ export async function lockVersionNode(
         );
 
       case DomainVersionKind.SHOT:
-        return lockOwner(node.shotVersion, () =>
+        return lockOwner(node.shotVersion, (id) =>
           tx.shotVersion.updateMany({
             where: {
-              id: node.shotVersion!.id,
+              id,
               lifecycle: VersionLifecycle.DRAFT
             },
             data: {
@@ -141,10 +145,10 @@ export async function lockVersionNode(
         );
 
       case DomainVersionKind.CREATIVE_MODULE:
-        return lockOwner(node.creativeModuleVersion, () =>
+        return lockOwner(node.creativeModuleVersion, (id) =>
           tx.creativeModuleVersion.updateMany({
             where: {
-              id: node.creativeModuleVersion!.id,
+              id,
               lifecycle: VersionLifecycle.DRAFT
             },
             data: {
@@ -155,10 +159,10 @@ export async function lockVersionNode(
         );
 
       case DomainVersionKind.TIMELINE:
-        return lockOwner(node.timelineVersion, () =>
+        return lockOwner(node.timelineVersion, (id) =>
           tx.timelineVersion.updateMany({
             where: {
-              id: node.timelineVersion!.id,
+              id,
               lifecycle: VersionLifecycle.DRAFT
             },
             data: {
@@ -168,8 +172,12 @@ export async function lockVersionNode(
           })
         );
 
-      case DomainVersionKind.ASSET:
-        throw new DependencyGraphError("Unreachable asset locking branch.");
+      default: {
+        const exhaustive: never = kind;
+        throw new DependencyGraphError(
+          "Unsupported semantic version kind: " + exhaustive
+        );
+      }
     }
   });
 }
