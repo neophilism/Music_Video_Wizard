@@ -236,3 +236,174 @@ h1 {
   margin: 0;
   font-size: 1.05rem;
 }
+
+
+.headerActions,
+.formActions,
+.projectMeta,
+.sectionHeading {
+  display: flex;
+  align-items: center;
+  gap: .8rem;
+}
+
+.headerActions {
+  flex-wrap: wrap;
+  justify-content: flex-end;
+}
+
+.projectSection {
+  margin-top: 2rem;
+}
+
+.sectionHeading {
+  justify-content: space-between;
+}
+
+.sectionHeading h2 {
+  margin: 0;
+  font-size: 1.35rem;
+}
+
+.sectionHeading span {
+  color: #939bac;
+}
+
+.projectGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.projectCard,
+.emptyState,
+.nextStepCard {
+  border: 1px solid rgba(255,255,255,.12);
+  border-radius: 16px;
+  background: rgba(18, 21, 30, .7);
+}
+
+.projectCard {
+  display: block;
+  padding: 1.25rem;
+  color: inherit;
+  text-decoration: none;
+  transition: transform .15s ease, border-color .15s ease;
+}
+
+.projectCard:hover {
+  transform: translateY(-2px);
+  border-color: rgba(170,162,255,.45);
+}
+
+.projectCard h3,
+.emptyState h3,
+.nextStepCard h2 {
+  margin: 0 0 .55rem;
+}
+
+.projectCard p,
+.emptyState p,
+.nextStepCard p {
+  color: #aeb5c4;
+  line-height: 1.5;
+}
+
+.projectMeta {
+  flex-wrap: wrap;
+  margin-top: 1rem;
+  color: #cfd4df;
+  font-size: .86rem;
+}
+
+.projectMeta span {
+  padding: .35rem .55rem;
+  border-radius: 999px;
+  background: rgba(255,255,255,.06);
+}
+
+.projectMetaLarge {
+  margin-top: 0;
+  margin-bottom: 1.5rem;
+}
+
+.emptyState,
+.nextStepCard {
+  margin-top: 1rem;
+  padding: 1.5rem;
+}
+
+.projectFormCard {
+  margin-top: 1.5rem;
+}
+
+.projectForm {
+  display: grid;
+  gap: 1.2rem;
+}
+
+.projectForm label {
+  display: grid;
+  gap: .5rem;
+  color: #dde2ed;
+  font-size: .92rem;
+  font-weight: 650;
+}
+
+.projectForm input,
+.projectForm textarea,
+.projectForm select {
+  width: 100%;
+  border: 1px solid rgba(255,255,255,.14);
+  border-radius: 10px;
+  padding: .85rem .9rem;
+  background: rgba(255,255,255,.05);
+  color: #f5f7fb;
+  font: inherit;
+}
+
+.projectForm textarea {
+  resize: vertical;
+}
+
+.projectForm small {
+  color: #939bac;
+  font-weight: 400;
+  line-height: 1.45;
+}
+
+.projectFormGrid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
+}
+
+.pageBack {
+  margin-bottom: 2rem;
+}
+
+.pageBack a {
+  color: #c9ceda;
+  text-decoration: none;
+}
+
+.audioPlayer {
+  width: 100%;
+  margin-top: 1rem;
+}
+
+@media (max-width: 680px) {
+  .projectFormGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .dashboardHeader {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .headerActions {
+    justify-content: flex-start;
+  }
+}
