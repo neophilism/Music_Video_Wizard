@@ -1,0 +1,12 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// Product-domain models intentionally begin in PR 2.
+// PR 1 establishes the persistent database boundary without prematurely
+// freezing a domain model before its dedicated architectural review.

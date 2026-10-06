@@ -1,0 +1,19 @@
+services:
+  postgres:
+    image: postgres:17-alpine
+    environment:
+      POSTGRES_DB: music_video_wizard
+      POSTGRES_USER: music_video_wizard
+      POSTGRES_PASSWORD: music_video_wizard
+    ports:
+      - "5432:5432"
+    volumes:
+      - music_video_wizard_pg:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U music_video_wizard -d music_video_wizard"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+volumes:
+  music_video_wizard_pg:
