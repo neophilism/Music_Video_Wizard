@@ -55,7 +55,7 @@ Long-running provider handlers receive the pg-boss `AbortSignal` so cancellation
 - FAILED
 - CANCELLED
 
-This is application-owned history and is not dependent on pg-boss retention.
+This is application-owned history and is not dependent on pg-boss retention. Queue retention can therefore be tuned independently without erasing the product's audit trail.
 
 ## Provider handler boundary
 
