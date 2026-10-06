@@ -6,6 +6,11 @@ import type {
   ResolvedCreativeBinding
 } from "./types";
 
+export type CreativeScopeKind =
+  | typeof DomainVersionKind.PROJECT
+  | typeof DomainVersionKind.SEQUENCE
+  | typeof DomainVersionKind.SHOT;
+
 const SUPPORTED_SCOPE_KINDS = new Set<DomainVersionKind>([
   DomainVersionKind.PROJECT,
   DomainVersionKind.SEQUENCE,
@@ -28,10 +33,7 @@ export function normalizeCreativeSlot(slot: string): string {
 
 export function assertSupportedCreativeScopeKind(
   kind: DomainVersionKind
-): asserts kind is
-  | DomainVersionKind.PROJECT
-  | DomainVersionKind.SEQUENCE
-  | DomainVersionKind.SHOT {
+): asserts kind is CreativeScopeKind {
   if (!SUPPORTED_SCOPE_KINDS.has(kind)) {
     throw new CreativeInheritanceError(
       "Creative inheritance does not support scope kind " + kind + "."
