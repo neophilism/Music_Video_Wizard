@@ -12,12 +12,12 @@ export default async function CreativeModulePage(props: {
   if (!session) redirect("/sign-in");
 
   const { moduleId } = await props.params;
-  const module = await getCreativeModule({
+  const libraryItem = await getCreativeModule({
     userId: session.user.id,
     displayName: session.user.name,
     moduleId
   });
-  if (!module) notFound();
+  if (!libraryItem) notFound();
 
   return (
     <main className="dashboardShell">
@@ -28,26 +28,26 @@ export default async function CreativeModulePage(props: {
       <header className="dashboardHeader">
         <div>
           <p className="eyebrow">
-            {module.kind.replaceAll("_", " ")}
+            {libraryItem.kind.replaceAll("_", " ")}
           </p>
-          <h1 className="dashboardTitle">{module.name}</h1>
+          <h1 className="dashboardTitle">{libraryItem.name}</h1>
           <p className="dashboardNote">
-            {module.description || "No description"}
+            {libraryItem.description || "No description"}
           </p>
           <div className="tagRow">
-            {module.tags.map((tag) => <span key={tag}>#{tag}</span>)}
+            {libraryItem.tags.map((tag) => <span key={tag}>#{tag}</span>)}
           </div>
         </div>
         <Link
           className="primaryButton linkButton"
-          href={"/app/library/" + module.id + "/new-version"}
+          href={"/app/library/" + libraryItem.id + "/new-version"}
         >
           New version
         </Link>
       </header>
 
       <section className="versionStack">
-        {module.versions.map((version) => (
+        {libraryItem.versions.map((version) => (
           <article className="dashboardCard versionCard" key={version.id}>
             <div className="versionHeader">
               <div>
@@ -58,7 +58,7 @@ export default async function CreativeModulePage(props: {
               </div>
               {version.lifecycle === "DRAFT" ? (
                 <PublishCreativeVersionButton
-                  moduleId={module.id}
+                  moduleId={libraryItem.id}
                   versionId={version.id}
                 />
               ) : null}
