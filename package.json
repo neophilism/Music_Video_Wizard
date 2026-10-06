@@ -2,7 +2,9 @@
   "name": "music-video-wizard",
   "version": "0.1.0",
   "private": true,
-  "engines": { "node": ">=22.0.0" },
+  "engines": {
+    "node": ">=22.0.0"
+  },
   "scripts": {
     "dev": "next dev",
     "build": "prisma generate && next build",
@@ -14,14 +16,17 @@
     "db:validate": "prisma validate",
     "db:generate": "prisma generate",
     "db:migrate": "prisma migrate dev",
-    "db:deploy": "prisma migrate deploy"
+    "db:deploy": "prisma migrate deploy",
+    "db:diff-initial": "prisma migrate diff --from-empty --to-schema-datamodel prisma/schema.prisma --script"
   },
   "dependencies": {
     "@prisma/client": "^6.16.2",
     "next": "^15.5.4",
     "react": "^19.1.1",
     "react-dom": "^19.1.1",
-    "zod": "^4.1.11"
+    "zod": "^4.1.11",
+    "better-auth": "1.7.7",
+    "@better-auth/prisma-adapter": "1.7.7"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3.3.1",

@@ -76,3 +76,163 @@ h1 {
   background: #7ee787;
   box-shadow: 0 0 16px rgba(126, 231, 135, .7);
 }
+
+
+.heroActions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .8rem;
+  margin-top: 2rem;
+}
+
+.linkButton {
+  text-decoration: none;
+}
+
+.primaryButton,
+.secondaryButton {
+  appearance: none;
+  border: 0;
+  border-radius: 12px;
+  padding: .85rem 1.05rem;
+  font: inherit;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.primaryButton {
+  background: #f5f7fb;
+  color: #11131a;
+}
+
+.secondaryButton {
+  background: rgba(255,255,255,.08);
+  color: #f5f7fb;
+  border: 1px solid rgba(255,255,255,.12);
+}
+
+.primaryButton:disabled,
+.secondaryButton:disabled {
+  opacity: .55;
+  cursor: wait;
+}
+
+.authShell,
+.dashboardShell {
+  min-height: 100vh;
+  padding: 3rem 2rem;
+}
+
+.authShell {
+  display: grid;
+  place-items: center;
+}
+
+.authCard {
+  width: min(520px, 100%);
+  border: 1px solid rgba(255,255,255,.12);
+  border-radius: 22px;
+  background: rgba(18, 21, 30, .82);
+  padding: clamp(1.5rem, 5vw, 3rem);
+}
+
+.brandLink {
+  display: inline-block;
+  margin-bottom: 2.5rem;
+  color: #f5f7fb;
+  text-decoration: none;
+  font-weight: 800;
+}
+
+.authTitle,
+.dashboardTitle {
+  max-width: none;
+  font-size: clamp(2rem, 6vw, 3.5rem);
+  letter-spacing: -.045em;
+}
+
+.authCopy,
+.dashboardNote {
+  color: #c9ceda;
+  line-height: 1.55;
+}
+
+.authForm {
+  display: grid;
+  gap: 1rem;
+  margin-top: 2rem;
+}
+
+.authForm label {
+  display: grid;
+  gap: .45rem;
+  color: #dde2ed;
+  font-size: .92rem;
+  font-weight: 650;
+}
+
+.authForm input {
+  width: 100%;
+  border: 1px solid rgba(255,255,255,.14);
+  border-radius: 10px;
+  padding: .85rem .9rem;
+  background: rgba(255,255,255,.05);
+  color: #f5f7fb;
+  font: inherit;
+  outline: none;
+}
+
+.authForm input:focus {
+  border-color: #aaa2ff;
+  box-shadow: 0 0 0 3px rgba(170,162,255,.12);
+}
+
+.formError {
+  margin: 0;
+  border-radius: 10px;
+  padding: .8rem .9rem;
+  background: rgba(255, 89, 89, .1);
+  color: #ffb4b4;
+}
+
+.authSwitch {
+  color: #aeb5c4;
+  margin: 1.4rem 0 0;
+}
+
+.authSwitch a {
+  color: #dedaff;
+}
+
+.dashboardShell {
+  width: min(1100px, 100%);
+  margin: 0 auto;
+}
+
+.dashboardHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+
+.dashboardCard {
+  border: 1px solid rgba(255,255,255,.12);
+  border-radius: 18px;
+  background: rgba(18, 21, 30, .78);
+  padding: 1.5rem;
+}
+
+.dashboardLabel {
+  margin: 1.1rem 0 .25rem;
+  color: #939bac;
+  font-size: .78rem;
+  text-transform: uppercase;
+  letter-spacing: .12em;
+}
+
+.dashboardValue {
+  margin: 0;
+  font-size: 1.05rem;
+}

@@ -1,3 +1,5 @@
+import Link from "next/link";
+
 export default function HomePage() {
   return (
     <main className="shell">
@@ -8,9 +10,13 @@ export default function HomePage() {
           A production application for turning an approved creative specification
           into generated shots and a complete first cut over finished music.
         </p>
-        <div className="status" role="status">
-          <span className="statusDot" aria-hidden="true" />
-          Application foundation online
+        <div className="heroActions">
+          <Link className="primaryButton linkButton" href="/sign-up">
+            Create account
+          </Link>
+          <Link className="secondaryButton linkButton" href="/sign-in">
+            Sign in
+          </Link>
         </div>
       </section>
     </main>

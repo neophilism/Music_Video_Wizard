@@ -3,6 +3,8 @@ import { z } from "zod";
 const environmentSchema = z.object({
   NODE_ENV: z.enum(["development", "test", "production"]).default("development"),
   DATABASE_URL: z.string().min(1),
+  BETTER_AUTH_SECRET: z.string().min(32),
+  BETTER_AUTH_URL: z.string().url(),
   ASSET_STORAGE_DRIVER: z.enum(["local", "s3"]).default("local"),
   ASSET_STORAGE_BUCKET: z.string().min(1),
   ASSET_STORAGE_ENDPOINT: z.string().url().optional().or(z.literal(""))
