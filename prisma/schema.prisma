@@ -91,6 +91,16 @@ enum GenerationStatus {
   CANCELLED
 }
 
+enum GenerationEventType {
+  QUEUED
+  STARTED
+  PROGRESS
+  RETRY_SCHEDULED
+  SUCCEEDED
+  FAILED
+  CANCELLED
+}
+
 enum DependencyRelation {
   DERIVED_FROM
   REFERENCES
@@ -523,20 +533,43 @@ model GenerationJob {
   requestSnapshot   Json
   responseMetadata  Json?
   errorMessage      String?          @db.Text
+  attemptCount      Int              @default(0)
+  maxAttempts       Int              @default(4)
+  progressPercent   Int              @default(0)
+  progressMessage   String?
   requestedByUserId String?          @db.Uuid
   createdAt         DateTime         @default(now())
+  updatedAt         DateTime         @updatedAt
   startedAt         DateTime?
   completedAt       DateTime?
+  cancelRequestedAt DateTime?
 
   workspace   Workspace @relation(fields: [workspaceId], references: [id])
   project     Project?  @relation(fields: [projectId], references: [id], onDelete: SetNull)
   requestedBy User?     @relation("GenerationJobRequester", fields: [requestedByUserId], references: [id], onDelete: SetNull)
   inputs      GenerationInput[]
   outputs     GenerationOutput[]
+  events      GenerationJobEvent[]
 
   @@index([workspaceId, createdAt])
   @@index([projectId, status])
   @@index([status, createdAt])
+}
+
+model GenerationJobEvent {
+  id              String              @id @default(uuid()) @db.Uuid
+  jobId           String              @db.Uuid
+  type            GenerationEventType
+  attempt         Int?
+  progressPercent Int?
+  message         String?             @db.Text
+  metadata        Json?
+  createdAt       DateTime            @default(now())
+
+  job GenerationJob @relation(fields: [jobId], references: [id], onDelete: Cascade)
+
+  @@index([jobId, createdAt])
+  @@index([type, createdAt])
 }
 
 model GenerationInput {

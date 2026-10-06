@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "engines": {
-    "node": ">=22.0.0"
+    "node": ">=22.12.0"
   },
   "scripts": {
     "dev": "next dev",
@@ -16,7 +16,9 @@
     "db:validate": "prisma validate",
     "db:generate": "prisma generate",
     "db:migrate": "prisma migrate dev",
-    "db:deploy": "prisma migrate deploy"
+    "db:deploy": "prisma migrate deploy",
+    "worker": "tsx src/worker.ts",
+    "test:queue": "tsx scripts/job-queue-smoke.ts"
   },
   "dependencies": {
     "@prisma/client": "^6.16.2",
@@ -27,7 +29,9 @@
     "better-auth": "1.7.7",
     "@better-auth/prisma-adapter": "1.7.7",
     "@aws-sdk/client-s3": "^3.0.0",
-    "@aws-sdk/s3-request-presigner": "^3.0.0"
+    "@aws-sdk/s3-request-presigner": "^3.0.0",
+    "pg-boss": "12.36.0",
+    "tsx": "4.23.15"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3.3.1",

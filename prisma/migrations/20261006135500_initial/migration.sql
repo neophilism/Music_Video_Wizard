@@ -848,13 +848,3 @@ ALTER TABLE "DependencyEdge" ADD CONSTRAINT "DependencyEdge_upstreamNodeId_fkey"
 
 -- AddForeignKey
 ALTER TABLE "DependencyEdge" ADD CONSTRAINT "DependencyEdge_downstreamNodeId_fkey" FOREIGN KEY ("downstreamNodeId") REFERENCES "DomainVersionNode"("id") ON DELETE CASCADE ON UPDATE CASCADE;
-
-##[group]Run npm run db:generate
-[36;1mnpm run db:generate[0m
-shell: /usr/bin/bash -e {0}
-env:
-  DATABASE_URL: ***localhost:5432/ci
-  BETTER_AUTH_SECRET: 0123456789abcdef0123456789abcdef
-  BETTER_AUTH_URL: http://localhost:3000
-  ASSET_STORAGE_DRIVER: local
-  ASSET_STORAGE_BUCKET: ci-assets
