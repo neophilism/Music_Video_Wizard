@@ -30,7 +30,7 @@ export interface EnqueueGenerationJobInput {
   prepare?: (
     tx: Prisma.TransactionClient,
     jobId: string
-  ) => Promise<void>;
+  ) => Promise<unknown>;
 }
 
 export async function enqueueGenerationJob(input: EnqueueGenerationJobInput) {
