@@ -19,7 +19,8 @@
     "db:deploy": "prisma migrate deploy",
     "worker": "tsx src/worker.ts",
     "test:queue": "tsx scripts/job-queue-smoke.ts",
-    "test:graph": "tsx scripts/dependency-graph-smoke.ts"
+    "test:graph": "tsx scripts/dependency-graph-smoke.ts",
+    "test:inheritance": "tsx scripts/creative-inheritance-smoke.ts"
   },
   "dependencies": {
     "@prisma/client": "^6.16.2",
