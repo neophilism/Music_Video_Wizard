@@ -40,7 +40,7 @@ export default async function CreativeModulePage(props: {
         </div>
         <Link
           className="primaryButton linkButton"
-          href={"/app/library/" + libraryItem.id + "/new-version"}
+          href={\`/app/library/\${libraryItem.id}/new-version\`}
         >
           New version
         </Link>
