@@ -88,7 +88,7 @@ async function main() {
         { id: sequenceNodeId, kind: DomainVersionKind.SEQUENCE },
         { id: shotNodeId, kind: DomainVersionKind.SHOT },
         ...moduleDefinitions.map((module) => ({
-          id: module.nodeId,
+          id: moduleDefinition.nodeId,
           kind: DomainVersionKind.CREATIVE_MODULE
         }))
       ]
@@ -154,21 +154,21 @@ async function main() {
       }
     });
 
-    for (const module of moduleDefinitions) {
+    for (const moduleDefinition of moduleDefinitions) {
       await db.creativeModule.create({
         data: {
-          id: module.id,
-          workspaceId: module.workspaceId,
-          kind: module.kind,
-          name: module.name
+          id: moduleDefinition.id,
+          workspaceId: moduleDefinition.workspaceId,
+          kind: moduleDefinition.kind,
+          name: moduleDefinition.name
         }
       });
 
       await db.creativeModuleVersion.create({
         data: {
-          id: module.versionId,
-          creativeModuleId: module.id,
-          nodeId: module.nodeId,
+          id: moduleDefinition.versionId,
+          creativeModuleId: moduleDefinition.id,
+          nodeId: moduleDefinition.nodeId,
           versionNumber: 1,
           definition: { smoke: true }
         }
