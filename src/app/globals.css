@@ -620,3 +620,294 @@ h1 {
     text-align: left;
   }
 }
+
+
+.wizardShell {
+  min-height: 100vh;
+  display: grid;
+  grid-template-columns: 320px minmax(0, 1fr);
+  background: #090b10;
+}
+
+.wizardSidebar {
+  height: 100vh;
+  position: sticky;
+  top: 0;
+  overflow-y: auto;
+  padding: 1.5rem 1rem 2rem;
+  border-right: 1px solid rgba(255,255,255,.1);
+  background: rgba(13, 15, 22, .96);
+}
+
+.wizardSidebarHeader {
+  padding: .5rem .6rem 1.4rem;
+  border-bottom: 1px solid rgba(255,255,255,.08);
+}
+
+.wizardSidebarHeader .brandLink {
+  margin-bottom: 1.25rem;
+}
+
+.wizardProjectName {
+  margin: 0;
+  font-weight: 750;
+  line-height: 1.35;
+}
+
+.wizardProjectVersion {
+  margin: .4rem 0 0;
+  color: #939bac;
+  font-size: .78rem;
+}
+
+.wizardNav {
+  padding-top: 1rem;
+}
+
+.wizardPhase {
+  margin: 1.25rem .55rem .45rem;
+  color: #777f91;
+  font-size: .69rem;
+  font-weight: 800;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+}
+
+.wizardNavStep {
+  width: 100%;
+  display: grid;
+  grid-template-columns: 2rem minmax(0, 1fr) auto;
+  gap: .7rem;
+  align-items: center;
+  border: 1px solid transparent;
+  border-radius: 10px;
+  padding: .7rem;
+  background: transparent;
+  color: #dce1ec;
+  text-align: left;
+  cursor: pointer;
+}
+
+.wizardNavStep:hover {
+  background: rgba(255,255,255,.045);
+}
+
+.wizardNavStepActive {
+  border-color: rgba(170,162,255,.38);
+  background: rgba(170,162,255,.09);
+}
+
+.wizardNavStep:disabled {
+  cursor: wait;
+  opacity: .72;
+}
+
+.wizardNavOrdinal {
+  color: #777f91;
+  font-size: .72rem;
+  font-variant-numeric: tabular-nums;
+}
+
+.wizardNavCopy {
+  min-width: 0;
+  display: grid;
+  gap: .18rem;
+}
+
+.wizardNavCopy strong {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: .9rem;
+}
+
+.wizardNavCopy small {
+  color: #868fa1;
+  font-size: .67rem;
+  text-transform: uppercase;
+  letter-spacing: .05em;
+}
+
+.wizardNavPending {
+  color: #aaa2ff;
+}
+
+.wizardWorkspace {
+  width: min(1120px, 100%);
+  padding: 3rem clamp(1.5rem, 4vw, 4rem) 5rem;
+}
+
+.wizardWorkspaceTop {
+  display: flex;
+  justify-content: space-between;
+  gap: 2rem;
+  align-items: flex-start;
+  margin-bottom: 1.5rem;
+}
+
+.wizardTitle {
+  max-width: none;
+  margin: .4rem 0 .65rem;
+  font-size: clamp(2.2rem, 5vw, 4rem);
+  letter-spacing: -.045em;
+}
+
+.wizardDescription {
+  max-width: 68ch;
+  margin: 0;
+  color: #b5bdcc;
+  line-height: 1.6;
+}
+
+.wizardStateBadges {
+  display: flex;
+  gap: .5rem;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+}
+
+.wizardStateBadges span,
+.wizardLockedLabel {
+  padding: .45rem .65rem;
+  border-radius: 999px;
+  background: rgba(255,255,255,.06);
+  color: #cfd5e1;
+  font-size: .72rem;
+  font-weight: 750;
+  text-transform: uppercase;
+  letter-spacing: .06em;
+}
+
+.wizardAudioCard,
+.wizardEditorCard {
+  margin-top: 1rem;
+}
+
+.wizardEditor {
+  display: grid;
+  gap: 1.25rem;
+}
+
+.autosaveStatus {
+  display: inline-flex;
+  width: fit-content;
+  align-items: center;
+  gap: .55rem;
+  color: #9ca5b6;
+  font-size: .82rem;
+}
+
+.autosaveDot {
+  width: .55rem;
+  height: .55rem;
+  border-radius: 50%;
+  background: #7e8799;
+}
+
+.autosaveDot-saved {
+  background: #7ee787;
+}
+
+.autosaveDot-saving,
+.autosaveDot-unsaved {
+  background: #d8b75f;
+}
+
+.autosaveDot-error,
+.autosaveDot-conflict {
+  background: #ff7b72;
+}
+
+.impactWarning {
+  padding: 1rem 1.1rem;
+  border: 1px solid rgba(216,183,95,.3);
+  border-radius: 12px;
+  background: rgba(216,183,95,.07);
+}
+
+.impactWarning strong {
+  display: block;
+  margin-bottom: .35rem;
+}
+
+.impactWarning p {
+  margin: .2rem 0 .65rem;
+  color: #d3d7df;
+  line-height: 1.5;
+}
+
+.impactWarning ul {
+  margin: 0;
+  padding-left: 1.2rem;
+  color: #b9c0cd;
+}
+
+.wizardStepActions {
+  display: flex;
+  align-items: center;
+  gap: .75rem;
+  flex-wrap: wrap;
+  padding-top: .25rem;
+}
+
+.wizardMessage {
+  margin: 0;
+  color: #cbd1dc;
+}
+
+.wizardStageBoundary {
+  padding: 1rem 0;
+}
+
+.wizardStageBoundary h2 {
+  margin: .45rem 0 .65rem;
+  font-size: 1.65rem;
+}
+
+.wizardStageBoundary > p:not(.eyebrow) {
+  max-width: 72ch;
+  color: #b7bfce;
+  line-height: 1.6;
+}
+
+@media (max-width: 900px) {
+  .wizardShell {
+    grid-template-columns: 1fr;
+  }
+
+  .wizardSidebar {
+    height: auto;
+    position: static;
+    max-height: none;
+    border-right: 0;
+    border-bottom: 1px solid rgba(255,255,255,.1);
+  }
+
+  .wizardNav {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: .35rem;
+  }
+
+  .wizardPhase {
+    grid-column: 1 / -1;
+  }
+
+  .wizardWorkspace {
+    padding-top: 2rem;
+  }
+}
+
+@media (max-width: 620px) {
+  .wizardNav {
+    grid-template-columns: 1fr;
+  }
+
+  .wizardWorkspaceTop {
+    flex-direction: column;
+  }
+
+  .wizardStateBadges {
+    justify-content: flex-start;
+  }
+}
