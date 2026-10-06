@@ -118,20 +118,80 @@ enum TimelineItemOrigin {
 }
 
 model User {
-  id          String   @id @default(uuid()) @db.Uuid
-  email       String?  @unique
-  displayName String?
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  id            String   @id @default(uuid()) @db.Uuid
+  email         String   @unique
+  emailVerified Boolean  @default(false)
+  displayName   String
+  image         String?
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
 
-  memberships                  WorkspaceMembership[]
-  projectVersionsCreated       ProjectVersion[]        @relation("ProjectVersionCreator")
-  sequenceVersionsCreated      SequenceVersion[]       @relation("SequenceVersionCreator")
-  shotVersionsCreated          ShotVersion[]           @relation("ShotVersionCreator")
+  sessions                      Session[]
+  accounts                      Account[]
+  memberships                   WorkspaceMembership[]
+  projectVersionsCreated        ProjectVersion[]        @relation("ProjectVersionCreator")
+  sequenceVersionsCreated       SequenceVersion[]       @relation("SequenceVersionCreator")
+  shotVersionsCreated           ShotVersion[]           @relation("ShotVersionCreator")
   creativeModuleVersionsCreated CreativeModuleVersion[] @relation("CreativeModuleVersionCreator")
-  assetVersionsCreated         AssetVersion[]          @relation("AssetVersionCreator")
-  generationJobsRequested      GenerationJob[]         @relation("GenerationJobRequester")
-  timelineVersionsCreated      TimelineVersion[]       @relation("TimelineVersionCreator")
+  assetVersionsCreated          AssetVersion[]          @relation("AssetVersionCreator")
+  generationJobsRequested       GenerationJob[]         @relation("GenerationJobRequester")
+  timelineVersionsCreated       TimelineVersion[]       @relation("TimelineVersionCreator")
+}
+
+model Session {
+  id        String   @id @default(uuid()) @db.Uuid
+  expiresAt DateTime
+  token     String   @unique
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  ipAddress String?
+  userAgent String?
+  userId    String   @db.Uuid
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([expiresAt])
+}
+
+model Account {
+  id                    String    @id @default(uuid()) @db.Uuid
+  accountId             String
+  providerId            String
+  userId                String    @db.Uuid
+  accessToken           String?   @db.Text
+  refreshToken          String?   @db.Text
+  idToken               String?   @db.Text
+  accessTokenExpiresAt  DateTime?
+  refreshTokenExpiresAt DateTime?
+  scope                 String?
+  password              String?   @db.Text
+  createdAt             DateTime  @default(now())
+  updatedAt             DateTime  @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([providerId, accountId])
+  @@index([userId])
+}
+
+model Verification {
+  id         String   @id @default(uuid()) @db.Uuid
+  identifier String
+  value      String   @db.Text
+  expiresAt  DateTime
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  @@index([identifier])
+  @@index([expiresAt])
+}
+
+model RateLimit {
+  id          String @id @default(uuid()) @db.Uuid
+  key         String @unique
+  count       Int
+  lastRequest BigInt
 }
 
 model Workspace {
