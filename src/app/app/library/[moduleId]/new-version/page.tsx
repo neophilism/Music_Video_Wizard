@@ -24,7 +24,7 @@ export default async function NewCreativeVersionPage(props: {
   return (
     <main className="dashboardShell">
       <div className="pageBack">
-        <Link href={\`/app/library/\${libraryItem.id}\`}>← {libraryItem.name}</Link>
+        <Link href={`/app/library/${libraryItem.id}`}>← {libraryItem.name}</Link>
       </div>
       <p className="eyebrow">Creative Library · new version</p>
       <h1 className="dashboardTitle">Refine without rewriting history.</h1>
