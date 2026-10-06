@@ -71,7 +71,7 @@ export function CreativeModuleForm({
         return;
       }
 
-      router.push(\`/app/library/\${payload.moduleId}\`);
+      router.push(`/app/library/${payload.moduleId}`);
       router.refresh();
     } catch {
       setError("Creative Library save failed. Please try again.");
@@ -192,7 +192,7 @@ export function CreativeModuleForm({
           <button
             className="secondaryButton"
             type="button"
-            onClick={() => router.push(\`/app/library/\${moduleId}\`)}
+            onClick={() => router.push(`/app/library/${moduleId}`)}
           >
             Cancel
           </button>
