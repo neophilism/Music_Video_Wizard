@@ -83,7 +83,7 @@ export async function enqueueGenerationJob(input: EnqueueGenerationJobInput) {
       { generationJobId: jobId },
       {
         id: jobId,
-        group: input.workspaceId,
+        group: { id: input.workspaceId },
         retryLimit,
         retryDelay: env.JOB_RETRY_DELAY_SECONDS,
         retryBackoff: true,
@@ -104,9 +104,10 @@ export async function enqueueGenerationJob(input: EnqueueGenerationJobInput) {
 
 export async function cancelGenerationJob(jobId: string): Promise<boolean> {
   const boss = await getJobQueue();
-  const result = await boss.cancel(GENERATION_QUEUE, jobId);
+  await boss.cancel(GENERATION_QUEUE, jobId);
 
-  if (result.affected === 0) return false;
+  const [queueJob] = await boss.findJobs(GENERATION_QUEUE, { id: jobId });
+  if (!queueJob || queueJob.state !== "cancelled") return false;
 
   const now = new Date();
   await db.$transaction(async (tx) => {
