@@ -44,6 +44,9 @@ export default async function AppHomePage() {
           <h1 className="dashboardTitle">Your studio</h1>
         </div>
         <div className="headerActions">
+          <Link className="secondaryButton linkButton" href="/app/library">
+            Creative Library
+          </Link>
           <Link className="primaryButton linkButton" href="/app/projects/new">
             New project
           </Link>
