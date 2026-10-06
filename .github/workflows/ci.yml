@@ -51,7 +51,7 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: "3.12"
-      - run: sudo apt-get update && sudo apt-get install -y ffmpeg
+      - run: command -v ffmpeg >/dev/null 2>&1 || (sudo apt-get update && sudo apt-get install -y ffmpeg)
       - run: python -m pip install --disable-pip-version-check -r analysis/requirements.txt
       - run: npm install
       - run: npm run db:validate
@@ -66,5 +66,6 @@ jobs:
       - run: npm run test:kits
       - run: npm run test:wizard
       - run: npm run test:analysis
+      - run: npm run test:map
       - run: npm run test:queue
       - run: npm run build

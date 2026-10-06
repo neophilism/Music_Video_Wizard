@@ -1149,3 +1149,240 @@ h1 {
     text-align: left;
   }
 }
+
+
+.musicMapEditor {
+  display: grid;
+  gap: 1.25rem;
+}
+
+.mapEmpty,
+.mapGridPanel,
+.mapCustomPanel,
+.mapCompletionPanel,
+.mapSummary,
+.mapTimeline,
+.mapCandidateToolbar {
+  padding: 1rem;
+  border: 1px solid rgba(255,255,255,.09);
+  border-radius: 12px;
+  background: rgba(255,255,255,.02);
+}
+
+.mapEmpty h2,
+.mapSummary h2,
+.mapGridPanel h3,
+.mapCustomPanel h3,
+.mapCandidateToolbar h3 {
+  margin: .3rem 0 .55rem;
+}
+
+.mapEmpty p,
+.mapSummary p,
+.mapCompletionPanel p {
+  color: #b3bccb;
+  line-height: 1.55;
+}
+
+.mapSummary,
+.mapCandidateToolbar,
+.mapCompletionPanel {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 1rem;
+}
+
+.mapSummaryStats,
+.mapCandidateActions,
+.mapPanelActions,
+.mapAnchorActions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .55rem;
+  align-items: center;
+}
+
+.mapSummaryStats span {
+  padding: .55rem .7rem;
+  border-radius: 9px;
+  background: rgba(255,255,255,.045);
+  color: #aeb6c5;
+  font-size: .78rem;
+}
+
+.mapSummaryStats strong {
+  color: #f0f2f6;
+  font-size: 1rem;
+}
+
+.mapTimeline {
+  padding-bottom: .75rem;
+}
+
+.mapWaveform {
+  position: relative;
+  height: 150px;
+  display: flex;
+  align-items: center;
+  gap: 1px;
+  overflow: hidden;
+}
+
+.mapWaveform > i {
+  min-width: 1px;
+  flex: 1 1 0;
+  border-radius: 1px;
+  background: currentColor;
+  color: #939cad;
+  opacity: .72;
+}
+
+.mapTimelineMarker {
+  position: absolute;
+  top: .25rem;
+  bottom: .25rem;
+  width: 2px;
+  transform: translateX(-1px);
+  background: #eee;
+  opacity: .9;
+  z-index: 2;
+}
+
+.mapTimelineMarker-section {
+  width: 3px;
+}
+
+.mapTimelineMarker-drop {
+  background: #fff;
+}
+
+.mapTimelineMarker-transition {
+  opacity: .6;
+}
+
+.mapTimelineFooter {
+  display: flex;
+  justify-content: space-between;
+  color: #858e9f;
+  font-size: .72rem;
+}
+
+.mapGridFields,
+.mapCustomFields,
+.mapAnchorFields {
+  display: grid;
+  gap: .7rem;
+}
+
+.mapGridFields {
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  margin: 1rem 0;
+}
+
+.mapCustomFields {
+  grid-template-columns: 1fr 2fr 1fr 1fr;
+  margin: 1rem 0;
+}
+
+.mapAnchorList {
+  display: grid;
+  gap: .7rem;
+}
+
+.mapAnchor {
+  padding: 1rem;
+  border: 1px solid rgba(255,255,255,.09);
+  border-radius: 12px;
+  background: rgba(255,255,255,.018);
+}
+
+.mapAnchor-pending {
+  border-color: rgba(216,183,95,.25);
+}
+
+.mapAnchor-accepted {
+  border-color: rgba(126,231,135,.18);
+}
+
+.mapAnchor-rejected {
+  opacity: .62;
+}
+
+.mapAnchorHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: .8rem;
+  margin-bottom: .75rem;
+}
+
+.mapAnchorKind {
+  display: inline-block;
+  margin-right: .55rem;
+  font-weight: 750;
+}
+
+.mapAnchorSource,
+.mapAnchorConfidence,
+.mapOriginalTiming {
+  color: #8f98aa;
+  font-size: .74rem;
+}
+
+.mapAnchorFields {
+  grid-template-columns: minmax(180px, 2fr) minmax(120px, .7fr) minmax(120px, .7fr);
+}
+
+.mapAnchorActions {
+  margin-top: .75rem;
+}
+
+.mapOriginalTiming {
+  margin: .55rem 0 0;
+}
+
+.mapCandidateToolbar {
+  align-items: center;
+}
+
+.mapCandidateActions select {
+  min-width: 150px;
+}
+
+.mapCompletionPanel {
+  border-color: rgba(170,162,255,.2);
+  background: rgba(170,162,255,.045);
+}
+
+.mapCompletionPanel strong {
+  display: block;
+  margin-bottom: .25rem;
+}
+
+@media (max-width: 920px) {
+  .mapGridFields {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .mapCustomFields {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .mapAnchorFields {
+    grid-template-columns: 1fr;
+  }
+
+  .mapSummary,
+  .mapCandidateToolbar,
+  .mapCompletionPanel {
+    flex-direction: column;
+  }
+}
+
+@media (max-width: 560px) {
+  .mapGridFields,
+  .mapCustomFields {
+    grid-template-columns: 1fr;
+  }
+}

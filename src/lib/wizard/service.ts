@@ -496,12 +496,17 @@ export async function transitionWizardStep(input: {
           "This stage does not have an editor installed in the current build."
         );
       }
+      if (context.definition.editor === "music-map") {
+        throw new WizardError(
+          "Music Map completion and locking are managed by the Music Map service."
+        );
+      }
       if (
         context.definition.editor === "music-analysis" &&
         input.action !== "lock"
       ) {
         throw new WizardError(
-          "Music analysis completion and re-analysis are managed by the analysis job."
+          "This stage's completion and revision flow is managed by its stage-specific service."
         );
       }
       let impactWarnings: Array<{
@@ -710,6 +715,94 @@ export async function prepareAutomaticWizardStep(input: {
       payload: input.payload
     })
   );
+}
+
+export async function saveManagedWizardStepInTransaction(
+  tx: Prisma.TransactionClient,
+  input: {
+    projectVersionId: string;
+    stepKey: string;
+    payload: Prisma.InputJsonValue;
+    semanticFingerprint: string;
+  }
+) {
+  const definition = requireRegisteredStep(input.stepKey);
+  const progress = await tx.wizardProgress.findUnique({
+    where: { projectVersionId: input.projectVersionId },
+    include: {
+      projectVersion: true,
+      steps: {
+        orderBy: { ordinal: "asc" }
+      }
+    }
+  });
+  if (!progress) {
+    throw new WizardError("Wizard progress not found for project version.");
+  }
+  if (progress.projectVersion.lifecycle !== VersionLifecycle.DRAFT) {
+    throw new WizardLockedError(
+      "This project version is locked and cannot be changed."
+    );
+  }
+
+  const step = progress.steps.find(
+    (candidate) => candidate.stepKey === input.stepKey
+  );
+  if (!step) throw new WizardError("Wizard step state not found.");
+  if (step.lockedAt) {
+    throw new WizardLockedError(
+      "This wizard step is locked and cannot be changed."
+    );
+  }
+
+  const materialChange =
+    Boolean(step.payloadFingerprint) &&
+    step.payloadFingerprint !== input.semanticFingerprint;
+
+  const impactWarnings = materialChange
+    ? await invalidateTouchedDownstream(tx, {
+        progressId: progress.id,
+        sourceOrdinal: step.ordinal,
+        sourceTitle: definition.title,
+        steps: progress.steps
+      })
+    : [];
+
+  const shouldOpen =
+    !step.payloadFingerprint ||
+    materialChange ||
+    step.status === WizardStepStatus.NOT_STARTED;
+
+  await tx.wizardStepState.update({
+    where: { id: step.id },
+    data: {
+      payload: input.payload,
+      payloadFingerprint: input.semanticFingerprint,
+      contentRevision: { increment: 1 },
+      lastSavedAt: new Date(),
+      ...(shouldOpen
+        ? {
+            status: WizardStepStatus.IN_PROGRESS,
+            completedAt: null,
+            needsReviewAt: null,
+            reviewReason: null
+          }
+        : {})
+    }
+  });
+
+  await tx.wizardProgress.update({
+    where: { id: progress.id },
+    data: {
+      revision: { increment: 1 },
+      currentStepKey: input.stepKey
+    }
+  });
+
+  return {
+    materialChange,
+    impactWarnings
+  };
 }
 
 export async function completeAutomaticWizardStepInTransaction(

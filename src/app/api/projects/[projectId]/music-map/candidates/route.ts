@@ -1,0 +1,61 @@
+import { z, ZodError } from "zod";
+import { auth } from "@/lib/auth";
+import {
+  decidePendingMusicMapAnchors,
+  MusicMapConflictError,
+  MusicMapError
+} from "@/lib/music-map/service";
+import { WizardError, WizardLockedError } from "@/lib/wizard/service";
+
+export const runtime = "nodejs";
+
+const schema = z.object({
+  mapVersionId: z.string().uuid(),
+  expectedRevision: z.number().int().min(0),
+  decision: z.enum(["ACCEPTED", "REJECTED"])
+});
+
+export async function PATCH(
+  request: Request,
+  context: { params: Promise<{ projectId: string }> }
+) {
+  const session = await auth.api.getSession({ headers: request.headers });
+  if (!session) return Response.json({ error: "Unauthorized" }, { status: 401 });
+
+  try {
+    const { projectId } = await context.params;
+    const body = schema.parse(await request.json());
+    return Response.json(
+      await decidePendingMusicMapAnchors({
+        userId: session.user.id,
+        projectId,
+        ...body
+      })
+    );
+  } catch (error) {
+    if (error instanceof MusicMapConflictError) {
+      return Response.json({ error: error.message }, { status: 409 });
+    }
+    if (
+      error instanceof ZodError ||
+      error instanceof MusicMapError ||
+      error instanceof WizardLockedError ||
+      error instanceof WizardError
+    ) {
+      return Response.json(
+        {
+          error:
+            error instanceof ZodError
+              ? error.issues.map((issue) => issue.message).join(" ")
+              : error.message
+        },
+        { status: 400 }
+      );
+    }
+    console.error("Music Map candidate update failed", error);
+    return Response.json(
+      { error: "Music Map candidate update failed." },
+      { status: 500 }
+    );
+  }
+}
