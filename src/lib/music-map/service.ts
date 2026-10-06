@@ -597,10 +597,10 @@ export async function initializeMusicMap(input: {
             ? latest!.beatGridSource
             : "analysis",
           beatGridMs: sameAnalysisLocked
-            ? latest!.beatGridMs
+            ? parseNumberArray(latest!.beatGridMs)
             : analysis.result.beatsMs,
           barGridMs: sameAnalysisLocked
-            ? latest!.barGridMs
+            ? parseNumberArray(latest!.barGridMs)
             : analysis.result.barCandidates.barsMs,
           durationMs: analysis.result.durationMs,
           notes: sameAnalysisLocked ? latest!.notes : null,
