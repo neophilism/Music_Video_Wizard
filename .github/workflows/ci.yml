@@ -67,5 +67,6 @@ jobs:
       - run: npm run test:wizard
       - run: npm run test:analysis
       - run: npm run test:map
+      - run: npm run test:brief
       - run: npm run test:queue
       - run: npm run build

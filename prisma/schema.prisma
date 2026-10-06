@@ -27,6 +27,7 @@ enum DomainVersionKind {
   CREATIVE_KIT
   MUSIC_ANALYSIS
   MUSIC_MAP
+  CREATIVE_BRIEF
   ASSET
   TIMELINE
 }
@@ -180,6 +181,7 @@ model User {
   creativeKitVersionsCreated    CreativeKitVersion[]    @relation("CreativeKitVersionCreator")
   musicAnalysisVersionsCreated  MusicAnalysisVersion[]  @relation("MusicAnalysisVersionCreator")
   musicMapVersionsCreated       MusicMapVersion[]       @relation("MusicMapVersionCreator")
+  creativeBriefVersionsCreated  CreativeBriefVersion[]  @relation("CreativeBriefVersionCreator")
   assetVersionsCreated          AssetVersion[]          @relation("AssetVersionCreator")
   generationJobsRequested       GenerationJob[]         @relation("GenerationJobRequester")
   timelineVersionsCreated       TimelineVersion[]       @relation("TimelineVersionCreator")
@@ -286,6 +288,7 @@ model Project {
   timelines Timeline[]
   musicAnalysis MusicAnalysis?
   musicMap      MusicMap?
+  creativeBrief CreativeBrief?
   generationJobs GenerationJob[]
 
   @@index([workspaceId, updatedAt])
@@ -735,6 +738,7 @@ model MusicMapVersion {
   sourceAnalysisVersion MusicAnalysisVersion @relation(fields: [sourceAnalysisVersionId], references: [id], onDelete: Restrict)
   createdBy             User?                @relation("MusicMapVersionCreator", fields: [createdByUserId], references: [id], onDelete: SetNull)
   anchors               MusicMapAnchor[]
+  creativeBriefVersions CreativeBriefVersion[]
 
   @@unique([musicMapId, versionNumber])
   @@index([musicMapId, lifecycle])
@@ -765,6 +769,40 @@ model MusicMapAnchor {
   @@unique([musicMapVersionId, position])
   @@index([musicMapVersionId, kind, decision])
   @@index([musicMapVersionId, startMs])
+}
+
+
+model CreativeBrief {
+  id        String   @id @default(uuid()) @db.Uuid
+  projectId String   @unique @db.Uuid
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  project  Project                @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  versions CreativeBriefVersion[]
+}
+
+model CreativeBriefVersion {
+  id                      String           @id @default(uuid()) @db.Uuid
+  creativeBriefId         String           @db.Uuid
+  nodeId                  String           @unique @db.Uuid
+  versionNumber           Int
+  lifecycle               VersionLifecycle @default(DRAFT)
+  sourceMusicMapVersionId String           @db.Uuid
+  revision                Int              @default(0)
+  brief                   Json
+  createdByUserId         String?          @db.Uuid
+  createdAt               DateTime         @default(now())
+  lockedAt                DateTime?
+
+  creativeBrief         CreativeBrief   @relation(fields: [creativeBriefId], references: [id], onDelete: Cascade)
+  node                  DomainVersionNode @relation(fields: [nodeId], references: [id])
+  sourceMusicMapVersion MusicMapVersion  @relation(fields: [sourceMusicMapVersionId], references: [id], onDelete: Restrict)
+  createdBy             User?            @relation("CreativeBriefVersionCreator", fields: [createdByUserId], references: [id], onDelete: SetNull)
+
+  @@unique([creativeBriefId, versionNumber])
+  @@index([creativeBriefId, lifecycle])
+  @@index([sourceMusicMapVersionId])
 }
 
 model GenerationJob {
@@ -949,6 +987,7 @@ model DomainVersionNode {
   creativeKitVersion    CreativeKitVersion?
   musicAnalysisVersion  MusicAnalysisVersion?
   musicMapVersion       MusicMapVersion?
+  creativeBriefVersion  CreativeBriefVersion?
   assetVersion          AssetVersion?
   timelineVersion       TimelineVersion?
 

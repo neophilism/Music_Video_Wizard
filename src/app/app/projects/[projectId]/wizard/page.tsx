@@ -6,6 +6,7 @@ import { auth } from "@/lib/auth";
 import { ProjectSetupEditor } from "@/components/project-setup-editor";
 import { MusicAnalysisEditor } from "@/components/music-analysis-editor";
 import { MusicMapEditor } from "@/components/music-map-editor";
+import { CreativeBriefEditor } from "@/components/creative-brief-editor";
 import { WizardNavigation } from "@/components/wizard-navigation";
 import { WizardStageShell } from "@/components/wizard-stage-placeholder";
 import { db } from "@/lib/db";
@@ -13,6 +14,7 @@ import { createAssetStorage } from "@/lib/storage";
 import { projectSetupDraftSchema } from "@/lib/wizard/input";
 import { getMusicAnalysisState } from "@/lib/music-analysis/service";
 import { getMusicMapState } from "@/lib/music-map/service";
+import { getCreativeBriefState } from "@/lib/creative-brief/service";
 import { getWizardView } from "@/lib/wizard/service";
 
 export default async function ProjectWizardPage(props: {
@@ -68,6 +70,14 @@ export default async function ProjectWizardPage(props: {
   const musicMapState =
     selected.definition.editor === "music-map"
       ? await getMusicMapState({
+          userId: session.user.id,
+          projectId
+        })
+      : null;
+
+  const creativeBriefState =
+    selected.definition.editor === "creative-brief"
+      ? await getCreativeBriefState({
           userId: session.user.id,
           projectId
         })
@@ -210,6 +220,47 @@ export default async function ProjectWizardPage(props: {
               }
               wizardStatus={selected.state.status}
               wizardLocked={Boolean(selected.state.lockedAt)}
+            />
+          </section>
+        ) : selected.definition.editor === "creative-brief" &&
+          creativeBriefState ? (
+          <section className="dashboardCard wizardEditorCard">
+            <CreativeBriefEditor
+              projectId={projectId}
+              sourceReady={creativeBriefState.sourceReady}
+              latestMusicMap={
+                creativeBriefState.latestMusicMap
+                  ? {
+                      ...creativeBriefState.latestMusicMap,
+                      lifecycle:
+                        creativeBriefState.latestMusicMap.lifecycle
+                    }
+                  : null
+              }
+              needsRebase={creativeBriefState.needsRebase}
+              initialVersion={
+                creativeBriefState.latest
+                  ? {
+                      id: creativeBriefState.latest.id,
+                      nodeId: creativeBriefState.latest.nodeId,
+                      versionNumber:
+                        creativeBriefState.latest.versionNumber,
+                      lifecycle: creativeBriefState.latest.lifecycle,
+                      sourceMusicMapVersionId:
+                        creativeBriefState.latest.sourceMusicMapVersionId,
+                      sourceMusicMapVersionNumber:
+                        creativeBriefState.latest
+                          .sourceMusicMapVersionNumber,
+                      revision: creativeBriefState.latest.revision,
+                      brief: creativeBriefState.latest.brief,
+                      sourceMusicMap:
+                        creativeBriefState.latest.sourceMusicMap
+                    }
+                  : null
+              }
+              wizardStatus={selected.state.status}
+              wizardLocked={Boolean(selected.state.lockedAt)}
+              downstreamImpact={view.downstreamImpact}
             />
           </section>
         ) : (
