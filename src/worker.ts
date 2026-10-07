@@ -2,10 +2,12 @@ import { startGenerationWorker } from "@/lib/jobs/worker";
 import { stopJobQueue } from "@/lib/jobs/queue";
 import { registerBuiltInGenerationHandlers } from "@/lib/music-analysis/register";
 import { registerConceptGenerationHandlers } from "@/lib/concepts/register";
+import { registerTreatmentGenerationHandlers } from "@/lib/treatment/register";
 
 async function main() {
   registerBuiltInGenerationHandlers();
   registerConceptGenerationHandlers();
+  registerTreatmentGenerationHandlers();
   const worker = await startGenerationWorker();
   console.log(`Generation worker started: ${worker.workerId}`);
 
