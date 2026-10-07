@@ -38,7 +38,7 @@ export const visualAestheticPaletteEntrySchema = z.object({
 
 export const visualAestheticDefinitionSchema = z.object({
   schemaVersion: z.literal(1),
-  medium: text.min(1, "Medium is required."),
+  medium: text,
   realism: z.enum(visualAestheticRealismValues),
   movement: text,
   texture: text,
@@ -107,6 +107,7 @@ export function visualAestheticCompletionIssues(value: unknown): string[] {
 
   const definition = parsed.data;
   const issues: string[] = [];
+  if (!definition.medium) issues.push("Describe the visual medium.");
   if (definition.palette.length === 0) issues.push("Add at least one palette color.");
   if (!definition.texture) issues.push("Describe the image texture.");
   if (!definition.colorTreatment) issues.push("Describe the color treatment.");
