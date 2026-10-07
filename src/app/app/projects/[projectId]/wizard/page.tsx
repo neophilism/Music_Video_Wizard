@@ -8,6 +8,7 @@ import { MusicAnalysisEditor } from "@/components/music-analysis-editor";
 import { MusicMapEditor } from "@/components/music-map-editor";
 import { CreativeBriefEditor } from "@/components/creative-brief-editor";
 import { ConceptsEditor } from "@/components/concepts-editor";
+import { TreatmentEditor } from "@/components/treatment-editor";
 import { WizardNavigation } from "@/components/wizard-navigation";
 import { WizardStageShell } from "@/components/wizard-stage-placeholder";
 import { db } from "@/lib/db";
@@ -17,6 +18,7 @@ import { getMusicAnalysisState } from "@/lib/music-analysis/service";
 import { getMusicMapState } from "@/lib/music-map/service";
 import { getCreativeBriefState } from "@/lib/creative-brief/service";
 import { getConceptState } from "@/lib/concepts/service";
+import { getTreatmentState } from "@/lib/treatment/service";
 import { getWizardView } from "@/lib/wizard/service";
 
 export default async function ProjectWizardPage(props: {
@@ -88,6 +90,14 @@ export default async function ProjectWizardPage(props: {
   const conceptState =
     selected.definition.editor === "concepts"
       ? await getConceptState({
+          userId: session.user.id,
+          projectId
+        })
+      : null;
+
+  const treatmentState =
+    selected.definition.editor === "treatment"
+      ? await getTreatmentState({
           userId: session.user.id,
           projectId
         })
@@ -300,6 +310,31 @@ export default async function ProjectWizardPage(props: {
               }
               recentJob={conceptState.recentJob}
               providerAvailable={conceptState.providerAvailable}
+              wizardStatus={selected.state.status}
+              wizardLocked={Boolean(selected.state.lockedAt)}
+              downstreamImpact={view.downstreamImpact}
+            />
+          </section>
+        ) : selected.definition.editor === "treatment" &&
+          treatmentState ? (
+          <section className="dashboardCard wizardEditorCard">
+            <TreatmentEditor
+              projectId={projectId}
+              sourceReady={treatmentState.sourceReady}
+              needsRebase={treatmentState.needsRebase}
+              initialVersion={
+                treatmentState.latest
+                  ? {
+                      ...treatmentState.latest,
+                      createdAt:
+                        treatmentState.latest.createdAt.toISOString(),
+                      lockedAt:
+                        treatmentState.latest.lockedAt?.toISOString() ?? null
+                    }
+                  : null
+              }
+              recentJob={treatmentState.recentJob}
+              providerAvailable={treatmentState.providerAvailable}
               wizardStatus={selected.state.status}
               wizardLocked={Boolean(selected.state.lockedAt)}
               downstreamImpact={view.downstreamImpact}
