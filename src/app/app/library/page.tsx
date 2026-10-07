@@ -44,6 +44,9 @@ export default async function CreativeLibraryPage(props: {
           <Link className="secondaryButton linkButton" href="/app/kits">
             Creative Kits
           </Link>
+          <Link className="secondaryButton linkButton" href="/app/library/aesthetics/new">
+            Visual Aesthetic Builder
+          </Link>
           <Link className="primaryButton linkButton" href="/app/library/new">
             New library item
           </Link>
