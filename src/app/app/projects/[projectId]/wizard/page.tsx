@@ -325,15 +325,37 @@ export default async function ProjectWizardPage(props: {
               initialVersion={
                 treatmentState.latest
                   ? {
-                      ...treatmentState.latest,
-                      createdAt:
-                        treatmentState.latest.createdAt.toISOString(),
-                      lockedAt:
-                        treatmentState.latest.lockedAt?.toISOString() ?? null
+                      id: treatmentState.latest.id,
+                      versionNumber: treatmentState.latest.versionNumber,
+                      lifecycle: treatmentState.latest.lifecycle,
+                      revision: treatmentState.latest.revision,
+                      sourceConceptSetVersionNumber:
+                        treatmentState.latest.sourceConceptSetVersionNumber,
+                      sourceConceptId: treatmentState.latest.sourceConceptId,
+                      selectedConcept: {
+                        title: treatmentState.latest.selectedConcept.title,
+                        logline: treatmentState.latest.selectedConcept.logline
+                      },
+                      musicMap: treatmentState.latest.musicMap,
+                      treatment: treatmentState.latest.treatment,
+                      generationJobId: treatmentState.latest.generationJobId
                     }
                   : null
               }
-              recentJob={treatmentState.recentJob}
+              recentJob={
+                treatmentState.recentJob
+                  ? {
+                      id: treatmentState.recentJob.id,
+                      status: treatmentState.recentJob.status,
+                      progressPercent:
+                        treatmentState.recentJob.progressPercent,
+                      progressMessage:
+                        treatmentState.recentJob.progressMessage,
+                      errorMessage:
+                        treatmentState.recentJob.errorMessage
+                    }
+                  : null
+              }
               providerAvailable={treatmentState.providerAvailable}
               wizardStatus={selected.state.status}
               wizardLocked={Boolean(selected.state.lockedAt)}
