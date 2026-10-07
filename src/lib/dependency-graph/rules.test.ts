@@ -24,7 +24,8 @@ describe("impactActionForKind", () => {
     DomainVersionKind.CREATIVE_BRIEF,
     DomainVersionKind.CONCEPT_SET,
     DomainVersionKind.TREATMENT,
-    DomainVersionKind.CREATIVE_LANGUAGE
+    DomainVersionKind.CREATIVE_LANGUAGE,
+    DomainVersionKind.SONG_PICTURE_PLAN
   ])("marks semantic node %s for review", (kind) => {
     expect(impactActionForKind(kind)).toBe("REVIEW");
   });

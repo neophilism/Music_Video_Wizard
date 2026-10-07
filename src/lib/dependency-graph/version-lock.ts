@@ -61,6 +61,9 @@ export async function lockVersionNode(
         creativeLanguageVersion: {
           select: { id: true, lifecycle: true }
         },
+        songPicturePlanVersion: {
+          select: { id: true, lifecycle: true }
+        },
         timelineVersion: {
           select: { id: true, lifecycle: true }
         }
@@ -326,6 +329,20 @@ export async function lockVersionNode(
       case DomainVersionKind.CREATIVE_LANGUAGE:
         return lockOwner(node.creativeLanguageVersion, (id) =>
           tx.creativeLanguageVersion.updateMany({
+            where: {
+              id,
+              lifecycle: VersionLifecycle.DRAFT
+            },
+            data: {
+              lifecycle: VersionLifecycle.LOCKED,
+              lockedAt: now
+            }
+          })
+        );
+
+      case DomainVersionKind.SONG_PICTURE_PLAN:
+        return lockOwner(node.songPicturePlanVersion, (id) =>
+          tx.songPicturePlanVersion.updateMany({
             where: {
               id,
               lifecycle: VersionLifecycle.DRAFT

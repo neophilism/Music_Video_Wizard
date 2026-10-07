@@ -2129,3 +2129,27 @@ h1 {
     grid-template-columns: 1fr;
   }
 }
+
+
+.songPictureEditor{display:grid;gap:1rem}
+.songPictureEmpty,.songPictureSources,.songPictureContext,.songPictureGenerate,.songPictureTopFields,.songPicturePassages{padding:1rem;border:1px solid rgba(255,255,255,.09);border-radius:12px;background:rgba(255,255,255,.02)}
+.songPictureSources,.songPicturePassageHeader,.songPictureActions{display:flex;justify-content:space-between;gap:1rem;align-items:flex-start}
+.songPictureSources h2,.songPictureGenerate h3,.songPicturePassages h3{margin:.25rem 0 .5rem}
+.songPictureSources p,.songPictureGenerate p,.songPictureEmpty p{color:#b8c0cd;line-height:1.55}
+.songPictureFacts{min-width:250px;display:grid;gap:.4rem}
+.songPictureFacts span{padding:.45rem .6rem;border-radius:9px;background:rgba(255,255,255,.045);color:#aeb6c5;font-size:.76rem}
+.songPictureContext{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:1rem}
+.songPictureContext p{margin:.35rem 0;color:#b8c0cd;font-size:.84rem}
+.songPictureGenerate{display:grid;gap:.75rem}.songPictureGenerate textarea{min-height:88px}
+.songPictureTopFields,.songPicturePassageGrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:.8rem}
+.songPictureTopFields label,.songPicturePassageGrid label,.songPictureSourceSelectors label,.songPicturePassageTiming label{display:grid;gap:.35rem}
+.songPictureTopFields label>span,.songPicturePassageGrid label>span,.songPictureSourceSelectors label>span,.songPicturePassageTiming label>span{color:#9aa4b5;font-size:.74rem;font-weight:700;text-transform:uppercase;letter-spacing:.04em}
+.songPictureTopFields textarea,.songPicturePassageGrid textarea{min-height:115px}
+.songPicturePassages{display:grid;gap:.85rem}
+.songPicturePassageCard{padding:.9rem;border:1px solid rgba(255,255,255,.08);border-radius:11px;background:rgba(0,0,0,.12);display:grid;gap:.85rem}
+.songPicturePassageTiming{display:grid;grid-template-columns:minmax(0,1.5fr) repeat(3,minmax(110px,.55fr)) auto;gap:.65rem;align-items:end}
+.songPictureSourceSelectors{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:.8rem}
+.songPictureSourceSelectors fieldset{display:grid;gap:.35rem;border:1px solid rgba(255,255,255,.08);border-radius:9px;padding:.65rem}
+.songPictureSourceSelectors select{min-height:110px}
+.songPictureActions{justify-content:flex-end;flex-wrap:wrap}
+@media(max-width:900px){.songPictureSources,.songPicturePassageHeader{flex-direction:column}.songPictureFacts{min-width:0;width:100%}.songPictureContext,.songPictureTopFields,.songPicturePassageGrid,.songPicturePassageTiming,.songPictureSourceSelectors{grid-template-columns:1fr}}

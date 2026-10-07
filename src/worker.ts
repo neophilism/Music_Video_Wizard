@@ -4,12 +4,14 @@ import { registerBuiltInGenerationHandlers } from "@/lib/music-analysis/register
 import { registerConceptGenerationHandlers } from "@/lib/concepts/register";
 import { registerTreatmentGenerationHandlers } from "@/lib/treatment/register";
 import { registerCreativeLanguageGenerationHandlers } from "@/lib/creative-language/register";
+import { registerSongPicturePlanGenerationHandlers } from "@/lib/song-picture-plan/register";
 
 async function main() {
   registerBuiltInGenerationHandlers();
   registerConceptGenerationHandlers();
   registerTreatmentGenerationHandlers();
   registerCreativeLanguageGenerationHandlers();
+  registerSongPicturePlanGenerationHandlers();
   const worker = await startGenerationWorker();
   console.log(`Generation worker started: ${worker.workerId}`);
 

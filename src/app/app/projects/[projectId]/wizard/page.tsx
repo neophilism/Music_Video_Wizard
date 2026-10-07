@@ -10,6 +10,7 @@ import { CreativeBriefEditor } from "@/components/creative-brief-editor";
 import { ConceptsEditor } from "@/components/concepts-editor";
 import { TreatmentEditor } from "@/components/treatment-editor";
 import { CreativeLanguageEditor } from "@/components/creative-language-editor";
+import { SongPicturePlanEditor } from "@/components/song-picture-plan-editor";
 import { WizardNavigation } from "@/components/wizard-navigation";
 import { WizardStageShell } from "@/components/wizard-stage-placeholder";
 import { db } from "@/lib/db";
@@ -21,6 +22,7 @@ import { getCreativeBriefState } from "@/lib/creative-brief/service";
 import { getConceptState } from "@/lib/concepts/service";
 import { getTreatmentState } from "@/lib/treatment/service";
 import { getCreativeLanguageState } from "@/lib/creative-language/service";
+import { getSongPicturePlanState } from "@/lib/song-picture-plan/service";
 import { getWizardView } from "@/lib/wizard/service";
 
 export default async function ProjectWizardPage(props: {
@@ -108,6 +110,14 @@ export default async function ProjectWizardPage(props: {
   const creativeLanguageState =
     selected.definition.editor === "creative-language"
       ? await getCreativeLanguageState({
+          userId: session.user.id,
+          projectId
+        })
+      : null;
+
+  const songPicturePlanState =
+    selected.definition.editor === "song-picture-plan"
+      ? await getSongPicturePlanState({
           userId: session.user.id,
           projectId
         })
@@ -407,6 +417,48 @@ export default async function ProjectWizardPage(props: {
               providerAvailable={
                 creativeLanguageState.providerAvailable
               }
+              wizardStatus={selected.state.status}
+              wizardLocked={Boolean(selected.state.lockedAt)}
+              downstreamImpact={view.downstreamImpact}
+            />
+          </section>
+        ) : selected.definition.editor === "song-picture-plan" &&
+          songPicturePlanState ? (
+          <section className="dashboardCard wizardEditorCard">
+            <SongPicturePlanEditor
+              projectId={projectId}
+              sourceReady={songPicturePlanState.sourceReady}
+              needsRebase={songPicturePlanState.needsRebase}
+              initialVersion={
+                songPicturePlanState.latest
+                  ? {
+                      id: songPicturePlanState.latest.id,
+                      versionNumber: songPicturePlanState.latest.versionNumber,
+                      lifecycle: songPicturePlanState.latest.lifecycle,
+                      revision: songPicturePlanState.latest.revision,
+                      sourceTreatmentVersionId:
+                        songPicturePlanState.latest.sourceTreatmentVersionId,
+                      sourceTreatmentVersionNumber:
+                        songPicturePlanState.latest.sourceTreatmentVersionNumber,
+                      sourceCreativeLanguageVersionId:
+                        songPicturePlanState.latest
+                          .sourceCreativeLanguageVersionId,
+                      sourceCreativeLanguageVersionNumber:
+                        songPicturePlanState.latest
+                          .sourceCreativeLanguageVersionNumber,
+                      sourceMusicMapVersionId:
+                        songPicturePlanState.latest.sourceMusicMapVersionId,
+                      sourceMusicMapVersionNumber:
+                        songPicturePlanState.latest.sourceMusicMapVersionNumber,
+                      document: songPicturePlanState.latest.document,
+                      sourceContext: songPicturePlanState.latest.sourceContext,
+                      generationJobId:
+                        songPicturePlanState.latest.generationJobId
+                    }
+                  : null
+              }
+              recentJob={songPicturePlanState.recentJob}
+              providerAvailable={songPicturePlanState.providerAvailable}
               wizardStatus={selected.state.status}
               wizardLocked={Boolean(selected.state.lockedAt)}
               downstreamImpact={view.downstreamImpact}

@@ -31,6 +31,7 @@ enum DomainVersionKind {
   CONCEPT_SET
   TREATMENT
   CREATIVE_LANGUAGE
+  SONG_PICTURE_PLAN
   ASSET
   TIMELINE
 }
@@ -201,6 +202,7 @@ model User {
   conceptOptionsCreated          ConceptOption[]          @relation("ConceptOptionCreator")
   treatmentVersionsCreated       TreatmentVersion[]       @relation("TreatmentVersionCreator")
   creativeLanguageVersionsCreated CreativeLanguageVersion[] @relation("CreativeLanguageVersionCreator")
+  songPicturePlanVersionsCreated   SongPicturePlanVersion[]   @relation("SongPicturePlanVersionCreator")
   assetVersionsCreated          AssetVersion[]          @relation("AssetVersionCreator")
   generationJobsRequested       GenerationJob[]         @relation("GenerationJobRequester")
   timelineVersionsCreated       TimelineVersion[]       @relation("TimelineVersionCreator")
@@ -311,6 +313,7 @@ model Project {
   conceptSet    ConceptSet?
   treatment       Treatment?
   creativeLanguage CreativeLanguage?
+  songPicturePlan  SongPicturePlan?
   generationJobs   GenerationJob[]
 
   @@index([workspaceId, updatedAt])
@@ -760,7 +763,8 @@ model MusicMapVersion {
   sourceAnalysisVersion MusicAnalysisVersion @relation(fields: [sourceAnalysisVersionId], references: [id], onDelete: Restrict)
   createdBy             User?                @relation("MusicMapVersionCreator", fields: [createdByUserId], references: [id], onDelete: SetNull)
   anchors               MusicMapAnchor[]
-  creativeBriefVersions CreativeBriefVersion[]
+  creativeBriefVersions   CreativeBriefVersion[]
+  songPicturePlanVersions SongPicturePlanVersion[]
 
   @@unique([musicMapId, versionNumber])
   @@index([musicMapId, lifecycle])
@@ -936,6 +940,7 @@ model TreatmentVersion {
   generationJob           GenerationJob?    @relation(fields: [generationJobId], references: [id], onDelete: SetNull)
   createdBy               User?             @relation("TreatmentVersionCreator", fields: [createdByUserId], references: [id], onDelete: SetNull)
   creativeLanguageVersions CreativeLanguageVersion[]
+  songPicturePlanVersions  SongPicturePlanVersion[]
 
   @@unique([treatmentId, versionNumber])
   @@index([treatmentId, lifecycle])
@@ -972,10 +977,53 @@ model CreativeLanguageVersion {
   sourceTreatmentVersion TreatmentVersion  @relation(fields: [sourceTreatmentVersionId], references: [id], onDelete: Restrict)
   generationJob          GenerationJob?    @relation(fields: [generationJobId], references: [id], onDelete: SetNull)
   createdBy              User?             @relation("CreativeLanguageVersionCreator", fields: [createdByUserId], references: [id], onDelete: SetNull)
+  songPicturePlanVersions SongPicturePlanVersion[]
 
   @@unique([creativeLanguageId, versionNumber])
   @@index([creativeLanguageId, lifecycle])
   @@index([sourceTreatmentVersionId])
+}
+
+
+model SongPicturePlan {
+  id        String   @id @default(uuid()) @db.Uuid
+  projectId String   @unique @db.Uuid
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  project  Project                  @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  versions SongPicturePlanVersion[]
+}
+
+model SongPicturePlanVersion {
+  id                              String           @id @default(uuid()) @db.Uuid
+  songPicturePlanId               String           @db.Uuid
+  nodeId                          String           @unique @db.Uuid
+  versionNumber                   Int
+  lifecycle                       VersionLifecycle @default(DRAFT)
+  sourceTreatmentVersionId        String           @db.Uuid
+  sourceCreativeLanguageVersionId String           @db.Uuid
+  sourceMusicMapVersionId         String           @db.Uuid
+  revision                        Int              @default(0)
+  document                        Json
+  generationJobId                 String?          @unique @db.Uuid
+  createdByUserId                 String?          @db.Uuid
+  createdAt                       DateTime         @default(now())
+  lockedAt                        DateTime?
+
+  songPicturePlan               SongPicturePlan       @relation(fields: [songPicturePlanId], references: [id], onDelete: Cascade)
+  node                          DomainVersionNode     @relation(fields: [nodeId], references: [id])
+  sourceTreatmentVersion        TreatmentVersion      @relation(fields: [sourceTreatmentVersionId], references: [id], onDelete: Restrict)
+  sourceCreativeLanguageVersion CreativeLanguageVersion @relation(fields: [sourceCreativeLanguageVersionId], references: [id], onDelete: Restrict)
+  sourceMusicMapVersion         MusicMapVersion       @relation(fields: [sourceMusicMapVersionId], references: [id], onDelete: Restrict)
+  generationJob                GenerationJob?        @relation(fields: [generationJobId], references: [id], onDelete: SetNull)
+  createdBy                    User?                 @relation("SongPicturePlanVersionCreator", fields: [createdByUserId], references: [id], onDelete: SetNull)
+
+  @@unique([songPicturePlanId, versionNumber])
+  @@index([songPicturePlanId, lifecycle])
+  @@index([sourceTreatmentVersionId])
+  @@index([sourceCreativeLanguageVersionId])
+  @@index([sourceMusicMapVersionId])
 }
 
 
@@ -1011,6 +1059,7 @@ model GenerationJob {
   conceptOptions       ConceptOption[]
   treatmentVersion        TreatmentVersion?
   creativeLanguageVersion CreativeLanguageVersion?
+  songPicturePlanVersion  SongPicturePlanVersion?
 
   @@index([workspaceId, createdAt])
   @@index([projectId, status])
@@ -1168,6 +1217,7 @@ model DomainVersionNode {
   conceptSetVersion     ConceptSetVersion?
   treatmentVersion      TreatmentVersion?
   creativeLanguageVersion CreativeLanguageVersion?
+  songPicturePlanVersion  SongPicturePlanVersion?
   assetVersion          AssetVersion?
   timelineVersion       TimelineVersion?
 
