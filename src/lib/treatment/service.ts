@@ -77,7 +77,7 @@ async function refreshFingerprint(tx: Tx, treatmentVersionId: string) {
   const version = await tx.treatmentVersion.findUniqueOrThrow({
     where: { id: treatmentVersionId }
   });
-  const treatment = treatmentDraftSchema.parse(version.treatment);
+  const treatment = treatmentDraftSchema.parse(version.document);
   const fingerprint = semanticFingerprint({
     sourceConceptSetVersionId: version.sourceConceptSetVersionId,
     sourceConceptId: version.sourceConceptId,
@@ -98,7 +98,7 @@ async function wizardPayload(tx: Tx, treatmentVersionId: string) {
       sourceConceptSetVersion: true
     }
   });
-  const treatment = treatmentDraftSchema.parse(version.treatment);
+  const treatment = treatmentDraftSchema.parse(version.document);
   return toJson({
     treatmentVersionId: version.id,
     treatmentNodeId: version.nodeId,
@@ -167,7 +167,7 @@ async function serializeTreatment(tx: Tx, treatmentVersionId: string) {
         endMs: a.endMs
       }))
     },
-    treatment: treatmentDraftSchema.parse(version.treatment),
+    treatment: treatmentDraftSchema.parse(version.document),
     generationJobId: version.generationJobId,
     createdAt: version.createdAt,
     lockedAt: version.lockedAt
@@ -267,7 +267,7 @@ export async function initializeTreatment(input: { userId: string; projectId: st
         versionNumber: (latest?.versionNumber ?? 0) + 1,
         sourceConceptSetVersionId: source.id,
         sourceConceptId: source.selectedConcept.id,
-        treatment: toJson(EMPTY_TREATMENT),
+        document: toJson(EMPTY_TREATMENT),
         createdByUserId: input.userId
       }
     });
@@ -295,7 +295,7 @@ export async function saveTreatment(input: {
     }
     const changed = await tx.treatmentVersion.updateMany({
       where: { id: context.version.id, revision: input.expectedRevision, lifecycle: VersionLifecycle.DRAFT },
-      data: { treatment: toJson(treatment), revision: { increment: 1 } }
+      data: { document: toJson(treatment), revision: { increment: 1 } }
     });
     if (changed.count !== 1) throw new TreatmentConflictError("Treatment changed while saving.");
     const synced = await syncWizard(tx, projectVersion.id, context.version.id);
@@ -389,7 +389,7 @@ export async function persistTreatmentGeneration(input: {
     if (existing) return { treatmentVersionId: version.id, nodeId: version.nodeId };
     await tx.treatmentVersion.update({
       where: { id: version.id },
-      data: { treatment: toJson(treatment), revision: { increment: 1 } }
+      data: { document: toJson(treatment), revision: { increment: 1 } }
     });
     await tx.generationOutput.create({
       data: { jobId: input.generationJobId, nodeId: version.nodeId, role: "treatment" }
@@ -410,7 +410,7 @@ export async function completeTreatment(input: {
     if (await activeTreatmentJob(tx, context.version.nodeId)) {
       throw new TreatmentError("Wait for treatment generation to finish before completing Treatment.");
     }
-    const draft = treatmentDraftSchema.parse(context.version.treatment);
+    const draft = treatmentDraftSchema.parse(context.version.document);
     const issues = treatmentCompletionIssues(draft);
     if (issues.length) throw new TreatmentError(issues.join(" "));
     const changed = await tx.treatmentVersion.updateMany({
