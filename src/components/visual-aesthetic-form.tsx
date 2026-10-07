@@ -33,10 +33,6 @@ function textList(raw: string): string[] {
 }
 
 function initialDefinition(value: unknown): VisualAestheticDefinition {
-  const parsed = parseVisualAestheticDefinition.safeParse
-    ? null
-    : null;
-  void parsed;
   try {
     return parseVisualAestheticDefinition(value ?? EMPTY_VISUAL_AESTHETIC);
   } catch {
