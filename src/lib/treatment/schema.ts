@@ -77,7 +77,10 @@ export const EMPTY_TREATMENT: TreatmentDraft = {
   sections: []
 };
 
-export function treatmentCompletionIssues(draft: TreatmentDraft): string[] {
+export function treatmentCompletionIssues(
+  draft: TreatmentDraft,
+  durationMs?: number
+): string[] {
   const parsed = treatmentDocumentSchema.safeParse(draft);
   if (!parsed.success) {
     return parsed.error.issues.map((issue) => issue.message);
@@ -87,9 +90,20 @@ export function treatmentCompletionIssues(draft: TreatmentDraft): string[] {
     return ["The treatment must begin at the start of the song."];
   }
   for (let index = 1; index < sections.length; index += 1) {
-    if (sections[index]!.startMs < sections[index - 1]!.startMs) {
+    const previous = sections[index - 1]!;
+    const current = sections[index]!;
+    if (current.startMs < previous.startMs) {
       return ["Treatment sections must be ordered by time."];
     }
+    if (current.startMs !== previous.endMs) {
+      return ["Treatment sections must cover the song continuously without gaps or overlaps."];
+    }
+  }
+  if (
+    durationMs !== undefined &&
+    sections.at(-1)!.endMs !== durationMs
+  ) {
+    return ["The treatment must end exactly at the end of the finished song."];
   }
   return [];
 }
