@@ -1858,3 +1858,136 @@ h1 {
     grid-template-columns: 1fr;
   }
 }
+
+
+.treatmentEditor {
+  display: grid;
+  gap: 1rem;
+}
+
+.treatmentEmpty,
+.treatmentSource,
+.treatmentGeneration,
+.treatmentLongForm,
+.treatmentSections {
+  padding: 1rem;
+  border: 1px solid rgba(255,255,255,.09);
+  border-radius: 12px;
+  background: rgba(255,255,255,.02);
+}
+
+.treatmentSource,
+.treatmentSectionHeader,
+.treatmentActions {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  align-items: flex-start;
+}
+
+.treatmentSource h2,
+.treatmentGeneration h3,
+.treatmentSections h3 {
+  margin: .25rem 0 .5rem;
+}
+
+.treatmentSource p,
+.treatmentGeneration p {
+  color: #b8c0cd;
+  line-height: 1.55;
+}
+
+.treatmentFacts {
+  min-width: 250px;
+  display: grid;
+  gap: .4rem;
+}
+
+.treatmentFacts span {
+  padding: .45rem .6rem;
+  border-radius: 9px;
+  background: rgba(255,255,255,.045);
+  color: #aeb6c5;
+  font-size: .76rem;
+}
+
+.treatmentGeneration {
+  display: grid;
+  gap: .75rem;
+}
+
+.treatmentGeneration textarea {
+  min-height: 88px;
+}
+
+.treatmentLongForm,
+.treatmentSectionGrid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0,1fr));
+  gap: .8rem;
+}
+
+.treatmentLongForm label,
+.treatmentSectionGrid label,
+.treatmentSectionTiming label {
+  display: grid;
+  gap: .35rem;
+}
+
+.treatmentLongForm label > span,
+.treatmentSectionGrid label > span,
+.treatmentSectionTiming label > span {
+  color: #9aa4b5;
+  font-size: .74rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: .04em;
+}
+
+.treatmentLongForm textarea,
+.treatmentSectionGrid textarea {
+  min-height: 120px;
+}
+
+.treatmentSections {
+  display: grid;
+  gap: .85rem;
+}
+
+.treatmentSectionCard {
+  padding: .9rem;
+  border: 1px solid rgba(255,255,255,.08);
+  border-radius: 11px;
+  background: rgba(0,0,0,.12);
+}
+
+.treatmentSectionTiming {
+  display: grid;
+  grid-template-columns: minmax(0,1.5fr) minmax(120px,.45fr) minmax(120px,.45fr) auto;
+  gap: .65rem;
+  align-items: end;
+  margin-bottom: .8rem;
+}
+
+.treatmentActions {
+  justify-content: flex-end;
+  flex-wrap: wrap;
+}
+
+@media (max-width: 900px) {
+  .treatmentSource,
+  .treatmentSectionHeader {
+    flex-direction: column;
+  }
+
+  .treatmentFacts {
+    min-width: 0;
+    width: 100%;
+  }
+
+  .treatmentLongForm,
+  .treatmentSectionGrid,
+  .treatmentSectionTiming {
+    grid-template-columns: 1fr;
+  }
+}
