@@ -55,6 +55,9 @@ export async function lockVersionNode(
         conceptSetVersion: {
           select: { id: true, lifecycle: true }
         },
+        treatmentVersion: {
+          select: { id: true, lifecycle: true }
+        },
         timelineVersion: {
           select: { id: true, lifecycle: true }
         }
@@ -292,6 +295,20 @@ export async function lockVersionNode(
       case DomainVersionKind.CONCEPT_SET:
         return lockOwner(node.conceptSetVersion, (id) =>
           tx.conceptSetVersion.updateMany({
+            where: {
+              id,
+              lifecycle: VersionLifecycle.DRAFT
+            },
+            data: {
+              lifecycle: VersionLifecycle.LOCKED,
+              lockedAt: now
+            }
+          })
+        );
+
+      case DomainVersionKind.TREATMENT:
+        return lockOwner(node.treatmentVersion, (id) =>
+          tx.treatmentVersion.updateMany({
             where: {
               id,
               lifecycle: VersionLifecycle.DRAFT

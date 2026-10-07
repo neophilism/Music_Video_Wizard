@@ -4,7 +4,7 @@ export interface WizardStepDefinition {
   phase: string;
   title: string;
   description: string;
-  editor: "project-setup" | "music-analysis" | "music-map" | "creative-brief" | "concepts" | null;
+  editor: "project-setup" | "music-analysis" | "music-map" | "creative-brief" | "concepts" | "treatment" | null;
 }
 
 export const WIZARD_STEPS: readonly WizardStepDefinition[] = [
@@ -59,8 +59,8 @@ export const WIZARD_STEPS: readonly WizardStepDefinition[] = [
     phase: "Creative direction",
     title: "Treatment",
     description:
-      "Turn the selected concept into the complete visual and dramatic treatment.",
-    editor: null
+      "Turn the selected concept into a complete, editable visual and dramatic treatment mapped across the finished song.",
+    editor: "treatment"
   },
   {
     key: "creative-language",

@@ -11,7 +11,7 @@ permissions:
 jobs:
   validate:
     runs-on: ubuntu-latest
-    timeout-minutes: 15
+    timeout-minutes: 30
     services:
       postgres:
         image: postgres:17-alpine
@@ -51,8 +51,8 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: "3.12"
-      - run: command -v ffmpeg >/dev/null 2>&1 || (sudo apt-get update && sudo apt-get install -y ffmpeg)
-      - run: python -m pip install --disable-pip-version-check -r analysis/requirements.txt
+      - run: python -m pip install --disable-pip-version-check -r analysis/requirements.txt imageio-ffmpeg
+      - run: echo "AUDIO_ANALYSIS_FFMPEG=$(python -c 'import imageio_ffmpeg; print(imageio_ffmpeg.get_ffmpeg_exe())')" >> "$GITHUB_ENV"
       - run: npm install
       - run: npm run db:validate
       - run: npm run db:generate
@@ -69,5 +69,6 @@ jobs:
       - run: npm run test:map
       - run: npm run test:brief
       - run: npm run test:concepts
+      - run: npm run test:treatment
       - run: npm run test:queue
       - run: npm run build
