@@ -9,7 +9,7 @@ import { conceptContentSchema } from "@/lib/concepts/schema";
 import { creativeBriefDraftSchema } from "@/lib/creative-brief/input";
 import { queuedTreatmentGenerationSchema } from "./input";
 import { buildTreatmentPrompt } from "./prompt";
-import { treatmentDocumentSchema, treatmentJsonSchema } from "./schema";
+import { treatmentCompletionIssues, treatmentDocumentSchema, treatmentJsonSchema } from "./schema";
 import { persistTreatmentGeneration, TreatmentError } from "./service";
 
 export async function handleTreatmentGeneration(
@@ -91,8 +91,9 @@ export async function handleTreatmentGeneration(
 
     await context.reportProgress(75, "Validating treatment structure and timing.");
     const treatment = treatmentDocumentSchema.parse(raw);
-    if (treatment.sections.at(-1)!.endMs > map.durationMs) {
-      throw new TreatmentError("Generated treatment extends beyond the finished song.");
+    const issues = treatmentCompletionIssues(treatment, map.durationMs);
+    if (issues.length) {
+      throw new TreatmentError(issues.join(" "));
     }
 
     await context.reportProgress(90, "Saving the treatment and provenance.");
