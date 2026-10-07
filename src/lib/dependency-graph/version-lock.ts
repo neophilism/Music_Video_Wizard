@@ -52,6 +52,9 @@ export async function lockVersionNode(
         creativeBriefVersion: {
           select: { id: true, lifecycle: true }
         },
+        conceptSetVersion: {
+          select: { id: true, lifecycle: true }
+        },
         timelineVersion: {
           select: { id: true, lifecycle: true }
         }
@@ -275,6 +278,20 @@ export async function lockVersionNode(
       case DomainVersionKind.CREATIVE_BRIEF:
         return lockOwner(node.creativeBriefVersion, (id) =>
           tx.creativeBriefVersion.updateMany({
+            where: {
+              id,
+              lifecycle: VersionLifecycle.DRAFT
+            },
+            data: {
+              lifecycle: VersionLifecycle.LOCKED,
+              lockedAt: now
+            }
+          })
+        );
+
+      case DomainVersionKind.CONCEPT_SET:
+        return lockOwner(node.conceptSetVersion, (id) =>
+          tx.conceptSetVersion.updateMany({
             where: {
               id,
               lifecycle: VersionLifecycle.DRAFT

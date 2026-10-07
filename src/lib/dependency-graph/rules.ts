@@ -13,6 +13,7 @@ export function impactActionForKind(
     case DomainVersionKind.PROJECT:
     case DomainVersionKind.MUSIC_MAP:
     case DomainVersionKind.CREATIVE_BRIEF:
+    case DomainVersionKind.CONCEPT_SET:
     case DomainVersionKind.SEQUENCE:
     case DomainVersionKind.SHOT:
     case DomainVersionKind.CREATIVE_MODULE:

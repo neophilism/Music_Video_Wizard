@@ -28,6 +28,7 @@ enum DomainVersionKind {
   MUSIC_ANALYSIS
   MUSIC_MAP
   CREATIVE_BRIEF
+  CONCEPT_SET
   ASSET
   TIMELINE
 }
@@ -162,6 +163,18 @@ enum MusicMapAnchorDecision {
   REJECTED
 }
 
+enum ConceptOptionOrigin {
+  GENERATED
+  REVISED
+  COMBINED
+  MANUAL
+}
+
+enum ConceptLineageRole {
+  REVISION_SOURCE
+  COMBINATION_SOURCE
+}
+
 model User {
   id            String   @id @default(uuid()) @db.Uuid
   email         String   @unique
@@ -182,6 +195,8 @@ model User {
   musicAnalysisVersionsCreated  MusicAnalysisVersion[]  @relation("MusicAnalysisVersionCreator")
   musicMapVersionsCreated       MusicMapVersion[]       @relation("MusicMapVersionCreator")
   creativeBriefVersionsCreated  CreativeBriefVersion[]  @relation("CreativeBriefVersionCreator")
+  conceptSetVersionsCreated      ConceptSetVersion[]      @relation("ConceptSetVersionCreator")
+  conceptOptionsCreated          ConceptOption[]          @relation("ConceptOptionCreator")
   assetVersionsCreated          AssetVersion[]          @relation("AssetVersionCreator")
   generationJobsRequested       GenerationJob[]         @relation("GenerationJobRequester")
   timelineVersionsCreated       TimelineVersion[]       @relation("TimelineVersionCreator")
@@ -289,6 +304,7 @@ model Project {
   musicAnalysis MusicAnalysis?
   musicMap      MusicMap?
   creativeBrief CreativeBrief?
+  conceptSet    ConceptSet?
   generationJobs GenerationJob[]
 
   @@index([workspaceId, updatedAt])
@@ -799,10 +815,85 @@ model CreativeBriefVersion {
   node                  DomainVersionNode @relation(fields: [nodeId], references: [id])
   sourceMusicMapVersion MusicMapVersion  @relation(fields: [sourceMusicMapVersionId], references: [id], onDelete: Restrict)
   createdBy             User?            @relation("CreativeBriefVersionCreator", fields: [createdByUserId], references: [id], onDelete: SetNull)
+  conceptSetVersions     ConceptSetVersion[]
 
   @@unique([creativeBriefId, versionNumber])
   @@index([creativeBriefId, lifecycle])
   @@index([sourceMusicMapVersionId])
+}
+
+
+model ConceptSet {
+  id        String   @id @default(uuid()) @db.Uuid
+  projectId String   @unique @db.Uuid
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  project  Project             @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  versions ConceptSetVersion[]
+}
+
+model ConceptSetVersion {
+  id                           String           @id @default(uuid()) @db.Uuid
+  conceptSetId                 String           @db.Uuid
+  nodeId                       String           @unique @db.Uuid
+  versionNumber                Int
+  lifecycle                    VersionLifecycle @default(DRAFT)
+  sourceCreativeBriefVersionId String           @db.Uuid
+  revision                     Int              @default(0)
+  selectedConceptId            String?          @unique @db.Uuid
+  createdByUserId              String?          @db.Uuid
+  createdAt                    DateTime         @default(now())
+  lockedAt                     DateTime?
+
+  conceptSet                 ConceptSet           @relation(fields: [conceptSetId], references: [id], onDelete: Cascade)
+  node                       DomainVersionNode    @relation(fields: [nodeId], references: [id])
+  sourceCreativeBriefVersion CreativeBriefVersion @relation(fields: [sourceCreativeBriefVersionId], references: [id], onDelete: Restrict)
+  selectedConcept            ConceptOption?       @relation("SelectedConcept", fields: [selectedConceptId], references: [id], onDelete: SetNull)
+  createdBy                  User?                @relation("ConceptSetVersionCreator", fields: [createdByUserId], references: [id], onDelete: SetNull)
+  options                    ConceptOption[]       @relation("ConceptOptions")
+
+  @@unique([conceptSetId, versionNumber])
+  @@index([conceptSetId, lifecycle])
+  @@index([sourceCreativeBriefVersionId])
+}
+
+model ConceptOption {
+  id                  String              @id @default(uuid()) @db.Uuid
+  conceptSetVersionId String              @db.Uuid
+  origin              ConceptOptionOrigin
+  position            Int
+  content             Json
+  generationJobId     String?             @db.Uuid
+  revisionInstruction String?             @db.Text
+  createdByUserId     String?             @db.Uuid
+  createdAt           DateTime            @default(now())
+
+  conceptSetVersion ConceptSetVersion   @relation("ConceptOptions", fields: [conceptSetVersionId], references: [id], onDelete: Cascade)
+  selectedBy        ConceptSetVersion?  @relation("SelectedConcept")
+  generationJob     GenerationJob?      @relation(fields: [generationJobId], references: [id], onDelete: SetNull)
+  createdBy         User?               @relation("ConceptOptionCreator", fields: [createdByUserId], references: [id], onDelete: SetNull)
+  parentLinks       ConceptOptionLineage[] @relation("ConceptChild")
+  childLinks        ConceptOptionLineage[] @relation("ConceptParent")
+
+  @@unique([conceptSetVersionId, position])
+  @@index([conceptSetVersionId, origin])
+  @@index([generationJobId])
+}
+
+model ConceptOptionLineage {
+  id              String             @id @default(uuid()) @db.Uuid
+  childConceptId  String             @db.Uuid
+  parentConceptId String             @db.Uuid
+  role            ConceptLineageRole
+  position        Int                @default(0)
+  createdAt       DateTime           @default(now())
+
+  child  ConceptOption @relation("ConceptChild", fields: [childConceptId], references: [id], onDelete: Cascade)
+  parent ConceptOption @relation("ConceptParent", fields: [parentConceptId], references: [id], onDelete: Cascade)
+
+  @@unique([childConceptId, parentConceptId, role])
+  @@index([parentConceptId])
 }
 
 model GenerationJob {
@@ -834,6 +925,7 @@ model GenerationJob {
   outputs     GenerationOutput[]
   events      GenerationJobEvent[]
   musicAnalysisVersion MusicAnalysisVersion?
+  conceptOptions       ConceptOption[]
 
   @@index([workspaceId, createdAt])
   @@index([projectId, status])
@@ -988,6 +1080,7 @@ model DomainVersionNode {
   musicAnalysisVersion  MusicAnalysisVersion?
   musicMapVersion       MusicMapVersion?
   creativeBriefVersion  CreativeBriefVersion?
+  conceptSetVersion     ConceptSetVersion?
   assetVersion          AssetVersion?
   timelineVersion       TimelineVersion?
 
