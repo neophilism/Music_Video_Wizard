@@ -64,6 +64,6 @@ describe("Treatment schema", () => {
       ]
     };
     expect(treatmentDocumentSchema.parse(treatment).sections).toHaveLength(2);
-    expect(treatmentCompletionIssues(treatment)).toEqual([]);
+    expect(treatmentCompletionIssues(treatment, 60000)).toEqual([]);
   });
 });
