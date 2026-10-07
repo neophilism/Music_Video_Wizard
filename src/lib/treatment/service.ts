@@ -411,7 +411,18 @@ export async function completeTreatment(input: {
       throw new TreatmentError("Wait for treatment generation to finish before completing Treatment.");
     }
     const draft = treatmentDraftSchema.parse(context.version.document);
-    const issues = treatmentCompletionIssues(draft);
+    const source = await tx.conceptSetVersion.findUniqueOrThrow({
+      where: { id: context.version.sourceConceptSetVersionId },
+      include: {
+        sourceCreativeBriefVersion: {
+          include: { sourceMusicMapVersion: true }
+        }
+      }
+    });
+    const issues = treatmentCompletionIssues(
+      draft,
+      source.sourceCreativeBriefVersion.sourceMusicMapVersion.durationMs
+    );
     if (issues.length) throw new TreatmentError(issues.join(" "));
     const changed = await tx.treatmentVersion.updateMany({
       where: { id: context.version.id, revision: input.expectedRevision },
