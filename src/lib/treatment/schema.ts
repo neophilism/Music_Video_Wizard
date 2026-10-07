@@ -1,55 +1,97 @@
 import { z } from "zod";
 
-const paragraph = z.string().trim().min(1).max(7000);
-const shortLine = z.string().trim().min(1).max(360);
+const text = (max: number) => z.string().trim().max(max);
+const requiredText = (max: number) => z.string().trim().min(1).max(max);
 
-export const treatmentSectionSchema = z.object({
-  title: z.string().trim().min(1).max(180),
-  startMs: z.number().int().min(0),
-  endMs: z.number().int().min(1),
-  musicAnchorLabels: z.array(shortLine).max(8),
-  dramaticPurpose: paragraph,
-  picturePlan: paragraph,
-  narrativeProgression: paragraph,
-  performancePlan: paragraph,
-  visualProgression: paragraph,
-  characterProgression: paragraph,
-  worldChange: paragraph,
-  motifs: z.array(shortLine).max(10),
-  majorReveal: z.string().trim().max(3000),
-  transitionIntent: z.string().trim().max(2200)
-}).refine((section) => section.endMs > section.startMs, {
-  message: "Treatment section end must be after its start."
+function sectionSchema(required: boolean) {
+  const paragraph = required ? requiredText(7000) : text(7000);
+  const shortLine = required ? requiredText(360) : text(360);
+  return z.object({
+    title: required ? requiredText(180) : text(180),
+    startMs: z.number().int().min(0),
+    endMs: z.number().int().min(0),
+    musicAnchorLabels: z.array(shortLine).max(8),
+    dramaticPurpose: paragraph,
+    picturePlan: paragraph,
+    narrativeProgression: paragraph,
+    performancePlan: paragraph,
+    visualProgression: paragraph,
+    characterProgression: paragraph,
+    worldChange: paragraph,
+    motifs: z.array(shortLine).max(10),
+    majorReveal: text(3000),
+    transitionIntent: text(2200)
+  }).refine((section) => section.endMs >= section.startMs, {
+    message: "Treatment section end must not precede its start."
+  });
+}
+
+export const treatmentSectionDraftSchema = sectionSchema(false);
+export const treatmentSectionSchema = sectionSchema(true);
+
+export const treatmentDraftSchema = z.object({
+  title: text(220),
+  thesis: text(7000),
+  overview: text(7000),
+  narrativeArc: text(7000),
+  visualArc: text(7000),
+  characterArc: text(7000),
+  performanceStrategy: text(7000),
+  worldEvolution: text(7000),
+  motifStrategy: text(7000),
+  revealStrategy: text(7000),
+  ending: text(7000),
+  sections: z.array(treatmentSectionDraftSchema).max(24)
 });
 
 export const treatmentDocumentSchema = z.object({
-  title: z.string().trim().min(1).max(220),
-  thesis: paragraph,
-  overview: paragraph,
-  narrativeArc: paragraph,
-  visualArc: paragraph,
-  characterArc: paragraph,
-  performanceStrategy: paragraph,
-  worldEvolution: paragraph,
-  motifStrategy: paragraph,
-  revealStrategy: paragraph,
-  ending: paragraph,
+  title: requiredText(220),
+  thesis: requiredText(7000),
+  overview: requiredText(7000),
+  narrativeArc: requiredText(7000),
+  visualArc: requiredText(7000),
+  characterArc: requiredText(7000),
+  performanceStrategy: requiredText(7000),
+  worldEvolution: requiredText(7000),
+  motifStrategy: requiredText(7000),
+  revealStrategy: requiredText(7000),
+  ending: requiredText(7000),
   sections: z.array(treatmentSectionSchema).min(2).max(24)
 });
 
+export type TreatmentDraft = z.infer<typeof treatmentDraftSchema>;
 export type TreatmentDocument = z.infer<typeof treatmentDocumentSchema>;
 
-export function treatmentCompletionIssues(document: TreatmentDocument): string[] {
-  const issues: string[] = [];
-  if (!document.sections.length) issues.push("Add at least one treatment section.");
-  const sorted = [...document.sections].sort((a, b) => a.startMs - b.startMs);
-  for (let i = 1; i < sorted.length; i += 1) {
-    if (sorted[i]!.startMs < sorted[i - 1]!.startMs) {
-      issues.push("Treatment sections must be ordered by time.");
-      break;
+export const EMPTY_TREATMENT: TreatmentDraft = {
+  title: "",
+  thesis: "",
+  overview: "",
+  narrativeArc: "",
+  visualArc: "",
+  characterArc: "",
+  performanceStrategy: "",
+  worldEvolution: "",
+  motifStrategy: "",
+  revealStrategy: "",
+  ending: "",
+  sections: []
+};
+
+export function treatmentCompletionIssues(draft: TreatmentDraft): string[] {
+  const parsed = treatmentDocumentSchema.safeParse(draft);
+  if (!parsed.success) {
+    return parsed.error.issues.map((issue) => issue.message);
+  }
+  const sections = parsed.data.sections;
+  if (sections[0]!.startMs !== 0) {
+    return ["The treatment must begin at the start of the song."];
+  }
+  for (let index = 1; index < sections.length; index += 1) {
+    if (sections[index]!.startMs < sections[index - 1]!.startMs) {
+      return ["Treatment sections must be ordered by time."];
     }
   }
-  return issues;
+  return [];
 }
 
 export const treatmentJsonSchema = {
