@@ -9,6 +9,7 @@ import { MusicMapEditor } from "@/components/music-map-editor";
 import { CreativeBriefEditor } from "@/components/creative-brief-editor";
 import { ConceptsEditor } from "@/components/concepts-editor";
 import { TreatmentEditor } from "@/components/treatment-editor";
+import { CreativeLanguageEditor } from "@/components/creative-language-editor";
 import { WizardNavigation } from "@/components/wizard-navigation";
 import { WizardStageShell } from "@/components/wizard-stage-placeholder";
 import { db } from "@/lib/db";
@@ -19,6 +20,7 @@ import { getMusicMapState } from "@/lib/music-map/service";
 import { getCreativeBriefState } from "@/lib/creative-brief/service";
 import { getConceptState } from "@/lib/concepts/service";
 import { getTreatmentState } from "@/lib/treatment/service";
+import { getCreativeLanguageState } from "@/lib/creative-language/service";
 import { getWizardView } from "@/lib/wizard/service";
 
 export default async function ProjectWizardPage(props: {
@@ -98,6 +100,14 @@ export default async function ProjectWizardPage(props: {
   const treatmentState =
     selected.definition.editor === "treatment"
       ? await getTreatmentState({
+          userId: session.user.id,
+          projectId
+        })
+      : null;
+
+  const creativeLanguageState =
+    selected.definition.editor === "creative-language"
+      ? await getCreativeLanguageState({
           userId: session.user.id,
           projectId
         })
@@ -357,6 +367,46 @@ export default async function ProjectWizardPage(props: {
                   : null
               }
               providerAvailable={treatmentState.providerAvailable}
+              wizardStatus={selected.state.status}
+              wizardLocked={Boolean(selected.state.lockedAt)}
+              downstreamImpact={view.downstreamImpact}
+            />
+          </section>
+        ) : selected.definition.editor === "creative-language" &&
+          creativeLanguageState ? (
+          <section className="dashboardCard wizardEditorCard">
+            <CreativeLanguageEditor
+              projectId={projectId}
+              sourceReady={creativeLanguageState.sourceReady}
+              needsRebase={creativeLanguageState.needsRebase}
+              initialVersion={
+                creativeLanguageState.latest
+                  ? {
+                      id: creativeLanguageState.latest.id,
+                      versionNumber:
+                        creativeLanguageState.latest.versionNumber,
+                      lifecycle:
+                        creativeLanguageState.latest.lifecycle,
+                      revision:
+                        creativeLanguageState.latest.revision,
+                      sourceTreatmentVersionId:
+                        creativeLanguageState.latest
+                          .sourceTreatmentVersionId,
+                      sourceTreatmentVersionNumber:
+                        creativeLanguageState.latest
+                          .sourceTreatmentVersionNumber,
+                      document:
+                        creativeLanguageState.latest.document,
+                      generationJobId:
+                        creativeLanguageState.latest
+                          .generationJobId
+                    }
+                  : null
+              }
+              recentJob={creativeLanguageState.recentJob}
+              providerAvailable={
+                creativeLanguageState.providerAvailable
+              }
               wizardStatus={selected.state.status}
               wizardLocked={Boolean(selected.state.lockedAt)}
               downstreamImpact={view.downstreamImpact}

@@ -4,7 +4,7 @@ export interface WizardStepDefinition {
   phase: string;
   title: string;
   description: string;
-  editor: "project-setup" | "music-analysis" | "music-map" | "creative-brief" | "concepts" | "treatment" | null;
+  editor: "project-setup" | "music-analysis" | "music-map" | "creative-brief" | "concepts" | "treatment" | "creative-language" | null;
 }
 
 export const WIZARD_STEPS: readonly WizardStepDefinition[] = [
@@ -68,8 +68,8 @@ export const WIZARD_STEPS: readonly WizardStepDefinition[] = [
     phase: "Creative direction",
     title: "Creative language",
     description:
-      "Set reusable aesthetics, characters, locations, lighting, camera, motion, performance, editing, and exclusions.",
-    editor: null
+      "Set reusable aesthetics, characters, locations, lighting, camera, motion, performance, editing, continuity, and exclusions.",
+    editor: "creative-language"
   },
   {
     key: "song-map",

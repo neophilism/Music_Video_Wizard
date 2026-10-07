@@ -500,7 +500,8 @@ export async function transitionWizardStep(input: {
         context.definition.editor === "music-map" ||
         context.definition.editor === "creative-brief" ||
         context.definition.editor === "concepts" ||
-        context.definition.editor === "treatment"
+        context.definition.editor === "treatment" ||
+        context.definition.editor === "creative-language"
       ) {
         throw new WizardError(
           "This stage's completion and locking are managed by its stage-specific service."

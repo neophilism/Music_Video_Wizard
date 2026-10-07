@@ -70,5 +70,6 @@ jobs:
       - run: npm run test:brief
       - run: npm run test:concepts
       - run: npm run test:treatment
+      - run: npm run test:creative-language
       - run: npm run test:queue
       - run: npm run build

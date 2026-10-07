@@ -3,11 +3,13 @@ import { stopJobQueue } from "@/lib/jobs/queue";
 import { registerBuiltInGenerationHandlers } from "@/lib/music-analysis/register";
 import { registerConceptGenerationHandlers } from "@/lib/concepts/register";
 import { registerTreatmentGenerationHandlers } from "@/lib/treatment/register";
+import { registerCreativeLanguageGenerationHandlers } from "@/lib/creative-language/register";
 
 async function main() {
   registerBuiltInGenerationHandlers();
   registerConceptGenerationHandlers();
   registerTreatmentGenerationHandlers();
+  registerCreativeLanguageGenerationHandlers();
   const worker = await startGenerationWorker();
   console.log(`Generation worker started: ${worker.workerId}`);
 

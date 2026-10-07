@@ -1991,3 +1991,141 @@ h1 {
     grid-template-columns: 1fr;
   }
 }
+
+
+.creativeLanguageEditor {
+  display: grid;
+  gap: 1rem;
+}
+
+.creativeLanguageEmpty,
+.creativeLanguageSource,
+.creativeLanguageGenerate,
+.creativeLanguageRules,
+.creativeLanguageLists,
+.creativeLanguageCollection {
+  padding: 1rem;
+  border: 1px solid rgba(255,255,255,.09);
+  border-radius: 12px;
+  background: rgba(255,255,255,.02);
+}
+
+.creativeLanguageSource,
+.creativeLanguageCollectionHeader,
+.creativeLanguageActions {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  align-items: flex-start;
+}
+
+.creativeLanguageSource h2,
+.creativeLanguageGenerate h3,
+.creativeLanguageCollection h3 {
+  margin: .25rem 0 .5rem;
+}
+
+.creativeLanguageSource p,
+.creativeLanguageGenerate p,
+.creativeLanguageEmpty p {
+  color: #b8c0cd;
+  line-height: 1.55;
+}
+
+.creativeLanguageFacts {
+  min-width: 250px;
+  display: grid;
+  gap: .4rem;
+}
+
+.creativeLanguageFacts span {
+  padding: .45rem .6rem;
+  border-radius: 9px;
+  background: rgba(255,255,255,.045);
+  color: #aeb6c5;
+  font-size: .76rem;
+}
+
+.creativeLanguageGenerate {
+  display: grid;
+  gap: .75rem;
+}
+
+.creativeLanguageGenerate textarea {
+  min-height: 88px;
+}
+
+.creativeLanguageRules,
+.creativeLanguageLists {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0,1fr));
+  gap: .8rem;
+}
+
+.creativeLanguageLists {
+  grid-template-columns: repeat(3, minmax(0,1fr));
+}
+
+.creativeLanguageRules label,
+.creativeLanguageLists label,
+.creativeLanguageCollectionCard label {
+  display: grid;
+  gap: .35rem;
+}
+
+.creativeLanguageRules label > span,
+.creativeLanguageLists label > span,
+.creativeLanguageCollectionCard label > span {
+  color: #9aa4b5;
+  font-size: .74rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: .04em;
+}
+
+.creativeLanguageRules textarea,
+.creativeLanguageLists textarea {
+  min-height: 120px;
+}
+
+.creativeLanguageCollection {
+  display: grid;
+  gap: .8rem;
+}
+
+.creativeLanguageCollectionCard {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0,1fr));
+  gap: .7rem;
+  padding: .85rem;
+  border: 1px solid rgba(255,255,255,.08);
+  border-radius: 10px;
+  background: rgba(0,0,0,.12);
+}
+
+.creativeLanguageCollectionCard textarea {
+  min-height: 105px;
+}
+
+.creativeLanguageActions {
+  justify-content: flex-end;
+  flex-wrap: wrap;
+}
+
+@media (max-width: 900px) {
+  .creativeLanguageSource,
+  .creativeLanguageCollectionHeader {
+    flex-direction: column;
+  }
+
+  .creativeLanguageFacts {
+    min-width: 0;
+    width: 100%;
+  }
+
+  .creativeLanguageRules,
+  .creativeLanguageLists,
+  .creativeLanguageCollectionCard {
+    grid-template-columns: 1fr;
+  }
+}
