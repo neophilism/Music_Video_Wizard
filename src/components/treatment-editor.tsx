@@ -59,7 +59,7 @@ type JobView = {
   errorMessage: string | null;
 } | null;
 
-type ImpactWarning = { stepKey: string; title: string; reason: string };
+type ImpactWarning = { stepKey: string; title: string; locked: boolean; status?: string };
 
 const TOP_FIELDS: Array<[keyof Omit<Draft, "sections">, string]> = [
   ["title", "Treatment title"],
@@ -411,7 +411,14 @@ export function TreatmentEditor(props: {
       </section>
 
       {impact.length ? (
-        <section className="impactWarning"><strong>Downstream work affected</strong>{impact.map((item) => <p key={item.stepKey}>{item.title}: {item.reason}</p>)}</section>
+        <section className="impactWarning">
+          <strong>Downstream work affected</strong>
+          {impact.map((item) => (
+            <p key={item.stepKey}>
+              {item.title}: {item.locked ? "locked content now needs review" : "needs review"}
+            </p>
+          ))}
+        </section>
       ) : null}
 
       {message ? <p className="formMessage">{message}</p> : null}
