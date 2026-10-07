@@ -58,6 +58,9 @@ export async function lockVersionNode(
         treatmentVersion: {
           select: { id: true, lifecycle: true }
         },
+        creativeLanguageVersion: {
+          select: { id: true, lifecycle: true }
+        },
         timelineVersion: {
           select: { id: true, lifecycle: true }
         }
@@ -309,6 +312,20 @@ export async function lockVersionNode(
       case DomainVersionKind.TREATMENT:
         return lockOwner(node.treatmentVersion, (id) =>
           tx.treatmentVersion.updateMany({
+            where: {
+              id,
+              lifecycle: VersionLifecycle.DRAFT
+            },
+            data: {
+              lifecycle: VersionLifecycle.LOCKED,
+              lockedAt: now
+            }
+          })
+        );
+
+      case DomainVersionKind.CREATIVE_LANGUAGE:
+        return lockOwner(node.creativeLanguageVersion, (id) =>
+          tx.creativeLanguageVersion.updateMany({
             where: {
               id,
               lifecycle: VersionLifecycle.DRAFT
