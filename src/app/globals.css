@@ -2153,3 +2153,32 @@ h1 {
 .songPictureSourceSelectors select{min-height:110px}
 .songPictureActions{justify-content:flex-end;flex-wrap:wrap}
 @media(max-width:900px){.songPictureSources,.songPicturePassageHeader{flex-direction:column}.songPictureFacts{min-width:0;width:100%}.songPictureContext,.songPictureTopFields,.songPicturePassageGrid,.songPicturePassageTiming,.songPictureSourceSelectors{grid-template-columns:1fr}}
+
+
+.visualAestheticBuilder{display:grid;gap:1rem}
+.aestheticPanel,.aestheticPreview,.aestheticIssues,.aestheticReady{padding:1rem;border:1px solid rgba(255,255,255,.09);border-radius:12px;background:rgba(255,255,255,.02)}
+.aestheticPanel h3,.aestheticPreview h2{margin:.2rem 0 .7rem}
+.aestheticMeta,.aestheticGrid,.aestheticPromptGrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:.8rem}
+.aestheticMeta label,.aestheticGrid label,.aestheticPromptGrid label{display:grid;gap:.35rem}
+.aestheticMeta label>span,.aestheticGrid label>span,.aestheticPromptGrid label>span{color:#9aa4b5;font-size:.74rem;font-weight:700;text-transform:uppercase;letter-spacing:.04em}
+.aestheticMeta label:nth-child(2),.aestheticMeta label:nth-child(3),.aestheticWide{grid-column:1/-1}
+.aestheticGrid textarea,.aestheticPromptGrid textarea{min-height:105px}
+.aestheticPreview{display:grid;grid-template-columns:minmax(0,1.5fr) minmax(240px,.7fr);gap:1rem;border-color:rgba(170,162,255,.22);background:rgba(170,162,255,.045)}
+.aestheticPreview p{color:#b8c0cd;line-height:1.5}
+.aestheticPreview dl{margin:0;display:grid;gap:.45rem}
+.aestheticPreview dl>div{padding:.55rem .65rem;border-radius:9px;background:rgba(0,0,0,.14)}
+.aestheticPreview dt{color:#8f98aa;font-size:.68rem;text-transform:uppercase;letter-spacing:.06em}
+.aestheticPreview dd{margin:.2rem 0 0;color:#eceef3}
+.aestheticPalette{display:flex;flex-wrap:wrap;gap:.4rem;align-items:center;min-height:2rem}
+.aestheticPalette span{width:2rem;height:2rem;border-radius:8px;border:1px solid rgba(255,255,255,.18)}
+.aestheticPalette em{color:#8f98aa;font-size:.8rem}
+.aestheticRepeater{display:grid;gap:.6rem;margin-top:.9rem}
+.aestheticRepeaterHeader{display:flex;justify-content:space-between;gap:1rem;align-items:center}
+.aestheticPaletteRow{display:grid;grid-template-columns:minmax(180px,1fr) 58px 100px auto;gap:.6rem;align-items:center}
+.aestheticPaletteRow input[type="color"]{height:42px;padding:.2rem}
+.aestheticProviderRow{display:grid;grid-template-columns:minmax(150px,.5fr) minmax(0,1.5fr) auto;gap:.6rem;align-items:start}
+.aestheticProviderRow textarea{min-height:72px}
+.aestheticIssues{border-color:rgba(216,183,95,.24);background:rgba(216,183,95,.045);color:#c8bfaa}
+.aestheticIssues ul{margin:.5rem 0 0;padding-left:1.2rem}
+.aestheticReady{border-color:rgba(126,231,135,.18);color:#bce8c0}
+@media(max-width:820px){.aestheticMeta,.aestheticGrid,.aestheticPromptGrid,.aestheticPreview,.aestheticProviderRow,.aestheticPaletteRow{grid-template-columns:1fr}.aestheticMeta label:nth-child(2),.aestheticMeta label:nth-child(3),.aestheticWide{grid-column:auto}}
