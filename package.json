@@ -29,7 +29,8 @@
     "test:brief": "tsx scripts/creative-brief-smoke.ts",
     "test:concepts": "tsx scripts/concepts-smoke.ts",
     "test:treatment": "vitest run src/lib/treatment/schema.test.ts",
-    "test:creative-language": "vitest run src/lib/creative-language/schema.test.ts"
+    "test:creative-language": "vitest run src/lib/creative-language/schema.test.ts",
+    "test:song-picture-plan": "vitest run src/lib/song-picture-plan/schema.test.ts"
   },
   "dependencies": {
     "@prisma/client": "^6.16.2",
