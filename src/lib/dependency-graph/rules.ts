@@ -16,6 +16,7 @@ export function impactActionForKind(
     case DomainVersionKind.CONCEPT_SET:
     case DomainVersionKind.TREATMENT:
     case DomainVersionKind.CREATIVE_LANGUAGE:
+    case DomainVersionKind.SONG_PICTURE_PLAN:
     case DomainVersionKind.SEQUENCE:
     case DomainVersionKind.SHOT:
     case DomainVersionKind.CREATIVE_MODULE:
