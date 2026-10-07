@@ -372,6 +372,46 @@ export default async function ProjectWizardPage(props: {
               downstreamImpact={view.downstreamImpact}
             />
           </section>
+        ) : selected.definition.editor === "creative-language" &&
+          creativeLanguageState ? (
+          <section className="dashboardCard wizardEditorCard">
+            <CreativeLanguageEditor
+              projectId={projectId}
+              sourceReady={creativeLanguageState.sourceReady}
+              needsRebase={creativeLanguageState.needsRebase}
+              initialVersion={
+                creativeLanguageState.latest
+                  ? {
+                      id: creativeLanguageState.latest.id,
+                      versionNumber:
+                        creativeLanguageState.latest.versionNumber,
+                      lifecycle:
+                        creativeLanguageState.latest.lifecycle,
+                      revision:
+                        creativeLanguageState.latest.revision,
+                      sourceTreatmentVersionId:
+                        creativeLanguageState.latest
+                          .sourceTreatmentVersionId,
+                      sourceTreatmentVersionNumber:
+                        creativeLanguageState.latest
+                          .sourceTreatmentVersionNumber,
+                      document:
+                        creativeLanguageState.latest.document,
+                      generationJobId:
+                        creativeLanguageState.latest
+                          .generationJobId
+                    }
+                  : null
+              }
+              recentJob={creativeLanguageState.recentJob}
+              providerAvailable={
+                creativeLanguageState.providerAvailable
+              }
+              wizardStatus={selected.state.status}
+              wizardLocked={Boolean(selected.state.lockedAt)}
+              downstreamImpact={view.downstreamImpact}
+            />
+          </section>
         ) : (
           <section className="dashboardCard wizardEditorCard">
             <WizardStageShell
