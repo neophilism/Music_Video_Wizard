@@ -920,7 +920,7 @@ model TreatmentVersion {
   sourceConceptSetVersionId String           @db.Uuid
   sourceConceptId           String           @db.Uuid
   revision                  Int              @default(0)
-  treatment                 Json
+  document                  Json
   generationJobId           String?          @unique @db.Uuid
   createdByUserId           String?          @db.Uuid
   createdAt                 DateTime         @default(now())
