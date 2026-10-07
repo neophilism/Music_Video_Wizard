@@ -9,6 +9,7 @@ import { MusicMapEditor } from "@/components/music-map-editor";
 import { CreativeBriefEditor } from "@/components/creative-brief-editor";
 import { ConceptsEditor } from "@/components/concepts-editor";
 import { TreatmentEditor } from "@/components/treatment-editor";
+import { CreativeLanguageEditor } from "@/components/creative-language-editor";
 import { WizardNavigation } from "@/components/wizard-navigation";
 import { WizardStageShell } from "@/components/wizard-stage-placeholder";
 import { db } from "@/lib/db";
@@ -19,6 +20,7 @@ import { getMusicMapState } from "@/lib/music-map/service";
 import { getCreativeBriefState } from "@/lib/creative-brief/service";
 import { getConceptState } from "@/lib/concepts/service";
 import { getTreatmentState } from "@/lib/treatment/service";
+import { getCreativeLanguageState } from "@/lib/creative-language/service";
 import { getWizardView } from "@/lib/wizard/service";
 
 export default async function ProjectWizardPage(props: {
