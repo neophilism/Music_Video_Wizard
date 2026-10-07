@@ -105,6 +105,14 @@ export default async function ProjectWizardPage(props: {
         })
       : null;
 
+  const creativeLanguageState =
+    selected.definition.editor === "creative-language"
+      ? await getCreativeLanguageState({
+          userId: session.user.id,
+          projectId
+        })
+      : null;
+
   return (
     <main className="wizardShell">
       <aside className="wizardSidebar">
