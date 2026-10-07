@@ -21,7 +21,7 @@ CREATE TABLE "TreatmentVersion" (
     "sourceConceptSetVersionId" UUID NOT NULL,
     "sourceConceptId" UUID NOT NULL,
     "revision" INTEGER NOT NULL DEFAULT 0,
-    "treatment" JSONB NOT NULL,
+    "document" JSONB NOT NULL,
     "generationJobId" UUID,
     "createdByUserId" UUID,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
