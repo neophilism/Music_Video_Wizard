@@ -78,4 +78,5 @@ jobs:
       - run: npm run test:sequence-map
       - run: npm run test:storyboard
       - run: npm run test:queue
+      - run: npm run test:acceptance
       - run: npm run build
