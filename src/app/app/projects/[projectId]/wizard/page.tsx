@@ -15,6 +15,7 @@ import { SequenceMapEditor } from "@/components/sequence-map-editor";
 import { StoryboardEngine } from "@/components/storyboard-engine";
 import { ShotSpecificationsEditor } from "@/components/shot-specifications-editor";
 import { InitialFramesEditor } from "@/components/initial-frames-editor";
+import { VideoClipsEditor } from "@/components/video-clips-editor";
 import { WizardNavigation } from "@/components/wizard-navigation";
 import { WizardStageShell } from "@/components/wizard-stage-placeholder";
 import { db } from "@/lib/db";
@@ -31,6 +32,7 @@ import { getSequenceMapState } from "@/lib/sequence-map/service";
 import { getStoryboardState } from "@/lib/storyboard/service";
 import { getShotSpecificationsState } from "@/lib/shot-specifications/service";
 import { getInitialFramesState } from "@/lib/initial-frames/service";
+import { getVideoClipsState } from "@/lib/video-clips/service";
 import { getWizardView } from "@/lib/wizard/service";
 
 export default async function ProjectWizardPage(props: {
@@ -158,6 +160,14 @@ export default async function ProjectWizardPage(props: {
   const initialFramesState =
     selected.definition.editor === "initial-frames"
       ? await getInitialFramesState({
+          userId: session.user.id,
+          projectId
+        })
+      : null;
+
+  const videoClipsState =
+    selected.definition.editor === "video-clips"
+      ? await getVideoClipsState({
           userId: session.user.id,
           projectId
         })
@@ -584,6 +594,33 @@ export default async function ProjectWizardPage(props: {
               wizardRevision={initialFramesState.wizardRevision}
               wizardStatus={initialFramesState.wizardStatus}
               wizardLocked={initialFramesState.wizardLocked}
+            />
+          </section>
+        ) : selected.definition.editor === "video-clips" &&
+          videoClipsState ? (
+          <section className="dashboardCard wizardEditorCard">
+            <VideoClipsEditor
+              projectId={projectId}
+              sourceReady={videoClipsState.sourceReady}
+              providerAvailable={videoClipsState.providerAvailable}
+              needsRegeneration={videoClipsState.needsRegeneration}
+              expectedClipCount={videoClipsState.expectedClipCount}
+              clips={videoClipsState.clips.map(item => ({
+                ...item,
+                createdAt: item.createdAt?.toISOString() ?? null
+              }))}
+              recentJobs={videoClipsState.recentJobs.map(job => ({
+                id: job.id,
+                status: job.status,
+                progressPercent: job.progressPercent,
+                progressMessage: job.progressMessage,
+                errorMessage: job.errorMessage,
+                modelKey: job.modelKey,
+                providerKey: job.providerKey
+              }))}
+              wizardRevision={videoClipsState.wizardRevision}
+              wizardStatus={videoClipsState.wizardStatus}
+              wizardLocked={videoClipsState.wizardLocked}
             />
           </section>
         ) : (
