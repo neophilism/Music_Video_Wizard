@@ -7,6 +7,7 @@ import { registerCreativeLanguageGenerationHandlers } from "@/lib/creative-langu
 import { registerSongPicturePlanGenerationHandlers } from "@/lib/song-picture-plan/register";
 import { registerStoryboardGenerationHandlers } from "@/lib/storyboard/register";
 import { registerShotSpecificationsGenerationHandlers } from "@/lib/shot-specifications/register";
+import { registerInitialFrameGenerationHandlers } from "@/lib/initial-frames/register";
 
 async function main() {
   registerBuiltInGenerationHandlers();
@@ -16,6 +17,7 @@ async function main() {
   registerSongPicturePlanGenerationHandlers();
   registerStoryboardGenerationHandlers();
   registerShotSpecificationsGenerationHandlers();
+  registerInitialFrameGenerationHandlers();
   const worker = await startGenerationWorker();
   console.log(`Generation worker started: ${worker.workerId}`);
 

@@ -65,7 +65,9 @@ export function compileShotGenerationRequest(
     textToImage:input.mediaKind==="IMAGE",
     imageEditing:false,
     imageToVideo:input.mediaKind==="VIDEO",
-    referenceImages:referenceRequirements.length>0,
+    referenceImages:referenceRequirements.some(
+      item=>item.role!=="FIRST_FRAME"&&item.role!=="LAST_FRAME"
+    ),
     firstFrame:input.mediaKind==="VIDEO",
     lastFrame:referenceRequirements.some(item=>item.role==="LAST_FRAME"),
     minDurationMs:generationDurationMs,

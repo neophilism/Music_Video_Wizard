@@ -33,6 +33,10 @@ const environmentSchema = z
     TEXT_GENERATION_PROVIDER: z.enum(["none", "openai"]).default("none"),
     TEXT_GENERATION_MODEL: z.string().min(1).default("gpt-6-sol"),
     IMAGE_GENERATION_PROVIDER: z.enum(["none", "openai"]).default("none"),
+    VIDEO_GENERATION_PROVIDER: z.enum(["none", "runway"]).default("none"),
+    RUNWAY_API_SECRET: z.string().optional().or(z.literal("")),
+    RUNWAY_BASE_URL: z.string().url().default("https://api.dev.runwayml.com"),
+    RUNWAY_API_VERSION: z.string().min(1).default("2024-11-06"),
     OPENAI_API_KEY: z.string().optional().or(z.literal("")),
     OPENAI_BASE_URL: z.string().url().default("https://api.openai.com")
   })
@@ -58,6 +62,18 @@ const environmentSchema = z
         path: ["OPENAI_API_KEY"],
         message:
           "OPENAI_API_KEY is required when an OpenAI audio, text, or image provider is enabled"
+      });
+    }
+
+    if(
+      env.VIDEO_GENERATION_PROVIDER==="runway" &&
+      !env.RUNWAY_API_SECRET
+    ){
+      ctx.addIssue({
+        code:"custom",
+        path:["RUNWAY_API_SECRET"],
+        message:
+          "RUNWAY_API_SECRET is required when the Runway video provider is enabled"
       });
     }
   });
