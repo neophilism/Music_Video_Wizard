@@ -462,7 +462,7 @@ export async function getStoryboardState(input:{
     where:{
       projectId:input.projectId,
       kind:GenerationKind.TEXT,
-      providerKey:{endsWith:":storyboard"}
+      providerKey:{contains:":storyboard"}
     },
     orderBy:{createdAt:"desc"},
     select:{
