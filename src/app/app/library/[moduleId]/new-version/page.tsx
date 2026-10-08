@@ -4,6 +4,7 @@ import { notFound, redirect } from "next/navigation";
 import { auth } from "@/lib/auth";
 import { getCreativeModule } from "@/lib/creative-library/service";
 import { CreativeModuleForm } from "@/components/creative-module-form";
+import { VisualAestheticForm } from "@/components/visual-aesthetic-form";
 
 export default async function NewCreativeVersionPage(props: {
   params: Promise<{ moduleId: string }>;
@@ -32,21 +33,37 @@ export default async function NewCreativeVersionPage(props: {
         Existing projects keep their exact pinned version. This creates a new
         reusable version for future adoption.
       </p>
-      <section className="dashboardCard projectFormCard">
-        <CreativeModuleForm
+      {libraryItem.kind === "VISUAL_AESTHETIC" ? (
+        <VisualAestheticForm
           mode="version"
           moduleId={libraryItem.id}
           endpoint={"/api/creative-library/" + libraryItem.id + "/versions"}
           defaults={{
-            definition: latest
-              ? JSON.stringify(latest.definition, null, 2)
-              : "{}",
+            definition: latest?.definition,
             positivePrompt: latest?.positivePrompt ?? "",
             negativePrompt: latest?.negativePrompt ?? "",
-            notes: latest?.notes ?? ""
+            notes: latest?.notes ?? "",
+            referenceAssetVersionIds:
+              latest?.references.map((reference) => reference.assetVersionId) ?? []
           }}
         />
-      </section>
+      ) : (
+        <section className="dashboardCard projectFormCard">
+          <CreativeModuleForm
+            mode="version"
+            moduleId={libraryItem.id}
+            endpoint={"/api/creative-library/" + libraryItem.id + "/versions"}
+            defaults={{
+              definition: latest
+                ? JSON.stringify(latest.definition, null, 2)
+                : "{}",
+              positivePrompt: latest?.positivePrompt ?? "",
+              negativePrompt: latest?.negativePrompt ?? "",
+              notes: latest?.notes ?? ""
+            }}
+          />
+        </section>
+      )}
     </main>
   );
 }

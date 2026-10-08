@@ -16,6 +16,7 @@ import {
   createCreativeKitVersion,
   publishCreativeKitVersion
 } from "../src/lib/creative-kits/service";
+import { EMPTY_VISUAL_AESTHETIC } from "../src/lib/visual-aesthetic/schema";
 
 async function main() {
   const userId = randomUUID();
@@ -59,7 +60,27 @@ async function main() {
         tags: ["noir"]
       },
       version: {
-        definition: { contrast: "high" },
+        definition: {
+          ...EMPTY_VISUAL_AESTHETIC,
+          medium: "silver gelatin film",
+          texture: "Dense analog emulsion with tactile photographic grain.",
+          colorTreatment: "Strict monochrome silver-gelatin tonality.",
+          palette: [
+            { name: "paper white", hex: "#E9E9E6" },
+            { name: "silver gray", hex: "#787A7D" },
+            { name: "deep black", hex: "#111214" }
+          ],
+          saturation: "MONOCHROME",
+          contrast: "HIGH",
+          grain: "heavy",
+          lighting: {
+            ...EMPTY_VISUAL_AESTHETIC.lighting,
+            quality: "Hard sculptural key light with controlled fill.",
+            shadowCharacter: "Dense blacks with readable edge detail."
+          },
+          renderingCharacteristics:
+            "Silver-gelatin density with soft highlight bloom and no digital gloss."
+        },
         positivePrompt: "silver gelatin",
         negativePrompt: "digital gloss",
         notes: "",

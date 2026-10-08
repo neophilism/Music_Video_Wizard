@@ -14,8 +14,31 @@ import type {
   CreativeModuleMetadata,
   CreativeVersionContent
 } from "./input";
+import { parseVisualAestheticDefinition } from "@/lib/visual-aesthetic/schema";
 
 export class CreativeLibraryError extends Error {}
+
+function normalizeVersionForKind(
+  kind: CreativeModuleKind,
+  content: CreativeVersionContent
+): CreativeVersionContent {
+  if (kind !== CreativeModuleKind.VISUAL_AESTHETIC) return content;
+
+  const definition = parseVisualAestheticDefinition(content.definition);
+  const referenceAssetVersionIds = [...content.referenceAssetVersionIds];
+  if (
+    definition.previewAssetVersionId &&
+    !referenceAssetVersionIds.includes(definition.previewAssetVersionId)
+  ) {
+    referenceAssetVersionIds.push(definition.previewAssetVersionId);
+  }
+
+  return {
+    ...content,
+    definition,
+    referenceAssetVersionIds
+  };
+}
 
 function semanticFingerprint(content: CreativeVersionContent): string {
   return fingerprintJson({
@@ -144,13 +167,14 @@ export async function createCreativeModule(input: {
         tags: input.metadata.tags
       }
     });
+    const version = normalizeVersionForKind(input.metadata.kind, input.version);
 
     const created = await createVersionRecords(tx, {
       creativeModuleId: libraryItem.id,
       versionNumber: 1,
       workspaceId: workspace.id,
       userId: input.userId,
-      content: input.version
+      content: version
     });
 
     return {
@@ -181,7 +205,7 @@ export async function createCreativeModuleVersion(input: {
           workspaceId: workspace.id,
           archivedAt: null
         },
-        select: { id: true }
+        select: { id: true, kind: true }
       });
 
       if (!libraryItem) {
@@ -195,12 +219,13 @@ export async function createCreativeModuleVersion(input: {
       });
 
       const versionNumber = (latest?.versionNumber ?? 0) + 1;
+      const version = normalizeVersionForKind(libraryItem.kind, input.version);
       const created = await createVersionRecords(tx, {
         creativeModuleId: input.moduleId,
         versionNumber,
         workspaceId: workspace.id,
         userId: input.userId,
-        content: input.version
+        content: version
       });
 
       return {
