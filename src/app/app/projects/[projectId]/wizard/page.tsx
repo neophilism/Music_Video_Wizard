@@ -14,6 +14,7 @@ import { SongPicturePlanEditor } from "@/components/song-picture-plan-editor";
 import { SequenceMapEditor } from "@/components/sequence-map-editor";
 import { StoryboardEngine } from "@/components/storyboard-engine";
 import { ShotSpecificationsEditor } from "@/components/shot-specifications-editor";
+import { InitialFramesEditor } from "@/components/initial-frames-editor";
 import { WizardNavigation } from "@/components/wizard-navigation";
 import { WizardStageShell } from "@/components/wizard-stage-placeholder";
 import { db } from "@/lib/db";
@@ -29,6 +30,7 @@ import { getSongPicturePlanState } from "@/lib/song-picture-plan/service";
 import { getSequenceMapState } from "@/lib/sequence-map/service";
 import { getStoryboardState } from "@/lib/storyboard/service";
 import { getShotSpecificationsState } from "@/lib/shot-specifications/service";
+import { getInitialFramesState } from "@/lib/initial-frames/service";
 import { getWizardView } from "@/lib/wizard/service";
 
 export default async function ProjectWizardPage(props: {
@@ -148,6 +150,14 @@ export default async function ProjectWizardPage(props: {
   const shotSpecificationsState =
     selected.definition.editor === "shot-specifications"
       ? await getShotSpecificationsState({
+          userId: session.user.id,
+          projectId
+        })
+      : null;
+
+  const initialFramesState =
+    selected.definition.editor === "initial-frames"
+      ? await getInitialFramesState({
           userId: session.user.id,
           projectId
         })
@@ -547,6 +557,33 @@ export default async function ProjectWizardPage(props: {
               wizardRevision={shotSpecificationsState.wizardRevision}
               wizardStatus={shotSpecificationsState.wizardStatus}
               wizardLocked={shotSpecificationsState.wizardLocked}
+            />
+          </section>
+        ) : selected.definition.editor === "initial-frames" &&
+          initialFramesState ? (
+          <section className="dashboardCard wizardEditorCard">
+            <InitialFramesEditor
+              projectId={projectId}
+              sourceReady={initialFramesState.sourceReady}
+              providerAvailable={initialFramesState.providerAvailable}
+              needsRegeneration={initialFramesState.needsRegeneration}
+              expectedFrameCount={initialFramesState.expectedFrameCount}
+              frames={initialFramesState.frames.map(item => ({
+                ...item,
+                createdAt: item.createdAt?.toISOString() ?? null
+              }))}
+              recentJobs={initialFramesState.recentJobs.map(job => ({
+                id: job.id,
+                status: job.status,
+                progressPercent: job.progressPercent,
+                progressMessage: job.progressMessage,
+                errorMessage: job.errorMessage,
+                modelKey: job.modelKey,
+                providerKey: job.providerKey
+              }))}
+              wizardRevision={initialFramesState.wizardRevision}
+              wizardStatus={initialFramesState.wizardStatus}
+              wizardLocked={initialFramesState.wizardLocked}
             />
           </section>
         ) : (
