@@ -329,6 +329,13 @@ export async function persistStoryboardGeneration(input:{
         link.position,
         link.shotVersion
       ]));
+      await tx.shotVersion.updateMany({
+        where:{
+          id:{in:priorLinks.map(link=>link.shotVersionId)},
+          lifecycle:VersionLifecycle.DRAFT
+        },
+        data:{lifecycle:VersionLifecycle.SUPERSEDED}
+      });
 
       await tx.sequenceVersionShot.deleteMany({
         where:{sequenceVersionId:sequence.version.id}
@@ -343,12 +350,6 @@ export async function persistStoryboardGeneration(input:{
             data:{projectId:input.projectId}
           });
           shotId=logical.id;
-        }
-        if(prior?.lifecycle===VersionLifecycle.DRAFT){
-          await tx.shotVersion.update({
-            where:{id:prior.id},
-            data:{lifecycle:VersionLifecycle.SUPERSEDED}
-          });
         }
         const latest=await tx.shotVersion.findFirst({
           where:{shotId},
