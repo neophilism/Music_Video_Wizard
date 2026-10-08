@@ -11,6 +11,10 @@ export const queueMasterRenderSchema=z.object({
   expectedWizardRevision:revision
 }).strict();
 
+export const lockFinishExportSchema=z.object({
+  expectedWizardRevision:revision
+}).strict();
+
 export const renderManifestSchema=z.object({
   schemaVersion:z.literal(1),
   projectVersionId:uuid,
