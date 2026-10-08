@@ -98,7 +98,9 @@ async function configuredModels(){
   if(!adapters.length){
     throw new InitialFramesError("No image-generation provider is configured.");
   }
-  const models=(await Promise.all(adapters.map(adapter=>adapter.listModels()))).flat();
+  const models=(await Promise.all(
+    adapters.map(adapter=>adapter.listModels())
+  )).flat().filter(model=>model.capabilities.textToImage);
   if(!models.length){
     throw new InitialFramesError("No image-generation model is configured.");
   }
@@ -383,7 +385,11 @@ export async function getInitialFramesState(input:{
 
   let providerAvailable=false;
   try{
-    providerAvailable=getConfiguredMediaGenerationAdapters(getEnvironment()).length>0;
+    const adapters=getConfiguredMediaGenerationAdapters(getEnvironment());
+    const models=(await Promise.all(
+      adapters.map(adapter=>adapter.listModels())
+    )).flat();
+    providerAvailable=models.some(model=>model.capabilities.textToImage);
   }catch{}
 
   const storage=createAssetStorage();
