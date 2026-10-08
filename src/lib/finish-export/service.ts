@@ -1,5 +1,8 @@
 import {
+  AssetKind,
   AssetStatus,
+  GenerationKind,
+  GenerationStatus,
   Prisma,
   TimelineKind,
   VersionLifecycle,
@@ -7,6 +10,8 @@ import {
 } from "@prisma/client";
 import { db } from "@/lib/db";
 import { fingerprintJson } from "@/lib/dependency-graph/fingerprint";
+import { enqueueGenerationJob } from "@/lib/jobs/service";
+import { createAssetStorage } from "@/lib/storage";
 import {
   ensureWizardProgress,
   saveManagedWizardStepInTransaction,
@@ -25,6 +30,23 @@ type Tx=Prisma.TransactionClient;
 
 function toJson(value:unknown):Prisma.InputJsonValue{
   return JSON.parse(JSON.stringify(value)) as Prisma.InputJsonValue;
+}
+
+function renderMetadata(value:unknown){
+  if(!value||typeof value!=="object"||Array.isArray(value)) return null;
+  const item=value as Record<string,unknown>;
+  if(
+    item.role!=="render-master"||
+    typeof item.manifestFingerprint!=="string"||
+    typeof item.sourceTimelineVersionId!=="string"||
+    typeof item.generationJobId!=="string"
+  ) return null;
+  return {
+    role:"render-master" as const,
+    manifestFingerprint:item.manifestFingerprint,
+    sourceTimelineVersionId:item.sourceTimelineVersionId,
+    generationJobId:item.generationJobId
+  };
 }
 
 async function mutationContext(tx:Tx,input:{
@@ -217,6 +239,21 @@ function manifestFingerprint(manifest:RenderManifest){
   );
 }
 
+async function renderMasterAsset(tx:Tx,projectId:string){
+  return tx.asset.findFirst({
+    where:{
+      projectId,
+      kind:AssetKind.RENDER_MASTER
+    },
+    orderBy:{createdAt:"asc"},
+    include:{
+      versions:{
+        orderBy:{versionNumber:"desc"}
+      }
+    }
+  });
+}
+
 export async function prepareRenderManifest(input:{
   userId:string;
   projectId:string;
@@ -249,13 +286,128 @@ export async function prepareRenderManifest(input:{
   },{isolationLevel:Prisma.TransactionIsolationLevel.Serializable});
 }
 
+export async function queueFinalMasterRender(input:{
+  userId:string;
+  projectId:string;
+  expectedWizardRevision:number;
+}){
+  const projectVersion=await ensureWizardProgress(input);
+
+  const context=await db.$transaction(async tx=>{
+    const current=await mutationContext(tx,{
+      ...input,
+      projectVersionId:projectVersion.id
+    });
+    const manifest=await compileCurrentManifest(tx,{
+      projectId:input.projectId,
+      projectVersionId:projectVersion.id
+    });
+    const fingerprint=manifestFingerprint(manifest);
+    if(current.step.payloadFingerprint!==fingerprint){
+      throw new FinishExportError(
+        "Prepare the current render manifest before rendering the final master."
+      );
+    }
+
+    const active=await tx.generationJob.findFirst({
+      where:{
+        projectId:input.projectId,
+        kind:GenerationKind.RENDER,
+        providerKey:"ffmpeg:finish-export",
+        status:{in:[GenerationStatus.QUEUED,GenerationStatus.RUNNING]}
+      },
+      select:{id:true}
+    });
+    if(active){
+      throw new FinishExportError(
+        "A final-master render job is already active."
+      );
+    }
+
+    const project=await tx.project.findUniqueOrThrow({
+      where:{id:input.projectId},
+      select:{workspaceId:true}
+    });
+    let asset=await tx.asset.findFirst({
+      where:{
+        projectId:input.projectId,
+        kind:AssetKind.RENDER_MASTER
+      },
+      orderBy:{createdAt:"asc"}
+    });
+    if(!asset){
+      asset=await tx.asset.create({
+        data:{
+          workspaceId:project.workspaceId,
+          projectId:input.projectId,
+          kind:AssetKind.RENDER_MASTER,
+          name:"Master render"
+        }
+      });
+    }
+    return {
+      workspaceId:project.workspaceId,
+      stepId:current.step.id,
+      manifest,
+      manifestFingerprint:fingerprint,
+      renderAssetId:asset.id
+    };
+  });
+
+  const job=await enqueueGenerationJob({
+    workspaceId:context.workspaceId,
+    projectId:input.projectId,
+    kind:GenerationKind.RENDER,
+    providerKey:"ffmpeg:finish-export",
+    modelKey:"ffmpeg",
+    requestSnapshot:toJson({
+      schemaVersion:1,
+      projectId:input.projectId,
+      renderAssetId:context.renderAssetId,
+      manifest:context.manifest,
+      manifestFingerprint:context.manifestFingerprint
+    }),
+    requestedByUserId:input.userId,
+    inputs:[
+      {
+        nodeId:context.manifest.sourceTimelineNodeId,
+        role:"timeline",
+        position:0
+      },
+      {
+        nodeId:context.manifest.audioMasterNodeId,
+        role:"audio-master",
+        position:0
+      },
+      ...context.manifest.items.map(item=>({
+        nodeId:item.clipNodeId,
+        role:"video-clip",
+        position:item.position
+      }))
+    ],
+    prepare:async tx=>{
+      await tx.wizardStepState.update({
+        where:{id:context.stepId},
+        data:{
+          status:WizardStepStatus.IN_PROGRESS,
+          completedAt:null,
+          needsReviewAt:null,
+          reviewReason:null
+        }
+      });
+    }
+  });
+
+  return {jobId:job.id,status:job.status};
+}
+
 export async function getFinishExportState(input:{
   userId:string;
   projectId:string;
 }){
   const projectVersion=await ensureWizardProgress(input);
 
-  return db.$transaction(async tx=>{
+  const snapshot=await db.$transaction(async tx=>{
     const progress=await tx.wizardProgress.findUniqueOrThrow({
       where:{projectVersionId:projectVersion.id},
       include:{steps:true}
@@ -287,6 +439,30 @@ export async function getFinishExportState(input:{
       currentFingerprint&&
       step.payloadFingerprint===currentFingerprint
     );
+    const recentJob=await tx.generationJob.findFirst({
+      where:{
+        projectId:input.projectId,
+        kind:GenerationKind.RENDER,
+        providerKey:"ffmpeg:finish-export"
+      },
+      orderBy:{createdAt:"desc"},
+      select:{
+        id:true,
+        status:true,
+        progressPercent:true,
+        progressMessage:true,
+        errorMessage:true,
+        createdAt:true,
+        completedAt:true
+      }
+    });
+    const asset=await renderMasterAsset(tx,input.projectId);
+    const currentMaster=currentFingerprint
+      ?asset?.versions.find(version=>
+        renderMetadata(version.metadata)?.manifestFingerprint===
+          currentFingerprint
+      )??null
+      :null;
 
     return {
       sourceReady:Boolean(sourceStep?.lockedAt&&manifest),
@@ -294,9 +470,59 @@ export async function getFinishExportState(input:{
       prepared,
       needsPrepare:Boolean(sourceStep?.lockedAt&&manifest&&!prepared),
       manifest,
+      manifestFingerprint:currentFingerprint,
+      recentJob,
+      currentMaster,
+      renderHistory:asset?.versions??[],
       wizardRevision:progress.revision,
       wizardStatus:step.status??WizardStepStatus.NOT_STARTED,
       wizardLocked:Boolean(step.lockedAt)
     };
   });
+
+  const storage=createAssetStorage();
+  return {
+    sourceReady:snapshot.sourceReady,
+    sourceError:snapshot.sourceError,
+    prepared:snapshot.prepared,
+    needsPrepare:snapshot.needsPrepare,
+    manifest:snapshot.manifest,
+    recentJob:snapshot.recentJob,
+    currentMaster:snapshot.currentMaster
+      ?{
+        id:snapshot.currentMaster.id,
+        versionNumber:snapshot.currentMaster.versionNumber,
+        contentType:snapshot.currentMaster.contentType,
+        byteSize:snapshot.currentMaster.byteSize,
+        checksumSha256:snapshot.currentMaster.checksumSha256,
+        durationMs:snapshot.currentMaster.durationMs,
+        frameRate:snapshot.currentMaster.frameRate,
+        createdAt:snapshot.currentMaster.createdAt,
+        readyAt:snapshot.currentMaster.readyAt,
+        url:await storage.getSignedReadUrl(
+          snapshot.currentMaster.storageKey,
+          60*60
+        )
+      }
+      :null,
+    renderHistory:snapshot.renderHistory.map(version=>({
+      id:version.id,
+      versionNumber:version.versionNumber,
+      status:version.status,
+      contentType:version.contentType,
+      byteSize:version.byteSize,
+      checksumSha256:version.checksumSha256,
+      durationMs:version.durationMs,
+      frameRate:version.frameRate,
+      createdAt:version.createdAt,
+      readyAt:version.readyAt,
+      current:Boolean(
+        snapshot.currentMaster&&
+        version.id===snapshot.currentMaster.id
+      )
+    })),
+    wizardRevision:snapshot.wizardRevision,
+    wizardStatus:snapshot.wizardStatus,
+    wizardLocked:snapshot.wizardLocked
+  };
 }
