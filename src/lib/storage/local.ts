@@ -1,7 +1,8 @@
 import { createHmac, timingSafeEqual } from "node:crypto";
-import { access, copyFile, mkdir, readFile, rm, writeFile } from "node:fs/promises";
+import { constants } from "node:fs";
+import { access, copyFile, mkdir, readFile, rm, stat, writeFile } from "node:fs/promises";
 import path from "node:path";
-import type { AssetStorage, PutAssetInput, StoredAsset } from "./types";
+import type { AssetStorage, PutAssetFileInput, PutAssetInput, StoredAsset } from "./types";
 
 function resolvedAssetPath(root: string, key: string): string {
   const cleanKey = key.replace(/\\/g, "/").replace(/^\/+/, "");
@@ -35,6 +36,19 @@ export class LocalAssetStorage implements AssetStorage {
     return {
       key: input.key,
       size: input.body.byteLength,
+      contentType: input.contentType
+    };
+  }
+
+  async putFile(input: PutAssetFileInput): Promise<StoredAsset> {
+    const targetPath = resolvedAssetPath(this.root, input.key);
+    await mkdir(path.dirname(targetPath), { recursive: true });
+    await copyFile(input.filePath, targetPath, constants.COPYFILE_EXCL);
+    const info = await stat(targetPath);
+
+    return {
+      key: input.key,
+      size: info.size,
       contentType: input.contentType
     };
   }
