@@ -297,12 +297,14 @@ model Project {
   workspaceId String    @db.Uuid
   title       String
   description String?   @db.Text
+  activeProjectVersionId String? @unique @db.Uuid
   archivedAt  DateTime?
   createdAt   DateTime  @default(now())
   updatedAt   DateTime  @updatedAt
 
   workspace Workspace @relation(fields: [workspaceId], references: [id])
-  versions  ProjectVersion[]
+  versions  ProjectVersion[] @relation("ProjectVersions")
+  activeProjectVersion ProjectVersion? @relation("ActiveProjectVersion", fields: [activeProjectVersionId], references: [id], onDelete: SetNull)
   sequences Sequence[]
   shots     Shot[]
   assets    Asset[]
@@ -323,6 +325,8 @@ model ProjectVersion {
   id                        String           @id @default(uuid()) @db.Uuid
   projectId                 String           @db.Uuid
   nodeId                    String           @unique @db.Uuid
+  parentProjectVersionId    String?          @db.Uuid
+  branchName                String?
   versionNumber             Int
   lifecycle                 VersionLifecycle @default(DRAFT)
   title                     String
@@ -338,7 +342,10 @@ model ProjectVersion {
   createdAt                 DateTime         @default(now())
   lockedAt                  DateTime?
 
-  project          Project           @relation(fields: [projectId], references: [id])
+  project          Project           @relation("ProjectVersions", fields: [projectId], references: [id])
+  activeForProject Project?           @relation("ActiveProjectVersion")
+  parent           ProjectVersion?    @relation("ProjectVersionBranchParent", fields: [parentProjectVersionId], references: [id], onDelete: SetNull)
+  children         ProjectVersion[]   @relation("ProjectVersionBranchParent")
   node             DomainVersionNode @relation(fields: [nodeId], references: [id])
   createdBy        User?             @relation("ProjectVersionCreator", fields: [createdByUserId], references: [id], onDelete: SetNull)
   audioMasterAssetVersion AssetVersion? @relation("ProjectVersionAudioMaster", fields: [audioMasterAssetVersionId], references: [id], onDelete: Restrict)
@@ -348,6 +355,8 @@ model ProjectVersion {
 
   @@unique([projectId, versionNumber])
   @@index([projectId, lifecycle])
+  @@index([projectId, branchName])
+  @@index([parentProjectVersionId])
 }
 
 
