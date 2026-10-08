@@ -50,6 +50,12 @@ export default async function CreativeLibraryPage(props: {
           <Link className="secondaryButton linkButton" href="/app/library/grammars/new">
             Creative Grammar Builder
           </Link>
+          <Link className="secondaryButton linkButton" href="/app/library/motifs/new">
+            Motif Builder
+          </Link>
+          <Link className="secondaryButton linkButton" href="/app/library/typography/new">
+            Typography Builder
+          </Link>
           <Link className="primaryButton linkButton" href="/app/library/new">
             New library item
           </Link>

@@ -74,5 +74,6 @@ jobs:
       - run: npm run test:song-picture-plan
       - run: npm run test:visual-aesthetic
       - run: npm run test:creative-grammar
+      - run: npm run test:motif-typography
       - run: npm run test:queue
       - run: npm run build
