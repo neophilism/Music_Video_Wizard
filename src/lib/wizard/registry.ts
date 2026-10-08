@@ -4,7 +4,7 @@ export interface WizardStepDefinition {
   phase: string;
   title: string;
   description: string;
-  editor: "project-setup" | "music-analysis" | "music-map" | "creative-brief" | "concepts" | "treatment" | "creative-language" | "song-picture-plan" | "sequence-map" | "storyboard" | "shot-specifications" | "initial-frames" | "video-clips" | "first-cut" | "refinement" | null;
+  editor: "project-setup" | "music-analysis" | "music-map" | "creative-brief" | "concepts" | "treatment" | "creative-language" | "song-picture-plan" | "sequence-map" | "storyboard" | "shot-specifications" | "initial-frames" | "video-clips" | "first-cut" | "refinement" | "finish-export" | null;
 }
 
 export const WIZARD_STEPS: readonly WizardStepDefinition[] = [
@@ -150,7 +150,7 @@ export const WIZARD_STEPS: readonly WizardStepDefinition[] = [
     title: "Finish & export",
     description:
       "Finalize the master, verify delivery settings, render, export, and preserve the reproducible project archive.",
-    editor: null
+    editor: "finish-export"
   }
 ] as const;
 
