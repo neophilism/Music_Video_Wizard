@@ -41,9 +41,10 @@ function explicitDurationMs(value:string){
   );
   if(!match) return null;
   const amount=Number(match[1]);
+  const unit=match[2]??"";
   if(!Number.isFinite(amount)||amount<0) return null;
   return Math.round(
-    /^(?:ms|millisecond)/i.test(match[2])
+    /^(?:ms|millisecond)/i.test(unit)
       ?amount
       :amount*1000
   );
