@@ -14,6 +14,7 @@ import { registerDependencyEdgeInTransaction } from "@/lib/dependency-graph/serv
 import { fingerprintJson } from "@/lib/dependency-graph/fingerprint";
 import { getEnvironment } from "@/lib/env";
 import { enqueueGenerationJob } from "@/lib/jobs/service";
+import { pinnedStepString } from "@/lib/project-versions/pins";
 import {
   completeAutomaticWizardStepInTransaction,
   ensureWizardProgress,
@@ -355,6 +356,109 @@ export async function persistMusicAnalysisResult(input: {
 export async function getMusicAnalysisState(input: {
   userId: string;
   projectId: string;
+}) {
+  const projectVersion = await ensureWizardProgress(input);
+  const steps = projectVersion.wizardProgress!.steps;
+  const analysisVersionId = pinnedStepString(
+    steps,
+    "music-analysis",
+    "analysisVersionId"
+  );
+  const jobId = pinnedStepString(
+    steps,
+    "music-analysis",
+    "jobId"
+  );
+
+  const project = await db.project.findFirst({
+    where: {
+      id: input.projectId,
+      archivedAt: null,
+      workspace: {
+        memberships: {
+          some: { userId: input.userId }
+        }
+      }
+    },
+    select: {
+      id: true,
+      workspaceId: true,
+      musicAnalysis: {
+        select: {
+          versions: {
+            orderBy: { versionNumber: "desc" },
+            take: 20,
+            select: {
+              id: true,
+              nodeId: true,
+              versionNumber: true,
+              engineKey: true,
+              engineVersion: true,
+              transcriptionProvider: true,
+              transcriptionModel: true,
+              durationMs: true,
+              result: true,
+              createdAt: true
+            }
+          }
+        }
+      }
+    }
+  });
+  if (!project) throw new MusicAnalysisError("Project not found.");
+
+  const versions =
+    project.musicAnalysis?.versions.map((version) => ({
+      ...version,
+      result: musicAnalysisResultSchema.parse(version.result)
+    })) ?? [];
+  const latest = analysisVersionId
+    ? versions.find((version) => version.id === analysisVersionId) ?? null
+    : null;
+
+  const recentJob = jobId
+    ? await db.generationJob.findUnique({
+        where: { id: jobId },
+        select: {
+          id: true,
+          status: true,
+          progressPercent: true,
+          progressMessage: true,
+          errorMessage: true,
+          createdAt: true,
+          completedAt: true
+        }
+      })
+    : latest
+      ? await db.generationJob.findFirst({
+          where: {
+            outputs: {
+              some: {
+                nodeId: latest.nodeId,
+                role: "music-analysis"
+              }
+            }
+          },
+          orderBy: { createdAt: "desc" },
+          select: {
+            id: true,
+            status: true,
+            progressPercent: true,
+            progressMessage: true,
+            errorMessage: true,
+            createdAt: true,
+            completedAt: true
+          }
+        })
+      : null;
+
+  return {
+    versions,
+    latest,
+    recentJob,
+    transcriptionAvailable:
+      getEnvironment().AUDIO_TRANSCRIPTION_PROVIDER !== "none"
+  };
 }) {
   const project = await db.project.findFirst({
     where: {
