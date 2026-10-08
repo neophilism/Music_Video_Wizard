@@ -39,7 +39,8 @@
     "test:acceptance": "tsx scripts/release-acceptance-smoke.ts",
     "ops:status": "tsx scripts/ops-status.ts",
     "production:preflight": "tsx scripts/production-preflight.ts",
-    "test:e2e": "playwright test"
+    "test:e2e": "playwright test",
+    "test:readiness": "tsx scripts/readiness-smoke.ts"
   },
   "dependencies": {
     "@prisma/client": "^6.16.2",

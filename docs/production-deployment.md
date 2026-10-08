@@ -96,3 +96,14 @@ The command performs zero-cost infrastructure checks:
 
 It intentionally does not submit paid OpenAI or Runway generation requests. A small controlled media project remains the final live-provider acceptance step.
 
+## Liveness vs readiness
+
+The deployment exposes two distinct health endpoints:
+
+- `/api/health` — liveness only; confirms the Next.js process is running.
+- `/api/ready` — readiness; validates application configuration and performs a live PostgreSQL query.
+
+Render uses `/api/ready` for service health routing. A database outage therefore produces HTTP 503 and prevents an unhealthy web instance from being treated as ready.
+
+Object storage and paid providers are deliberately not called from the readiness endpoint; those external checks would make traffic routing depend on slower third-party systems. Use `npm run production:preflight` for the broader production dependency check.
+
