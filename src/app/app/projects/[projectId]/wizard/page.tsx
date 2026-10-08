@@ -18,6 +18,7 @@ import { InitialFramesEditor } from "@/components/initial-frames-editor";
 import { VideoClipsEditor } from "@/components/video-clips-editor";
 import { FirstCutEditor } from "@/components/first-cut-editor";
 import { RefinementEditor } from "@/components/refinement-editor";
+import { FinishExportEditor } from "@/components/finish-export-editor";
 import { WizardNavigation } from "@/components/wizard-navigation";
 import { WizardStageShell } from "@/components/wizard-stage-placeholder";
 import { db } from "@/lib/db";
@@ -37,6 +38,7 @@ import { getInitialFramesState } from "@/lib/initial-frames/service";
 import { getVideoClipsState } from "@/lib/video-clips/service";
 import { getAutomaticFirstCutState } from "@/lib/first-cut/service";
 import { getRefinementState } from "@/lib/refinement/service";
+import { getFinishExportState } from "@/lib/finish-export/service";
 import { getWizardView } from "@/lib/wizard/service";
 
 export default async function ProjectWizardPage(props: {
@@ -188,6 +190,14 @@ export default async function ProjectWizardPage(props: {
   const refinementState =
     selected.definition.editor === "refinement"
       ? await getRefinementState({
+          userId: session.user.id,
+          projectId
+        })
+      : null;
+
+  const finishExportState =
+    selected.definition.editor === "finish-export"
+      ? await getFinishExportState({
           userId: session.user.id,
           projectId
         })
@@ -706,6 +716,48 @@ export default async function ProjectWizardPage(props: {
                 createdAt: entry.createdAt.toISOString(),
                 lockedAt: entry.lockedAt?.toISOString() ?? null
               }))}
+            />
+          </section>
+        ) : selected.definition.editor === "finish-export" &&
+          finishExportState ? (
+          <section className="dashboardCard wizardEditorCard">
+            <FinishExportEditor
+              projectId={projectId}
+              sourceReady={finishExportState.sourceReady}
+              sourceError={finishExportState.sourceError}
+              prepared={finishExportState.prepared}
+              needsPrepare={finishExportState.needsPrepare}
+              manifest={finishExportState.manifest}
+              recentJob={
+                finishExportState.recentJob
+                  ? {
+                      ...finishExportState.recentJob,
+                      createdAt:
+                        finishExportState.recentJob.createdAt.toISOString(),
+                      completedAt:
+                        finishExportState.recentJob.completedAt?.toISOString() ?? null
+                    }
+                  : null
+              }
+              currentMaster={
+                finishExportState.currentMaster
+                  ? {
+                      ...finishExportState.currentMaster,
+                      createdAt:
+                        finishExportState.currentMaster.createdAt.toISOString(),
+                      readyAt:
+                        finishExportState.currentMaster.readyAt?.toISOString() ?? null
+                    }
+                  : null
+              }
+              renderHistory={finishExportState.renderHistory.map(item => ({
+                ...item,
+                createdAt: item.createdAt.toISOString(),
+                readyAt: item.readyAt?.toISOString() ?? null
+              }))}
+              wizardRevision={finishExportState.wizardRevision}
+              wizardStatus={finishExportState.wizardStatus}
+              wizardLocked={finishExportState.wizardLocked}
             />
           </section>
         ) : (
