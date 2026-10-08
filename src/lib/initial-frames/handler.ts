@@ -324,7 +324,7 @@ export async function handleInitialFrameGeneration(
         projectVersionId:queued.projectVersionId
       });
       return {assetVersionId,nodeId,reused:false};
-    },{isolationLevel:undefined});
+    });
 
     return {
       ...persisted,
