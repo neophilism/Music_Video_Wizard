@@ -72,3 +72,27 @@ Repository CI does not prove live infrastructure. Before declaring production ac
 - final-master persistence and download.
 
 Do not mark these checks passed until they are actually performed against production.
+
+## Automated production preflight
+
+After the web and worker environment variables are configured, run:
+
+```bash
+npm run production:preflight
+```
+
+Run it in the production container/environment with the same credentials used by the services.
+
+The command performs zero-cost infrastructure checks:
+
+- strict production environment validation;
+- HTTPS authentication origin;
+- OpenAI text/image provider configuration presence;
+- Runway video provider configuration presence;
+- live PostgreSQL query;
+- real S3-compatible write/read/signed-URL/delete round trip;
+- FFmpeg executable check;
+- Python analysis dependency imports.
+
+It intentionally does not submit paid OpenAI or Runway generation requests. A small controlled media project remains the final live-provider acceptance step.
+
