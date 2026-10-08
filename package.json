@@ -40,7 +40,8 @@
     "ops:status": "tsx scripts/ops-status.ts",
     "production:preflight": "tsx scripts/production-preflight.ts",
     "test:e2e": "playwright test",
-    "test:readiness": "tsx scripts/readiness-smoke.ts"
+    "test:readiness": "tsx scripts/readiness-smoke.ts",
+    "audit:prod": "node scripts/audit-production.mjs"
   },
   "dependencies": {
     "@prisma/client": "^6.16.2",
@@ -64,7 +65,10 @@
     "eslint": "^9.36.0",
     "eslint-config-next": "^15.5.4",
     "typescript": "^5.9.2",
-    "vitest": "^3.2.4",
+    "vitest": "5.0.3",
     "@playwright/test": "1.63.0"
+  },
+  "overrides": {
+    "postcss": "8.5.29"
   }
 }
