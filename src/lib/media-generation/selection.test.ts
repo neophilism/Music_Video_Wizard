@@ -76,7 +76,27 @@ describe("media model selection",()=>{
     expect(result.rejected[0]?.reasons).toContain("first frame unsupported");
   });
 
-  it("fails explicitly instead of degrading the request",()=>{
+  it("allows a provider to over-generate its minimum duration and trim later",()=>{
+    const shortRequest={
+      ...request,
+      generationDurationMs:1000,
+      capabilityRequirements:{
+        ...request.capabilityRequirements,
+        minDurationMs:1000,
+        maxDurationMs:1000
+      },
+      requestFingerprintInput:{
+        ...request.requestFingerprintInput,
+        generationDurationMs:1000
+      }
+    };
+    const twoSecondMinimum=model({
+      capabilities:{...model().capabilities,minDurationMs:2000}
+    });
+    expect(selectMediaModel([twoSecondMinimum],shortRequest).model).not.toBeNull();
+  });
+
+  it("fails explicitly instead of degrading a request beyond provider maximum",()=>{
     const incompatible=model({
       capabilities:{...model().capabilities,maxDurationMs:3000}
     });
