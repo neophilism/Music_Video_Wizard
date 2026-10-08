@@ -62,33 +62,50 @@ function isTouchedStep(step: {
   );
 }
 
-async function loadLatestProjectVersionForUser(
+async function loadActiveProjectVersionForUser(
   userId: string,
   projectId: string
 ) {
-  return db.projectVersion.findFirst({
+  const project = await db.project.findFirst({
     where: {
-      projectId,
-      project: {
-        archivedAt: null,
-        workspace: {
-          memberships: {
-            some: { userId }
-          }
+      id: projectId,
+      archivedAt: null,
+      workspace: {
+        memberships: {
+          some: { userId }
         }
       }
     },
-    orderBy: { versionNumber: "desc" },
-    include: {
-      project: true,
-      wizardProgress: {
-        include: {
-          steps: {
-            orderBy: { ordinal: "asc" }
-          }
+    select: { activeProjectVersionId: true }
+  });
+  if (!project) return null;
+
+  const include = {
+    project: true,
+    wizardProgress: {
+      include: {
+        steps: {
+          orderBy: { ordinal: "asc" as const }
         }
       }
     }
+  };
+
+  if (project.activeProjectVersionId) {
+    const active = await db.projectVersion.findFirst({
+      where: {
+        id: project.activeProjectVersionId,
+        projectId
+      },
+      include
+    });
+    if (active) return active;
+  }
+
+  return db.projectVersion.findFirst({
+    where: { projectId },
+    orderBy: { versionNumber: "desc" },
+    include
   });
 }
 
@@ -96,7 +113,7 @@ export async function ensureWizardProgress(input: {
   userId: string;
   projectId: string;
 }) {
-  let version = await loadLatestProjectVersionForUser(
+  let version = await loadActiveProjectVersionForUser(
     input.userId,
     input.projectId
   );
@@ -145,7 +162,7 @@ export async function ensureWizardProgress(input: {
       }
     }
 
-    version = await loadLatestProjectVersionForUser(
+    version = await loadActiveProjectVersionForUser(
       input.userId,
       input.projectId
     );
@@ -169,7 +186,7 @@ export async function ensureWizardProgress(input: {
       })),
       skipDuplicates: true
     });
-    version = await loadLatestProjectVersionForUser(
+    version = await loadActiveProjectVersionForUser(
       input.userId,
       input.projectId
     );
@@ -265,24 +282,38 @@ async function loadMutationContext(
   }
 ) {
   const definition = requireRegisteredStep(input.stepKey);
-  const progress = await tx.wizardProgress.findFirst({
+  const project = await tx.project.findFirst({
     where: {
-      projectVersion: {
-        projectId: input.projectId,
-        project: {
-          workspace: {
-            memberships: {
-              some: { userId: input.userId }
-            }
-          }
+      id: input.projectId,
+      archivedAt: null,
+      workspace: {
+        memberships: {
+          some: { userId: input.userId }
         }
       }
     },
-    orderBy: {
-      projectVersion: {
-        versionNumber: "desc"
-      }
-    },
+    select: { activeProjectVersionId: true }
+  });
+  if (!project) {
+    throw new WizardError("Project not found.");
+  }
+
+  let projectVersionId = project.activeProjectVersionId;
+  if (!projectVersionId) {
+    projectVersionId = (
+      await tx.projectVersion.findFirst({
+        where: { projectId: input.projectId },
+        orderBy: { versionNumber: "desc" },
+        select: { id: true }
+      })
+    )?.id ?? null;
+  }
+  if (!projectVersionId) {
+    throw new WizardError("Project version not found.");
+  }
+
+  const progress = await tx.wizardProgress.findUnique({
+    where: { projectVersionId },
     include: {
       projectVersion: {
         include: {
