@@ -13,6 +13,7 @@ import { CreativeLanguageEditor } from "@/components/creative-language-editor";
 import { SongPicturePlanEditor } from "@/components/song-picture-plan-editor";
 import { SequenceMapEditor } from "@/components/sequence-map-editor";
 import { StoryboardEngine } from "@/components/storyboard-engine";
+import { ShotSpecificationsEditor } from "@/components/shot-specifications-editor";
 import { WizardNavigation } from "@/components/wizard-navigation";
 import { WizardStageShell } from "@/components/wizard-stage-placeholder";
 import { db } from "@/lib/db";
@@ -27,6 +28,7 @@ import { getCreativeLanguageState } from "@/lib/creative-language/service";
 import { getSongPicturePlanState } from "@/lib/song-picture-plan/service";
 import { getSequenceMapState } from "@/lib/sequence-map/service";
 import { getStoryboardState } from "@/lib/storyboard/service";
+import { getShotSpecificationsState } from "@/lib/shot-specifications/service";
 import { getWizardView } from "@/lib/wizard/service";
 
 export default async function ProjectWizardPage(props: {
@@ -138,6 +140,14 @@ export default async function ProjectWizardPage(props: {
   const storyboardState =
     selected.definition.editor === "storyboard"
       ? await getStoryboardState({
+          userId: session.user.id,
+          projectId
+        })
+      : null;
+
+  const shotSpecificationsState =
+    selected.definition.editor === "shot-specifications"
+      ? await getShotSpecificationsState({
           userId: session.user.id,
           projectId
         })
@@ -513,6 +523,30 @@ export default async function ProjectWizardPage(props: {
               wizardRevision={storyboardState.wizardRevision}
               wizardStatus={storyboardState.wizardStatus}
               wizardLocked={storyboardState.wizardLocked}
+            />
+          </section>
+        ) : selected.definition.editor === "shot-specifications" &&
+          shotSpecificationsState ? (
+          <section className="dashboardCard wizardEditorCard">
+            <ShotSpecificationsEditor
+              projectId={projectId}
+              sourceReady={shotSpecificationsState.sourceReady}
+              providerAvailable={shotSpecificationsState.providerAvailable}
+              needsRegeneration={shotSpecificationsState.needsRegeneration}
+              recentJob={shotSpecificationsState.recentJob}
+              sourceCreativeLanguageVersionId={
+                shotSpecificationsState.sourceCreativeLanguageVersionId
+              }
+              specifications={shotSpecificationsState.specifications.map(
+                item => ({
+                  ...item,
+                  lockedAt: item.lockedAt?.toISOString() ?? null
+                })
+              )}
+              expectedShotCount={shotSpecificationsState.expectedShotCount}
+              wizardRevision={shotSpecificationsState.wizardRevision}
+              wizardStatus={shotSpecificationsState.wizardStatus}
+              wizardLocked={shotSpecificationsState.wizardLocked}
             />
           </section>
         ) : (
