@@ -4,7 +4,7 @@ export interface WizardStepDefinition {
   phase: string;
   title: string;
   description: string;
-  editor: "project-setup" | "music-analysis" | "music-map" | "creative-brief" | "concepts" | "treatment" | "creative-language" | "song-picture-plan" | null;
+  editor: "project-setup" | "music-analysis" | "music-map" | "creative-brief" | "concepts" | "treatment" | "creative-language" | "song-picture-plan" | "sequence-map" | null;
 }
 
 export const WIZARD_STEPS: readonly WizardStepDefinition[] = [
@@ -79,6 +79,15 @@ export const WIZARD_STEPS: readonly WizardStepDefinition[] = [
     description:
       "Map the locked Treatment and Creative Language continuously across the approved Music Map before individual shots are designed.",
     editor: "song-picture-plan"
+  },
+  {
+    key: "sequence-map",
+    ordinal: 75,
+    phase: "Plan the video",
+    title: "Sequence map",
+    description:
+      "Materialize the locked Song-to-Picture Plan into exact, versioned sequences with continuous music timing and source provenance.",
+    editor: "sequence-map"
   },
   {
     key: "storyboard",

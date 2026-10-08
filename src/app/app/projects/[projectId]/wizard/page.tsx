@@ -11,6 +11,7 @@ import { ConceptsEditor } from "@/components/concepts-editor";
 import { TreatmentEditor } from "@/components/treatment-editor";
 import { CreativeLanguageEditor } from "@/components/creative-language-editor";
 import { SongPicturePlanEditor } from "@/components/song-picture-plan-editor";
+import { SequenceMapEditor } from "@/components/sequence-map-editor";
 import { WizardNavigation } from "@/components/wizard-navigation";
 import { WizardStageShell } from "@/components/wizard-stage-placeholder";
 import { db } from "@/lib/db";
@@ -23,6 +24,7 @@ import { getConceptState } from "@/lib/concepts/service";
 import { getTreatmentState } from "@/lib/treatment/service";
 import { getCreativeLanguageState } from "@/lib/creative-language/service";
 import { getSongPicturePlanState } from "@/lib/song-picture-plan/service";
+import { getSequenceMapState } from "@/lib/sequence-map/service";
 import { getWizardView } from "@/lib/wizard/service";
 
 export default async function ProjectWizardPage(props: {
@@ -118,6 +120,14 @@ export default async function ProjectWizardPage(props: {
   const songPicturePlanState =
     selected.definition.editor === "song-picture-plan"
       ? await getSongPicturePlanState({
+          userId: session.user.id,
+          projectId
+        })
+      : null;
+
+  const sequenceMapState =
+    selected.definition.editor === "sequence-map"
+      ? await getSequenceMapState({
           userId: session.user.id,
           projectId
         })
@@ -462,6 +472,22 @@ export default async function ProjectWizardPage(props: {
               wizardStatus={selected.state.status}
               wizardLocked={Boolean(selected.state.lockedAt)}
               downstreamImpact={view.downstreamImpact}
+            />
+          </section>
+        ) : selected.definition.editor === "sequence-map" &&
+          sequenceMapState ? (
+          <section className="dashboardCard wizardEditorCard">
+            <SequenceMapEditor
+              projectId={projectId}
+              sourceReady={sequenceMapState.sourceReady}
+              needsRebase={sequenceMapState.needsRebase}
+              latestSongPicturePlanVersionNumber={
+                sequenceMapState.latestSongPicturePlanVersionNumber
+              }
+              initialMap={sequenceMapState.map}
+              wizardRevision={sequenceMapState.wizardRevision}
+              wizardStatus={sequenceMapState.wizardStatus}
+              wizardLocked={sequenceMapState.wizardLocked}
             />
           </section>
         ) : (
