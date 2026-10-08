@@ -8,6 +8,7 @@ import { registerSongPicturePlanGenerationHandlers } from "@/lib/song-picture-pl
 import { registerStoryboardGenerationHandlers } from "@/lib/storyboard/register";
 import { registerShotSpecificationsGenerationHandlers } from "@/lib/shot-specifications/register";
 import { registerInitialFrameGenerationHandlers } from "@/lib/initial-frames/register";
+import { registerVideoClipGenerationHandlers } from "@/lib/video-clips/register";
 
 async function main() {
   registerBuiltInGenerationHandlers();
@@ -18,6 +19,7 @@ async function main() {
   registerStoryboardGenerationHandlers();
   registerShotSpecificationsGenerationHandlers();
   registerInitialFrameGenerationHandlers();
+  registerVideoClipGenerationHandlers();
   const worker = await startGenerationWorker();
   console.log(`Generation worker started: ${worker.workerId}`);
 
