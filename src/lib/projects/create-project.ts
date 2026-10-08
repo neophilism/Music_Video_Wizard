@@ -130,6 +130,7 @@ export async function createProjectWithAudio(
           projectId,
           nodeId: projectNodeId,
           versionNumber: 1,
+          branchName: "Main",
           title: input.project.title,
           description: input.project.description || null,
           aspectRatio: input.project.aspectRatio,
@@ -145,6 +146,11 @@ export async function createProjectWithAudio(
           },
           createdByUserId: input.userId
         }
+      });
+
+      await tx.project.update({
+        where: { id: projectId },
+        data: { activeProjectVersionId: projectVersionId }
       });
 
       await registerDependencyEdgeInTransaction(tx, {
