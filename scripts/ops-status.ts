@@ -2,11 +2,6 @@ import { GenerationStatus } from "@prisma/client";
 import { db } from "../src/lib/db";
 import { getEnvironment } from "../src/lib/env";
 
-type StatusRow={
-  status:GenerationStatus;
-  _count:{_all:number};
-};
-
 function ageMs(date:Date){
   return Date.now()-date.getTime();
 }
@@ -41,7 +36,7 @@ async function main(){
     db.generationJob.groupBy({
       by:["status"],
       _count:{_all:true}
-    }) as Promise<StatusRow[]>,
+    }),
     db.generationJob.findMany({
       where:{
         status:{in:[GenerationStatus.QUEUED,GenerationStatus.RUNNING]}
