@@ -38,6 +38,8 @@ ENV NODE_ENV=production \
 RUN npm run db:generate \
   && npm run build
 
+RUN npm prune --omit=dev
+
 EXPOSE 10000
 
 CMD ["sh","-c","npm start -- -H 0.0.0.0 -p ${PORT:-10000}"]
