@@ -2640,3 +2640,191 @@ h1 {
     grid-template-columns: 1fr;
   }
 }
+
+
+.refinementEditor {
+  display: grid;
+  gap: 1rem;
+}
+
+.refinementAudio,
+.refinementHistory {
+  padding: 1rem;
+  border: 1px solid rgba(255,255,255,.09);
+  border-radius: 12px;
+  background: rgba(255,255,255,.02);
+}
+
+.refinementTimeline {
+  display: grid;
+  gap: 1rem;
+}
+
+.refinementItem {
+  display: grid;
+  grid-template-columns: minmax(260px,.9fr) minmax(0,1.6fr);
+  gap: 1rem;
+  padding: 1rem;
+  border: 1px solid rgba(255,255,255,.09);
+  border-radius: 14px;
+  background: rgba(255,255,255,.018);
+}
+
+.refinementClipPreview {
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
+  border-radius: 10px;
+  background: #000;
+}
+
+.refinementClipPreview video {
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: contain;
+  background: #000;
+}
+
+.refinementItemBody {
+  min-width: 0;
+  display: grid;
+  gap: .9rem;
+  align-content: start;
+}
+
+.refinementItemHeader {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  align-items: flex-start;
+}
+
+.refinementItemHeader h3 {
+  margin: .25rem 0 .4rem;
+}
+
+.refinementItemHeader > span {
+  color: #8f98aa;
+  font-size: .75rem;
+  font-variant-numeric: tabular-nums;
+}
+
+.refinementClipControl,
+.refinementBoundary,
+.refinementTransition {
+  display: grid;
+  gap: .7rem;
+  align-items: end;
+  padding: .85rem;
+  border-radius: 10px;
+  background: rgba(255,255,255,.025);
+}
+
+.refinementClipControl {
+  grid-template-columns: minmax(0,1fr) auto;
+}
+
+.refinementBoundary {
+  grid-template-columns: minmax(160px,1fr) minmax(150px,.7fr) auto;
+}
+
+.refinementBoundary > div {
+  display: grid;
+  gap: .25rem;
+}
+
+.refinementBoundary > div span {
+  color: #8f98aa;
+  font-size: .75rem;
+}
+
+.refinementTransition {
+  grid-template-columns: minmax(130px,.7fr) minmax(110px,.45fr) minmax(0,1.3fr) auto;
+}
+
+.refinementTransition label,
+.refinementClipControl label,
+.refinementBoundary label {
+  display: grid;
+  gap: .35rem;
+}
+
+.refinementTransition label span,
+.refinementClipControl label span,
+.refinementBoundary label span {
+  color: #929bac;
+  font-size: .72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: .045em;
+}
+
+.refinementHistory h3 {
+  margin: .25rem 0 .6rem;
+}
+
+.refinementHistoryList {
+  display: grid;
+  gap: .55rem;
+}
+
+.refinementHistoryList article {
+  display: grid;
+  grid-template-columns: 3.5rem 7rem minmax(0,1fr) auto;
+  gap: .7rem;
+  align-items: baseline;
+  padding: .65rem 0;
+  border-top: 1px solid rgba(255,255,255,.065);
+}
+
+.refinementHistoryList article p {
+  margin: 0;
+  color: #c2c9d5;
+}
+
+.refinementHistoryList article span,
+.refinementHistoryList article small {
+  color: #8f98aa;
+  font-size: .74rem;
+}
+
+@media (max-width: 980px) {
+  .refinementItem {
+    grid-template-columns: 1fr;
+  }
+
+  .refinementTransition,
+  .refinementBoundary {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .refinementTransitionNote {
+    grid-column: 1 / -1;
+  }
+
+  .refinementHistoryList article {
+    grid-template-columns: 3rem 6rem minmax(0,1fr);
+  }
+
+  .refinementHistoryList article small {
+    grid-column: 3;
+  }
+}
+
+@media (max-width: 620px) {
+  .refinementItemHeader {
+    flex-direction: column;
+  }
+
+  .refinementClipControl,
+  .refinementTransition,
+  .refinementBoundary,
+  .refinementHistoryList article {
+    grid-template-columns: 1fr;
+  }
+
+  .refinementTransitionNote,
+  .refinementHistoryList article small {
+    grid-column: auto;
+  }
+}

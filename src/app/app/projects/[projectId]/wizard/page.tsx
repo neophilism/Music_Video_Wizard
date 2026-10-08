@@ -17,6 +17,7 @@ import { ShotSpecificationsEditor } from "@/components/shot-specifications-edito
 import { InitialFramesEditor } from "@/components/initial-frames-editor";
 import { VideoClipsEditor } from "@/components/video-clips-editor";
 import { FirstCutEditor } from "@/components/first-cut-editor";
+import { RefinementEditor } from "@/components/refinement-editor";
 import { WizardNavigation } from "@/components/wizard-navigation";
 import { WizardStageShell } from "@/components/wizard-stage-placeholder";
 import { db } from "@/lib/db";
@@ -35,6 +36,7 @@ import { getShotSpecificationsState } from "@/lib/shot-specifications/service";
 import { getInitialFramesState } from "@/lib/initial-frames/service";
 import { getVideoClipsState } from "@/lib/video-clips/service";
 import { getAutomaticFirstCutState } from "@/lib/first-cut/service";
+import { getRefinementState } from "@/lib/refinement/service";
 import { getWizardView } from "@/lib/wizard/service";
 
 export default async function ProjectWizardPage(props: {
@@ -178,6 +180,14 @@ export default async function ProjectWizardPage(props: {
   const firstCutState =
     selected.definition.editor === "first-cut"
       ? await getAutomaticFirstCutState({
+          userId: session.user.id,
+          projectId
+        })
+      : null;
+
+  const refinementState =
+    selected.definition.editor === "refinement"
+      ? await getRefinementState({
           userId: session.user.id,
           projectId
         })
@@ -658,6 +668,44 @@ export default async function ProjectWizardPage(props: {
                   : null
               }
               durationMs={firstCutState.durationMs}
+            />
+          </section>
+        ) : selected.definition.editor === "refinement" &&
+          refinementState ? (
+          <section className="dashboardCard wizardEditorCard">
+            <RefinementEditor
+              projectId={projectId}
+              audioUrl={audioUrl}
+              sourceReady={refinementState.sourceReady}
+              needsInitialize={refinementState.needsInitialize}
+              wizardRevision={refinementState.wizardRevision}
+              wizardStatus={refinementState.wizardStatus}
+              wizardLocked={refinementState.wizardLocked}
+              sourceFirstCut={refinementState.sourceFirstCut}
+              timeline={refinementState.timeline}
+              version={
+                refinementState.version
+                  ? {
+                      ...refinementState.version,
+                      createdAt:
+                        refinementState.version.createdAt.toISOString(),
+                      lockedAt:
+                        refinementState.version.lockedAt?.toISOString() ?? null,
+                      items: refinementState.version.items.map(item => ({
+                        ...item,
+                        alternatives: item.alternatives.map(alt => ({
+                          ...alt,
+                          createdAt: alt.createdAt.toISOString()
+                        }))
+                      }))
+                    }
+                  : null
+              }
+              history={refinementState.history.map(entry => ({
+                ...entry,
+                createdAt: entry.createdAt.toISOString(),
+                lockedAt: entry.lockedAt?.toISOString() ?? null
+              }))}
             />
           </section>
         ) : (
