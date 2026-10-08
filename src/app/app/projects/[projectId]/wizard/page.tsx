@@ -16,6 +16,7 @@ import { StoryboardEngine } from "@/components/storyboard-engine";
 import { ShotSpecificationsEditor } from "@/components/shot-specifications-editor";
 import { InitialFramesEditor } from "@/components/initial-frames-editor";
 import { VideoClipsEditor } from "@/components/video-clips-editor";
+import { FirstCutEditor } from "@/components/first-cut-editor";
 import { WizardNavigation } from "@/components/wizard-navigation";
 import { WizardStageShell } from "@/components/wizard-stage-placeholder";
 import { db } from "@/lib/db";
@@ -33,6 +34,7 @@ import { getStoryboardState } from "@/lib/storyboard/service";
 import { getShotSpecificationsState } from "@/lib/shot-specifications/service";
 import { getInitialFramesState } from "@/lib/initial-frames/service";
 import { getVideoClipsState } from "@/lib/video-clips/service";
+import { getAutomaticFirstCutState } from "@/lib/first-cut/service";
 import { getWizardView } from "@/lib/wizard/service";
 
 export default async function ProjectWizardPage(props: {
@@ -168,6 +170,14 @@ export default async function ProjectWizardPage(props: {
   const videoClipsState =
     selected.definition.editor === "video-clips"
       ? await getVideoClipsState({
+          userId: session.user.id,
+          projectId
+        })
+      : null;
+
+  const firstCutState =
+    selected.definition.editor === "first-cut"
+      ? await getAutomaticFirstCutState({
           userId: session.user.id,
           projectId
         })
@@ -621,6 +631,33 @@ export default async function ProjectWizardPage(props: {
               wizardRevision={videoClipsState.wizardRevision}
               wizardStatus={videoClipsState.wizardStatus}
               wizardLocked={videoClipsState.wizardLocked}
+            />
+          </section>
+        ) : selected.definition.editor === "first-cut" &&
+          firstCutState ? (
+          <section className="dashboardCard wizardEditorCard">
+            <FirstCutEditor
+              projectId={projectId}
+              audioUrl={audioUrl}
+              sourceReady={firstCutState.sourceReady}
+              sourceError={firstCutState.sourceError}
+              needsRebuild={firstCutState.needsRebuild}
+              wizardRevision={firstCutState.wizardRevision}
+              wizardStatus={firstCutState.wizardStatus}
+              wizardLocked={firstCutState.wizardLocked}
+              timeline={firstCutState.timeline}
+              version={
+                firstCutState.version
+                  ? {
+                      ...firstCutState.version,
+                      createdAt:
+                        firstCutState.version.createdAt.toISOString(),
+                      lockedAt:
+                        firstCutState.version.lockedAt?.toISOString() ?? null
+                    }
+                  : null
+              }
+              durationMs={firstCutState.durationMs}
             />
           </section>
         ) : (
