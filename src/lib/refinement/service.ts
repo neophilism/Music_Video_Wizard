@@ -392,7 +392,8 @@ async function initializeWorkingTimeline(tx:Tx,input:{
   if(
     existing.version&&
     existing.timeline&&
-    existing.version.lifecycle!==VersionLifecycle.SUPERSEDED&&
+    existing.version.lifecycle===VersionLifecycle.DRAFT&&
+    existing.version.basisProjectVersionId===input.projectVersionId&&
     await sourceDependencyExists(
       tx,input.sourceFirstCut.nodeId,existing.version.nodeId
     )
@@ -439,7 +440,7 @@ async function initializeWorkingTimeline(tx:Tx,input:{
     data:{
       timelineId:timeline.id,
       nodeId:node.id,
-      versionNumber:1,
+      versionNumber:(existing.version?.versionNumber??0)+1,
       lifecycle:VersionLifecycle.DRAFT,
       basisProjectVersionId:input.projectVersionId,
       audioMasterAssetVersionId:
@@ -517,7 +518,7 @@ async function initializeWorkingTimeline(tx:Tx,input:{
       timelineVersionId:version.id,
       timelineNodeId:node.id,
       sourceFirstCutTimelineVersionId:input.sourceFirstCut.id,
-      versionNumber:1,
+      versionNumber:version.versionNumber,
       itemCount:sourceSnapshot.items.length,
       transitionCount:sourceSnapshot.transitions.length
     }),
