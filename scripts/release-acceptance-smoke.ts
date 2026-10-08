@@ -80,7 +80,7 @@ function assertWorkerRegistry(){
   registerFinalMasterRenderHandler();
 
   const required:Array<[GenerationKind,string]>=[
-    [GenerationKind.ANALYSIS,"local:music-analysis"],
+    [GenerationKind.ANALYSIS,"local-librosa"],
     [GenerationKind.TEXT,"openai-responses"],
     [GenerationKind.TEXT,"openai-responses:treatment"],
     [GenerationKind.TEXT,"openai-responses:creative-language"],
