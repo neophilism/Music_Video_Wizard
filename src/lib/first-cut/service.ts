@@ -272,10 +272,10 @@ export async function buildAutomaticFirstCut(input:{
       orderBy:{versionNumber:"desc"},
       include:{node:true}
     });
-    const fingerprint=fingerprintJson(
-      toJson(semanticInput({audioMasterAssetVersionId,plan}))
-        as unknown as Prisma.JsonValue
-    );
+    const semanticValue=toJson(
+      semanticInput({audioMasterAssetVersionId,plan})
+    ) as unknown as Prisma.JsonValue;
+    const fingerprint=fingerprintJson(semanticValue);
 
     const latest=priorVersions[0]??null;
     if(
