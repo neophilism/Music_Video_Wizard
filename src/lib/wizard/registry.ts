@@ -4,7 +4,7 @@ export interface WizardStepDefinition {
   phase: string;
   title: string;
   description: string;
-  editor: "project-setup" | "music-analysis" | "music-map" | "creative-brief" | "concepts" | "treatment" | "creative-language" | "song-picture-plan" | "sequence-map" | "storyboard" | "shot-specifications" | "initial-frames" | "video-clips" | null;
+  editor: "project-setup" | "music-analysis" | "music-map" | "creative-brief" | "concepts" | "treatment" | "creative-language" | "song-picture-plan" | "sequence-map" | "storyboard" | "shot-specifications" | "initial-frames" | "video-clips" | "first-cut" | null;
 }
 
 export const WIZARD_STEPS: readonly WizardStepDefinition[] = [
@@ -132,7 +132,7 @@ export const WIZARD_STEPS: readonly WizardStepDefinition[] = [
     title: "Automatic first cut",
     description:
       "Compile the complete first edit automatically from the approved plan, timing, clips, transitions, and music.",
-    editor: null
+    editor: "first-cut"
   },
   {
     key: "refinement",
