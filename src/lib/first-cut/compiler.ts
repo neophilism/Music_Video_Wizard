@@ -127,11 +127,21 @@ export function compileFirstCutPlan(
       outgoing.timelineEndMs-outgoing.timelineStartMs,
       incoming.timelineEndMs-incoming.timelineStartMs
     );
+    const durationMs=Math.min(explicit??0,maxDuration);
+    if(
+      durationMs>0&&
+      outgoing.generatedDurationMs!==null&&
+      outgoing.sourceEndMs+durationMs>outgoing.generatedDurationMs
+    ){
+      throw new Error(
+        "A First Cut transition requires more outgoing clip tail than the generated clip contains."
+      );
+    }
     transitions.push({
       fromPosition:position,
       toPosition:position+1,
       kind:transitionKind(combined),
-      durationMs:Math.min(explicit??0,maxDuration),
+      durationMs,
       outgoingIntent,
       incomingIntent,
       durationSpecified:explicit!==undefined
