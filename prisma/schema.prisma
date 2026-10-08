@@ -327,6 +327,7 @@ model ProjectVersion {
   nodeId                    String           @unique @db.Uuid
   parentProjectVersionId    String?          @db.Uuid
   branchName                String?
+  branchForkStepKey         String?
   versionNumber             Int
   lifecycle                 VersionLifecycle @default(DRAFT)
   title                     String
