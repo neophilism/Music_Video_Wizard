@@ -4,7 +4,7 @@ export interface WizardStepDefinition {
   phase: string;
   title: string;
   description: string;
-  editor: "project-setup" | "music-analysis" | "music-map" | "creative-brief" | "concepts" | "treatment" | "creative-language" | "song-picture-plan" | "sequence-map" | "storyboard" | "shot-specifications" | "initial-frames" | null;
+  editor: "project-setup" | "music-analysis" | "music-map" | "creative-brief" | "concepts" | "treatment" | "creative-language" | "song-picture-plan" | "sequence-map" | "storyboard" | "shot-specifications" | "initial-frames" | "video-clips" | null;
 }
 
 export const WIZARD_STEPS: readonly WizardStepDefinition[] = [
@@ -123,7 +123,7 @@ export const WIZARD_STEPS: readonly WizardStepDefinition[] = [
     title: "Video clips",
     description:
       "Generate the required moving-image clips from approved frames and shot specifications.",
-    editor: null
+    editor: "video-clips"
   },
   {
     key: "first-cut",
