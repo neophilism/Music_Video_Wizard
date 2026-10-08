@@ -37,7 +37,7 @@
     "test:sequence-map": "vitest run src/lib/sequence-map/schema.test.ts",
     "test:storyboard": "vitest run src/lib/storyboard/schema.test.ts src/lib/storyboard/editor.test.ts",
     "test:acceptance": "tsx scripts/release-acceptance-smoke.ts",
-    "audit:prod": "npm audit --omit=dev --audit-level=critical"
+    "audit:prod": "node scripts/audit-production.mjs"
   },
   "dependencies": {
     "@prisma/client": "^6.16.2",
