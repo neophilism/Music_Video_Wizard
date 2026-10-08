@@ -4,7 +4,7 @@ export interface WizardStepDefinition {
   phase: string;
   title: string;
   description: string;
-  editor: "project-setup" | "music-analysis" | "music-map" | "creative-brief" | "concepts" | "treatment" | "creative-language" | "song-picture-plan" | "sequence-map" | "storyboard" | "shot-specifications" | "initial-frames" | "video-clips" | "first-cut" | null;
+  editor: "project-setup" | "music-analysis" | "music-map" | "creative-brief" | "concepts" | "treatment" | "creative-language" | "song-picture-plan" | "sequence-map" | "storyboard" | "shot-specifications" | "initial-frames" | "video-clips" | "first-cut" | "refinement" | null;
 }
 
 export const WIZARD_STEPS: readonly WizardStepDefinition[] = [
@@ -141,7 +141,7 @@ export const WIZARD_STEPS: readonly WizardStepDefinition[] = [
     title: "Refinement",
     description:
       "Retiming, replacement, regeneration, transition changes, and manual editorial refinement after the complete first cut exists.",
-    editor: null
+    editor: "refinement"
   },
   {
     key: "finish-export",
