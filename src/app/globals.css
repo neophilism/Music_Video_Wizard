@@ -2487,3 +2487,156 @@ h1 {
     grid-template-columns: 1fr;
   }
 }
+
+
+.firstCutEditor {
+  display: grid;
+  gap: 1rem;
+}
+
+.firstCutPlayback,
+.firstCutTimelinePanel,
+.firstCutTransitionList {
+  padding: 1rem;
+  border: 1px solid rgba(255,255,255,.09);
+  border-radius: 12px;
+  background: rgba(255,255,255,.02);
+}
+
+.firstCutPlaybackHeader,
+.firstCutRuler {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  align-items: center;
+}
+
+.firstCutPlaybackHeader h3 {
+  margin: .25rem 0 .55rem;
+}
+
+.firstCutPlaybackHeader > span,
+.firstCutRuler {
+  color: #8f98aa;
+  font-size: .75rem;
+  font-variant-numeric: tabular-nums;
+}
+
+.firstCutMonitor {
+  aspect-ratio: 16 / 9;
+  margin: .8rem 0;
+  overflow: hidden;
+  border-radius: 12px;
+  background: #000;
+}
+
+.firstCutMonitor video {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  background: #000;
+}
+
+.firstCutTimelinePanel {
+  overflow-x: auto;
+}
+
+.firstCutRuler {
+  margin-bottom: .55rem;
+}
+
+.firstCutTimeline {
+  min-width: 680px;
+  display: flex;
+  align-items: stretch;
+  overflow: hidden;
+  border: 1px solid rgba(255,255,255,.09);
+  border-radius: 10px;
+  background: rgba(0,0,0,.14);
+}
+
+.firstCutSegment {
+  min-width: 38px;
+  display: grid;
+  gap: .2rem;
+  align-content: center;
+  padding: .65rem .5rem;
+  border: 0;
+  border-right: 1px solid rgba(255,255,255,.1);
+  background: rgba(255,255,255,.025);
+  color: #d9deea;
+  text-align: left;
+  cursor: pointer;
+}
+
+.firstCutSegment:last-child {
+  border-right: 0;
+}
+
+.firstCutSegment:hover,
+.firstCutSegmentActive {
+  background: rgba(170,162,255,.12);
+}
+
+.firstCutSegment strong,
+.firstCutSegment span,
+.firstCutSegment small {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.firstCutSegment strong {
+  font-size: .72rem;
+}
+
+.firstCutSegment span {
+  font-size: .78rem;
+  font-weight: 700;
+}
+
+.firstCutSegment small {
+  color: #939cad;
+  font-size: .64rem;
+}
+
+.firstCutTransitionList {
+  display: grid;
+  gap: .7rem;
+}
+
+.firstCutTransitionList h3 {
+  margin: .25rem 0 .5rem;
+}
+
+.firstCutTransitionList article {
+  display: grid;
+  grid-template-columns: minmax(150px,.7fr) minmax(140px,.5fr) minmax(0,1.8fr);
+  gap: .8rem;
+  align-items: baseline;
+  padding: .75rem 0;
+  border-top: 1px solid rgba(255,255,255,.065);
+}
+
+.firstCutTransitionList article span {
+  color: #8f98aa;
+  font-size: .75rem;
+}
+
+.firstCutTransitionList article p {
+  margin: 0;
+  color: #c6ccd7;
+  line-height: 1.45;
+}
+
+@media (max-width: 760px) {
+  .firstCutPlaybackHeader {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .firstCutTransitionList article {
+    grid-template-columns: 1fr;
+  }
+}
