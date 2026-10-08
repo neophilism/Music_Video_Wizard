@@ -401,6 +401,78 @@ export async function queueFinalMasterRender(input:{
   return {jobId:job.id,status:job.status};
 }
 
+
+export async function lockFinishExport(input:{
+  userId:string;
+  projectId:string;
+  expectedWizardRevision:number;
+}){
+  const projectVersion=await ensureWizardProgress(input);
+  return db.$transaction(async tx=>{
+    const context=await mutationContext(tx,{
+      ...input,
+      projectVersionId:projectVersion.id
+    });
+    if(context.step.status!==WizardStepStatus.COMPLETED){
+      throw new FinishExportError(
+        "Render and verify the current final master before locking Finish & Export."
+      );
+    }
+
+    const manifest=await compileCurrentManifest(tx,{
+      projectId:input.projectId,
+      projectVersionId:projectVersion.id
+    });
+    const fingerprint=manifestFingerprint(manifest);
+    if(context.step.payloadFingerprint!==fingerprint){
+      throw new FinishExportError(
+        "Prepare and render the current manifest before locking Finish & Export."
+      );
+    }
+
+    const active=await tx.generationJob.findFirst({
+      where:{
+        projectId:input.projectId,
+        kind:GenerationKind.RENDER,
+        providerKey:"ffmpeg:finish-export",
+        status:{in:[GenerationStatus.QUEUED,GenerationStatus.RUNNING]}
+      },
+      select:{id:true}
+    });
+    if(active){
+      throw new FinishExportError(
+        "Wait for the active final-master render to finish before locking."
+      );
+    }
+
+    const asset=await renderMasterAsset(tx,input.projectId);
+    const master=asset?.versions.find(version=>
+      renderMetadata(version.metadata)?.manifestFingerprint===fingerprint
+    )??null;
+    if(!master||master.status!==AssetStatus.READY){
+      throw new FinishExportError(
+        "A verified final master for the current manifest is required before locking."
+      );
+    }
+
+    const now=new Date();
+    await tx.wizardStepState.update({
+      where:{id:context.step.id},
+      data:{lockedAt:now}
+    });
+    await tx.wizardProgress.update({
+      where:{id:context.progress.id},
+      data:{revision:{increment:1}}
+    });
+
+    return {
+      renderMasterAssetVersionId:master.id,
+      versionNumber:master.versionNumber,
+      checksumSha256:master.checksumSha256
+    };
+  },{isolationLevel:Prisma.TransactionIsolationLevel.Serializable});
+}
+
 export async function getFinishExportState(input:{
   userId:string;
   projectId:string;
