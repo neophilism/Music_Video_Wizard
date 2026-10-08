@@ -72,6 +72,7 @@ export function buildFfmpegRenderCommand(input:{
       ":(ow-iw)/2:(oh-ih)/2:black"+
       ",setsar=1"+
       ",fps="+fpsValue(manifest.output.frameRate)+
+      ",settb=AVTB"+
       ",format="+manifest.output.pixelFormat+
       "[v"+item.position+"]"
     );
