@@ -1,6 +1,7 @@
 import { GenerationKind } from "@prisma/client";
 import { generationHandlers } from "@/lib/jobs/registry";
 import { handleStoryboardGeneration } from "./handler";
+import { handleStoryboardShotRegeneration } from "./shot-handler";
 
 let registered=false;
 
@@ -10,6 +11,11 @@ export function registerStoryboardGenerationHandlers(){
     GenerationKind.TEXT,
     "openai-responses:storyboard",
     handleStoryboardGeneration
+  );
+  generationHandlers.register(
+    GenerationKind.TEXT,
+    "openai-responses:storyboard-shot",
+    handleStoryboardShotRegeneration
   );
   registered=true;
 }

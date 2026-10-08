@@ -46,7 +46,8 @@ export const storyboardShotSpecSchema=z.object({
   framingIntent:req(3000),
   cameraIntent:req(3000),
   visualIntensity:z.number().int().min(0).max(100),
-  generationJobId:z.string().uuid()
+  origin:z.enum(["GENERATED","MANUAL","REGENERATED"]).default("GENERATED"),
+  generationJobId:z.string().uuid().nullable()
 }).strict();
 
 export type StoryboardShotSpec=z.infer<typeof storyboardShotSpecSchema>;
@@ -102,7 +103,7 @@ export function storyboardCompletionIssues(
   return [];
 }
 
-const shotJson={
+export const storyboardShotJsonSchema={
   type:"object",
   properties:{
     label:{type:"string"},
@@ -139,7 +140,7 @@ export const storyboardJsonSchema={
         type:"object",
         properties:{
           sequenceVersionId:{type:"string"},
-          shots:{type:"array",minItems:1,maxItems:200,items:shotJson}
+          shots:{type:"array",minItems:1,maxItems:200,items:storyboardShotJsonSchema}
         },
         required:["sequenceVersionId","shots"],
         additionalProperties:false
