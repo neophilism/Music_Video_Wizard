@@ -2313,3 +2313,41 @@ h1 {
 .storyboardRegenerateControl{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:.65rem;align-items:end}
 .storyboardRegenerateControl textarea{min-height:72px}
 @media(max-width:900px){.storyboardLifecycle,.storyboardEditActions{align-items:stretch;flex-direction:column}.storyboardEditorGrid,.storyboardSplitControl,.storyboardRegenerateControl{grid-template-columns:1fr}.storyboardWide{grid-column:auto}}
+
+
+.specificationGrid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.9rem;
+  margin: 0;
+}
+
+.specificationGrid > div {
+  min-width: 0;
+  padding: 0.85rem;
+  border: 1px solid var(--border-subtle, rgba(127, 127, 127, 0.22));
+  border-radius: 0.75rem;
+  background: rgba(127, 127, 127, 0.05);
+}
+
+.specificationGrid dt {
+  margin-bottom: 0.35rem;
+  font-size: 0.76rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  opacity: 0.7;
+}
+
+.specificationGrid dd {
+  margin: 0;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  line-height: 1.5;
+}
+
+@media (max-width: 760px) {
+  .specificationGrid {
+    grid-template-columns: 1fr;
+  }
+}
