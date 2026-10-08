@@ -5,6 +5,7 @@ import { registerConceptGenerationHandlers } from "@/lib/concepts/register";
 import { registerTreatmentGenerationHandlers } from "@/lib/treatment/register";
 import { registerCreativeLanguageGenerationHandlers } from "@/lib/creative-language/register";
 import { registerSongPicturePlanGenerationHandlers } from "@/lib/song-picture-plan/register";
+import { registerStoryboardGenerationHandlers } from "@/lib/storyboard/register";
 
 async function main() {
   registerBuiltInGenerationHandlers();
@@ -12,6 +13,7 @@ async function main() {
   registerTreatmentGenerationHandlers();
   registerCreativeLanguageGenerationHandlers();
   registerSongPicturePlanGenerationHandlers();
+  registerStoryboardGenerationHandlers();
   const worker = await startGenerationWorker();
   console.log(`Generation worker started: ${worker.workerId}`);
 

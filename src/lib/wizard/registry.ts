@@ -4,7 +4,7 @@ export interface WizardStepDefinition {
   phase: string;
   title: string;
   description: string;
-  editor: "project-setup" | "music-analysis" | "music-map" | "creative-brief" | "concepts" | "treatment" | "creative-language" | "song-picture-plan" | "sequence-map" | null;
+  editor: "project-setup" | "music-analysis" | "music-map" | "creative-brief" | "concepts" | "treatment" | "creative-language" | "song-picture-plan" | "sequence-map" | "storyboard" | null;
 }
 
 export const WIZARD_STEPS: readonly WizardStepDefinition[] = [
@@ -96,7 +96,7 @@ export const WIZARD_STEPS: readonly WizardStepDefinition[] = [
     title: "Storyboard",
     description:
       "Design the complete visual sequence against the music with explicit timing and transition intent.",
-    editor: null
+    editor: "storyboard"
   },
   {
     key: "shot-specifications",

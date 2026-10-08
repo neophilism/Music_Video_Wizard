@@ -12,6 +12,7 @@ import { TreatmentEditor } from "@/components/treatment-editor";
 import { CreativeLanguageEditor } from "@/components/creative-language-editor";
 import { SongPicturePlanEditor } from "@/components/song-picture-plan-editor";
 import { SequenceMapEditor } from "@/components/sequence-map-editor";
+import { StoryboardEngine } from "@/components/storyboard-engine";
 import { WizardNavigation } from "@/components/wizard-navigation";
 import { WizardStageShell } from "@/components/wizard-stage-placeholder";
 import { db } from "@/lib/db";
@@ -25,6 +26,7 @@ import { getTreatmentState } from "@/lib/treatment/service";
 import { getCreativeLanguageState } from "@/lib/creative-language/service";
 import { getSongPicturePlanState } from "@/lib/song-picture-plan/service";
 import { getSequenceMapState } from "@/lib/sequence-map/service";
+import { getStoryboardState } from "@/lib/storyboard/service";
 import { getWizardView } from "@/lib/wizard/service";
 
 export default async function ProjectWizardPage(props: {
@@ -128,6 +130,14 @@ export default async function ProjectWizardPage(props: {
   const sequenceMapState =
     selected.definition.editor === "sequence-map"
       ? await getSequenceMapState({
+          userId: session.user.id,
+          projectId
+        })
+      : null;
+
+  const storyboardState =
+    selected.definition.editor === "storyboard"
+      ? await getStoryboardState({
           userId: session.user.id,
           projectId
         })
@@ -488,6 +498,21 @@ export default async function ProjectWizardPage(props: {
               wizardRevision={sequenceMapState.wizardRevision}
               wizardStatus={sequenceMapState.wizardStatus}
               wizardLocked={sequenceMapState.wizardLocked}
+            />
+          </section>
+        ) : selected.definition.editor === "storyboard" &&
+          storyboardState ? (
+          <section className="dashboardCard wizardEditorCard">
+            <StoryboardEngine
+              projectId={projectId}
+              sourceReady={storyboardState.sourceReady}
+              providerAvailable={storyboardState.providerAvailable}
+              needsRegeneration={storyboardState.needsRegeneration}
+              recentJob={storyboardState.recentJob}
+              storyboard={storyboardState.storyboard}
+              wizardRevision={storyboardState.wizardRevision}
+              wizardStatus={storyboardState.wizardStatus}
+              wizardLocked={storyboardState.wizardLocked}
             />
           </section>
         ) : (
