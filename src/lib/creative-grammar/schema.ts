@@ -211,7 +211,7 @@ function blankControls(kind: CreativeGrammarKind): Record<string, string> {
 export function emptyCreativeGrammar(
   kind: CreativeGrammarKind
 ): CreativeGrammarDefinition {
-  return {
+  return creativeGrammarDefinitionSchema.parse({
     schemaVersion: 1,
     grammarKind: kind,
     intent: "",
@@ -221,7 +221,7 @@ export function emptyCreativeGrammar(
     exceptions: [],
     providerHints: [],
     controls: blankControls(kind)
-  } as CreativeGrammarDefinition;
+  });
 }
 
 export function isCreativeGrammarModuleKind(
