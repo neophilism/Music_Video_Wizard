@@ -35,7 +35,7 @@
     "test:creative-grammar": "vitest run src/lib/creative-grammar/schema.test.ts",
     "test:motif-typography": "vitest run src/lib/motif/schema.test.ts src/lib/typography-kit/schema.test.ts",
     "test:sequence-map": "vitest run src/lib/sequence-map/schema.test.ts",
-    "test:storyboard": "vitest run src/lib/storyboard/schema.test.ts"
+    "test:storyboard": "vitest run src/lib/storyboard/schema.test.ts src/lib/storyboard/editor.test.ts"
   },
   "dependencies": {
     "@prisma/client": "^6.16.2",
