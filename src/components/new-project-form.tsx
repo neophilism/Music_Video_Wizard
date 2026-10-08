@@ -34,8 +34,7 @@ export function NewProjectForm() {
         return;
       }
 
-      router.push(`/app/projects/${payload.projectId}`);
-      router.refresh();
+      router.push(`/app/projects/${payload.projectId}/wizard`);
     } catch {
       setError("Project creation failed. Please try again.");
     } finally {
