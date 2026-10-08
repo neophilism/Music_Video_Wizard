@@ -13,8 +13,15 @@ export interface PutAssetInput {
   contentType: string;
 }
 
+export interface PutAssetFileInput {
+  key: AssetKey;
+  filePath: string;
+  contentType: string;
+}
+
 export interface AssetStorage {
   put(input: PutAssetInput): Promise<StoredAsset>;
+  putFile(input: PutAssetFileInput): Promise<StoredAsset>;
   delete(key: AssetKey): Promise<void>;
   exists(key: AssetKey): Promise<boolean>;
   downloadToFile(key: AssetKey, destinationPath: string): Promise<void>;
