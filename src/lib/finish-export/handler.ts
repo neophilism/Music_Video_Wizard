@@ -10,6 +10,7 @@ import {
   AssetStatus,
   DependencyRelation,
   DomainVersionKind,
+  TimelineKind,
   VersionLifecycle
 } from "@prisma/client";
 import { db } from "@/lib/db";
@@ -136,7 +137,7 @@ export async function handleFinalMasterRender(
       basisProjectVersionId:queued.manifest.projectVersionId,
       timeline:{
         projectId:queued.projectId,
-        kind:"WORKING"
+        kind:TimelineKind.WORKING
       }
     }
   });
@@ -325,7 +326,7 @@ export async function handleFinalMasterRender(
             nodeId:queued.manifest.sourceTimelineNodeId,
             lifecycle:VersionLifecycle.LOCKED,
             basisProjectVersionId:queued.manifest.projectVersionId,
-            timeline:{projectId:queued.projectId,kind:"WORKING"}
+            timeline:{projectId:queued.projectId,kind:TimelineKind.WORKING}
           }
         });
         if(!currentTimeline){
