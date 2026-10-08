@@ -2294,3 +2294,22 @@ h1 {
 .storyboardShotGrid strong{display:block;margin-bottom:.3rem;color:#9fa8b8;font-size:.7rem;text-transform:uppercase}
 .storyboardShotGrid p{margin:0;font-size:.82rem}
 @media(max-width:900px){.storyboardSummary,.storyboardShotGrid{grid-template-columns:1fr}.storyboardSequence>header,.storyboardShotTop{flex-direction:column}}
+
+
+.storyboardLifecycle{padding:1rem;border:1px solid rgba(170,162,255,.18);border-radius:12px;background:rgba(170,162,255,.04);display:flex;justify-content:space-between;gap:1rem;align-items:center}
+.storyboardLifecycle span,.storyboardLifecycle strong,.storyboardLifecycle em{display:block}
+.storyboardLifecycle span{color:#8f98aa;font-size:.7rem;text-transform:uppercase;letter-spacing:.05em}
+.storyboardLifecycle strong{margin-top:.2rem}
+.storyboardLifecycle em{margin-top:.15rem;color:#c3badf;font-size:.75rem}
+.storyboardLifecycleActions,.storyboardEditActions{display:flex;gap:.55rem;flex-wrap:wrap}
+.storyboardShotEditable{display:grid;gap:.75rem}
+.storyboardShotTitle{margin-top:.25rem;font-size:1rem;font-weight:700}
+.storyboardEditorGrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:.65rem}
+.storyboardEditorGrid label,.storyboardSplitControl label{display:grid;gap:.35rem}
+.storyboardEditorGrid label>span,.storyboardSplitControl label>span{color:#9aa4b5;font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.04em}
+.storyboardEditorGrid textarea{min-height:90px}
+.storyboardWide{grid-column:1/-1}
+.storyboardSplitControl{display:grid;grid-template-columns:minmax(140px,.35fr) auto;gap:.6rem;align-items:end;padding-top:.7rem;border-top:1px solid rgba(255,255,255,.06)}
+.storyboardRegenerateControl{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:.65rem;align-items:end}
+.storyboardRegenerateControl textarea{min-height:72px}
+@media(max-width:900px){.storyboardLifecycle,.storyboardEditActions{align-items:stretch;flex-direction:column}.storyboardEditorGrid,.storyboardSplitControl,.storyboardRegenerateControl{grid-template-columns:1fr}.storyboardWide{grid-column:auto}}
