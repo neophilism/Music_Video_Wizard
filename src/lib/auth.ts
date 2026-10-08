@@ -44,7 +44,8 @@ export const auth = betterAuth({
   },
   advanced: {
     database: {
-      joins: true
+      joins: true,
+      generateId: "uuid"
     }
   }
 });
