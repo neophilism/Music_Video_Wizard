@@ -9,6 +9,7 @@ import { registerStoryboardGenerationHandlers } from "@/lib/storyboard/register"
 import { registerShotSpecificationsGenerationHandlers } from "@/lib/shot-specifications/register";
 import { registerInitialFrameGenerationHandlers } from "@/lib/initial-frames/register";
 import { registerVideoClipGenerationHandlers } from "@/lib/video-clips/register";
+import { registerFinalMasterRenderHandler } from "@/lib/finish-export/register";
 
 async function main() {
   registerBuiltInGenerationHandlers();
@@ -20,6 +21,7 @@ async function main() {
   registerShotSpecificationsGenerationHandlers();
   registerInitialFrameGenerationHandlers();
   registerVideoClipGenerationHandlers();
+  registerFinalMasterRenderHandler();
   const worker = await startGenerationWorker();
   console.log(`Generation worker started: ${worker.workerId}`);
 
