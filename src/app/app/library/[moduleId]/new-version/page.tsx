@@ -5,6 +5,8 @@ import { auth } from "@/lib/auth";
 import { getCreativeModule } from "@/lib/creative-library/service";
 import { CreativeModuleForm } from "@/components/creative-module-form";
 import { VisualAestheticForm } from "@/components/visual-aesthetic-form";
+import { CreativeGrammarForm } from "@/components/creative-grammar-form";
+import { isCreativeGrammarModuleKind } from "@/lib/creative-grammar/schema";
 
 export default async function NewCreativeVersionPage(props: {
   params: Promise<{ moduleId: string }>;
@@ -37,6 +39,21 @@ export default async function NewCreativeVersionPage(props: {
         <VisualAestheticForm
           mode="version"
           moduleId={libraryItem.id}
+          endpoint={"/api/creative-library/" + libraryItem.id + "/versions"}
+          defaults={{
+            definition: latest?.definition,
+            positivePrompt: latest?.positivePrompt ?? "",
+            negativePrompt: latest?.negativePrompt ?? "",
+            notes: latest?.notes ?? "",
+            referenceAssetVersionIds:
+              latest?.references.map((reference) => reference.assetVersionId) ?? []
+          }}
+        />
+      ) : isCreativeGrammarModuleKind(libraryItem.kind) ? (
+        <CreativeGrammarForm
+          mode="version"
+          moduleId={libraryItem.id}
+          fixedKind={libraryItem.kind}
           endpoint={"/api/creative-library/" + libraryItem.id + "/versions"}
           defaults={{
             definition: latest?.definition,
