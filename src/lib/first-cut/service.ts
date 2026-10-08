@@ -282,6 +282,27 @@ export async function buildAutomaticFirstCut(input:{
       latest?.node.fingerprint===fingerprint&&
       latest.lifecycle!==VersionLifecycle.SUPERSEDED
     ){
+      await completeAutomaticWizardStepInTransaction(tx,{
+        projectVersionId:projectVersion.id,
+        stepKey:"first-cut",
+        payload:toJson({
+          timelineId:timeline.id,
+          timelineVersionId:latest.id,
+          timelineNodeId:latest.nodeId,
+          versionNumber:latest.versionNumber,
+          audioMasterAssetVersionId,
+          videoClipAssetVersionIds:plan.items.map(
+            item=>item.clipAssetVersionId
+          ),
+          shotSpecificationVersionIds:plan.items.map(
+            item=>item.shotSpecificationVersionId
+          ),
+          durationMs:plan.durationMs,
+          itemCount:plan.items.length,
+          transitionCount:plan.transitions.length
+        }),
+        semanticFingerprint:fingerprint
+      });
       return {
         timelineId:timeline.id,
         timelineVersionId:latest.id,
