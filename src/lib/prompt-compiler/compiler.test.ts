@@ -55,6 +55,25 @@ describe("prompt compiler",()=>{
     expect(request.requestFingerprintInput.prompt).toBe(request.prompt);
   });
 
+  it("treats keyframes separately from generic reference-image conditioning",()=>{
+    const request=compileShotGenerationRequest({
+      sourceShotSpecificationVersionId:"77777777-7777-4777-8777-777777777777",
+      sourceStoryboardShotVersionId:shot.sourceStoryboardShotVersionId,
+      shot,
+      mediaKind:"VIDEO",
+      editorialDurationMs:4000,
+      aspectRatio:"16:9",
+      frameRate:24,
+      referenceDescriptions:[{
+        role:"FIRST_FRAME",
+        required:true,
+        description:"Approved Initial Frame"
+      }]
+    });
+    expect(request.capabilityRequirements.firstFrame).toBe(true);
+    expect(request.capabilityRequirements.referenceImages).toBe(false);
+  });
+
   it("does not embed provider or model identifiers",()=>{
     const request=compileShotGenerationRequest({
       sourceShotSpecificationVersionId:"77777777-7777-4777-8777-777777777777",
