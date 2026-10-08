@@ -1,7 +1,8 @@
 import { describe,expect,it } from "vitest";
 import {
   generatedShotSpecificationsDocumentSchema,
-  shotSpecificationCompletionIssues
+  shotSpecificationCompletionIssues,
+  shotSpecificationSpecSchema
 } from "./schema";
 
 const a="11111111-1111-4111-8111-111111111111";
@@ -45,5 +46,29 @@ describe("shot specification schema",()=>{
     expect(shotSpecificationCompletionIssues(document,[a,b])).toContain(
       "A locked storyboard shot has more than one generated specification."
     );
+  });
+});
+
+
+describe("persisted shot specification provenance",()=>{
+  it("requires exact Storyboard, Sequence, Creative Language and generation sources",()=>{
+    const parsed=shotSpecificationSpecSchema.parse({
+      ...spec(a),
+      schemaVersion:1,
+      stage:"SHOT_SPECIFICATION",
+      sourceStoryboardShotVersionId:a,
+      sourceStoryboardShotNodeId:"33333333-3333-4333-8333-333333333333",
+      sourceSequenceVersionId:"44444444-4444-4444-8444-444444444444",
+      sourceSequenceNodeId:"55555555-5555-4555-8555-555555555555",
+      sourceSequencePosition:0,
+      sourceShotPosition:1,
+      sourceCreativeLanguageVersionId:"66666666-6666-4666-8666-666666666666",
+      generationJobId:"77777777-7777-4777-8777-777777777777",
+      origin:"GENERATED"
+    });
+    expect(parsed.stage).toBe("SHOT_SPECIFICATION");
+    expect(parsed.sourceStoryboardShotVersionId).toBe(a);
+    expect(parsed.sourceCreativeLanguageVersionId)
+      .toBe("66666666-6666-4666-8666-666666666666");
   });
 });
