@@ -25,7 +25,6 @@ export function modelRejectionReasons(
   if(r.referenceImages&&!c.referenceImages) reasons.push("reference images unsupported");
   if(r.firstFrame&&!c.firstFrame) reasons.push("first frame unsupported");
   if(r.lastFrame&&!c.lastFrame) reasons.push("last frame unsupported");
-  if(request.generationDurationMs<c.minDurationMs) reasons.push("duration below model minimum");
   if(request.generationDurationMs>c.maxDurationMs) reasons.push("duration above model maximum");
   if(c.aspectRatios.length>0&&!c.aspectRatios.includes(request.aspectRatio)){
     reasons.push("aspect ratio unsupported");

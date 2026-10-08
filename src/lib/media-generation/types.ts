@@ -36,6 +36,13 @@ export interface MediaGenerationResult{
   providerSnapshot?:unknown;
 }
 
+export interface MediaGenerationReference{
+  role:"SUBJECT"|"WARDROBE"|"PROP"|"ENVIRONMENT"|"STYLE"|"FIRST_FRAME"|"LAST_FRAME";
+  contentType?:string;
+  url?:string;
+  dataUri?:string;
+}
+
 export interface MediaGenerationSubmission{
   providerId:string;
   modelId:string;
@@ -50,6 +57,7 @@ export interface MediaGenerationAdapter{
   submit(input:{
     model:MediaModelDescriptor;
     request:CompiledGenerationRequest;
+    references?:MediaGenerationReference[];
   }):Promise<MediaGenerationSubmission>;
   poll(input:{
     model:MediaModelDescriptor;
