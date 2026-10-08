@@ -3,7 +3,8 @@ ADD COLUMN "activeProjectVersionId" UUID;
 
 ALTER TABLE "ProjectVersion"
 ADD COLUMN "parentProjectVersionId" UUID,
-ADD COLUMN "branchName" TEXT;
+ADD COLUMN "branchName" TEXT,
+ADD COLUMN "branchForkStepKey" TEXT;
 
 UPDATE "Project" AS p
 SET "activeProjectVersionId" = (
