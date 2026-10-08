@@ -38,7 +38,6 @@ ENV NODE_ENV=production \
 RUN npm run db:generate \
   && npm run build
 
-RUN npm prune --omit=dev
 
 EXPOSE 10000
 
