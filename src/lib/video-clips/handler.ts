@@ -55,6 +55,19 @@ function resumeTaskId(value:unknown):string|null{
   return typeof id==="string"&&id?id:null;
 }
 
+function generatedDurationFromMetadata(
+  value:unknown,
+  fallbackMs:number
+){
+  if(!value||typeof value!=="object"||Array.isArray(value)) return fallbackMs;
+  const request=(value as Record<string,unknown>).providerRequestSnapshot;
+  if(!request||typeof request!=="object"||Array.isArray(request)) return fallbackMs;
+  const duration=(request as Record<string,unknown>).duration;
+  return typeof duration==="number"&&Number.isFinite(duration)&&duration>0
+    ?Math.round(duration*1000)
+    :fallbackMs;
+}
+
 async function firstFrameReference(
   storage:AssetStorage,
   input:{storageKey:string;contentType:string}
@@ -296,6 +309,14 @@ export async function handleVideoClipGeneration(
     throw new PermanentGenerationError("Generated Video Clip is empty.");
   }
   const checksum=createHash("sha256").update(bytes).digest("hex");
+  const refreshedJob=await db.generationJob.findUnique({
+    where:{id:job.id},
+    select:{responseMetadata:true}
+  });
+  const generatedDurationMs=generatedDurationFromMetadata(
+    refreshedJob?.responseMetadata,
+    queued.request.generationDurationMs
+  );
 
   const assets=await db.$transaction(tx=>
     videoClipAssetsForProject(tx,queued.projectId)
@@ -386,7 +407,7 @@ export async function handleVideoClipGeneration(
           contentType,
           byteSize:BigInt(bytes.byteLength),
           checksumSha256:checksum,
-          durationMs:queued.request.generationDurationMs,
+          durationMs:generatedDurationMs,
           frameRate:queued.request.frameRate,
           metadata:{
             role:"video-clip",
@@ -399,7 +420,7 @@ export async function handleVideoClipGeneration(
             providerId,
             modelId:job.modelKey,
             editorialDurationMs:queued.request.editorialDurationMs,
-            generatedDurationMs:queued.request.generationDurationMs
+            generatedDurationMs
           },
           createdByUserId:job.requestedByUserId,
           readyAt:new Date()
