@@ -93,6 +93,16 @@ export function validateWorkingTimeline(
         "Transition duration cannot exceed either adjacent timeline item."
       );
     }
+    if(
+      transition.durationMs>0&&
+      outgoing.availableDurationMs!==null&&
+      outgoing.sourceEndMs+transition.durationMs>
+        outgoing.availableDurationMs
+    ){
+      throw new Error(
+        "Transition duration requires more outgoing clip tail than the selected clip contains."
+      );
+    }
   }
 }
 
