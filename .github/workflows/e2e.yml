@@ -1,0 +1,51 @@
+name: Browser E2E
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  browser:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    services:
+      postgres:
+        image: postgres:17-alpine
+        env:
+          POSTGRES_DB: music_video_wizard_e2e
+          POSTGRES_USER: e2e
+          POSTGRES_PASSWORD: e2e
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U e2e -d music_video_wizard_e2e"
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 10
+    env:
+      CI: "true"
+      DATABASE_URL: postgresql://e2e:e2e@localhost:5432/music_video_wizard_e2e
+      BETTER_AUTH_SECRET: 0123456789abcdef0123456789abcdef
+      BETTER_AUTH_URL: http://127.0.0.1:3000
+      ASSET_STORAGE_DRIVER: local
+      ASSET_STORAGE_BUCKET: e2e-assets
+      ASSET_STORAGE_LOCAL_ROOT: .data/e2e-assets
+      AUDIO_TRANSCRIPTION_PROVIDER: none
+      TEXT_GENERATION_PROVIDER: none
+      IMAGE_GENERATION_PROVIDER: none
+      VIDEO_GENERATION_PROVIDER: none
+      PLAYWRIGHT_BASE_URL: http://127.0.0.1:3000
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22.13.0
+      - run: npm install
+      - run: npm run db:generate
+      - run: npm run db:deploy
+      - run: npx playwright install --with-deps chromium
+      - run: npm run test:e2e
