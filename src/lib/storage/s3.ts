@@ -1,5 +1,5 @@
-import { createWriteStream } from "node:fs";
-import { mkdir } from "node:fs/promises";
+import { createReadStream, createWriteStream } from "node:fs";
+import { mkdir, stat } from "node:fs/promises";
 import path from "node:path";
 import { Readable } from "node:stream";
 import { pipeline } from "node:stream/promises";
@@ -11,7 +11,7 @@ import {
 } from "@aws-sdk/client-s3";
 import { GetObjectCommand } from "@aws-sdk/client-s3";
 import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
-import type { AssetStorage, PutAssetInput, StoredAsset } from "./types";
+import type { AssetStorage, PutAssetFileInput, PutAssetInput, StoredAsset } from "./types";
 
 export interface S3AssetStorageOptions {
   bucket: string;
@@ -53,6 +53,26 @@ export class S3AssetStorage implements AssetStorage {
     return {
       key: input.key,
       size: input.body.byteLength,
+      contentType: input.contentType,
+      etag: response.ETag?.replaceAll('"', "")
+    };
+  }
+
+  async putFile(input: PutAssetFileInput): Promise<StoredAsset> {
+    const info = await stat(input.filePath);
+    const response = await this.client.send(
+      new PutObjectCommand({
+        Bucket: this.options.bucket,
+        Key: input.key,
+        Body: createReadStream(input.filePath),
+        ContentLength: info.size,
+        ContentType: input.contentType
+      })
+    );
+
+    return {
+      key: input.key,
+      size: info.size,
       contentType: input.contentType,
       etag: response.ETag?.replaceAll('"', "")
     };
