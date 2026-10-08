@@ -28,6 +28,7 @@ const environmentSchema = z
     JOB_WORKSPACE_CONCURRENCY: z.coerce.number().int().positive().max(32).default(2),
     AUDIO_ANALYSIS_PYTHON: z.string().min(1).default("python3"),
     AUDIO_ANALYSIS_FFMPEG: z.string().min(1).default("ffmpeg"),
+    VIDEO_RENDER_FFMPEG: z.string().min(1).default("ffmpeg"),
     AUDIO_TRANSCRIPTION_PROVIDER: z.enum(["none", "openai"]).default("none"),
     AUDIO_TRANSCRIPTION_MODEL: z.string().min(1).default("gpt-transcribe"),
     TEXT_GENERATION_PROVIDER: z.enum(["none", "openai"]).default("none"),
