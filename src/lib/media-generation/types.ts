@@ -21,19 +21,27 @@ export interface MediaModelDescriptor{
   capabilities:MediaModelCapabilities;
 }
 
-export interface MediaGenerationSubmission{
-  providerId:string;
-  modelId:string;
-  externalJobId:string;
-  requestSnapshot:unknown;
+export interface MediaGenerationOutput{
+  kind:"INLINE_BASE64"|"REMOTE_URL";
+  contentType:string;
+  base64?:string;
+  url?:string;
 }
 
 export interface MediaGenerationResult{
-  externalJobId:string;
+  externalJobId:string|null;
   status:"QUEUED"|"RUNNING"|"SUCCEEDED"|"FAILED"|"CANCELED";
-  outputUrls:string[];
+  outputs:MediaGenerationOutput[];
   errorMessage?:string;
   providerSnapshot?:unknown;
+}
+
+export interface MediaGenerationSubmission{
+  providerId:string;
+  modelId:string;
+  externalJobId:string|null;
+  requestSnapshot:unknown;
+  immediateResult?:MediaGenerationResult;
 }
 
 export interface MediaGenerationAdapter{
