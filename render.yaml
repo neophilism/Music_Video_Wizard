@@ -1,0 +1,113 @@
+services:
+  - type: web
+    name: music-video-wizard-web
+    runtime: docker
+    dockerfilePath: ./Dockerfile
+    dockerContext: .
+    healthCheckPath: /api/health
+    preDeployCommand: npm run db:deploy
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: DATABASE_URL
+        sync: false
+      - key: BETTER_AUTH_SECRET
+        sync: false
+      - key: BETTER_AUTH_URL
+        sync: false
+      - key: ASSET_STORAGE_DRIVER
+        value: s3
+      - key: ASSET_STORAGE_BUCKET
+        sync: false
+      - key: ASSET_STORAGE_ENDPOINT
+        sync: false
+      - key: ASSET_STORAGE_REGION
+        sync: false
+      - key: ASSET_STORAGE_ACCESS_KEY_ID
+        sync: false
+      - key: ASSET_STORAGE_SECRET_ACCESS_KEY
+        sync: false
+      - key: ASSET_STORAGE_FORCE_PATH_STYLE
+        value: "false"
+      - key: AUDIO_TRANSCRIPTION_PROVIDER
+        value: openai
+      - key: AUDIO_TRANSCRIPTION_MODEL
+        value: gpt-transcribe
+      - key: TEXT_GENERATION_PROVIDER
+        value: openai
+      - key: IMAGE_GENERATION_PROVIDER
+        value: openai
+      - key: VIDEO_GENERATION_PROVIDER
+        value: runway
+      - key: OPENAI_API_KEY
+        sync: false
+      - key: OPENAI_BASE_URL
+        value: https://api.openai.com
+      - key: RUNWAY_API_SECRET
+        sync: false
+      - key: RUNWAY_BASE_URL
+        value: https://api.dev.runwayml.com
+      - key: RUNWAY_API_VERSION
+        value: "2024-11-06"
+      - key: AUDIO_ANALYSIS_PYTHON
+        value: python
+      - key: AUDIO_ANALYSIS_FFMPEG
+        value: ffmpeg
+
+  - type: worker
+    name: music-video-wizard-worker
+    runtime: docker
+    dockerfilePath: ./Dockerfile
+    dockerContext: .
+    dockerCommand: npm run worker
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: DATABASE_URL
+        sync: false
+      - key: BETTER_AUTH_SECRET
+        sync: false
+      - key: BETTER_AUTH_URL
+        sync: false
+      - key: ASSET_STORAGE_DRIVER
+        value: s3
+      - key: ASSET_STORAGE_BUCKET
+        sync: false
+      - key: ASSET_STORAGE_ENDPOINT
+        sync: false
+      - key: ASSET_STORAGE_REGION
+        sync: false
+      - key: ASSET_STORAGE_ACCESS_KEY_ID
+        sync: false
+      - key: ASSET_STORAGE_SECRET_ACCESS_KEY
+        sync: false
+      - key: ASSET_STORAGE_FORCE_PATH_STYLE
+        value: "false"
+      - key: AUDIO_TRANSCRIPTION_PROVIDER
+        value: openai
+      - key: AUDIO_TRANSCRIPTION_MODEL
+        value: gpt-transcribe
+      - key: TEXT_GENERATION_PROVIDER
+        value: openai
+      - key: IMAGE_GENERATION_PROVIDER
+        value: openai
+      - key: VIDEO_GENERATION_PROVIDER
+        value: runway
+      - key: OPENAI_API_KEY
+        sync: false
+      - key: OPENAI_BASE_URL
+        value: https://api.openai.com
+      - key: RUNWAY_API_SECRET
+        sync: false
+      - key: RUNWAY_BASE_URL
+        value: https://api.dev.runwayml.com
+      - key: RUNWAY_API_VERSION
+        value: "2024-11-06"
+      - key: AUDIO_ANALYSIS_PYTHON
+        value: python
+      - key: AUDIO_ANALYSIS_FFMPEG
+        value: ffmpeg
+      - key: JOB_WORKER_CONCURRENCY
+        value: "4"
+      - key: JOB_WORKSPACE_CONCURRENCY
+        value: "2"
