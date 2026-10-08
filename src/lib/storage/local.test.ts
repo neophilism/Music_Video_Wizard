@@ -1,4 +1,4 @@
-import { mkdtemp, rm } from "node:fs/promises";
+import { mkdtemp, rm, writeFile } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import path from "node:path";
 import { afterEach, describe, expect, it } from "vitest";
@@ -59,6 +59,45 @@ describe("LocalAssetStorage", () => {
     expect(
       verifyLocalAssetSignature(key!, expires, signature!, secret)
     ).toBe(true);
+  });
+
+
+  it("copies immutable files without buffering the asset in the storage API", async () => {
+    const root = await mkdtemp(path.join(tmpdir(), "mvw-storage-"));
+    createdRoots.push(root);
+    const sourceRoot = await mkdtemp(path.join(tmpdir(), "mvw-storage-source-"));
+    createdRoots.push(sourceRoot);
+    const sourcePath = path.join(sourceRoot, "master.mp4");
+    await writeFile(sourcePath, new Uint8Array([9, 8, 7, 6, 5]));
+
+    const storage = new LocalAssetStorage(
+      root,
+      "http://localhost:3000",
+      "0123456789abcdef0123456789abcdef"
+    );
+    const stored = await storage.putFile({
+      key: "workspace/project/renders/master.mp4",
+      filePath: sourcePath,
+      contentType: "video/mp4"
+    });
+
+    expect(stored.size).toBe(5);
+    expect(
+      Array.from(
+        await readLocalAsset(
+          root,
+          "workspace/project/renders/master.mp4"
+        )
+      )
+    ).toEqual([9, 8, 7, 6, 5]);
+
+    await expect(
+      storage.putFile({
+        key: "workspace/project/renders/master.mp4",
+        filePath: sourcePath,
+        contentType: "video/mp4"
+      })
+    ).rejects.toThrow();
   });
 
   it("prevents path traversal", async () => {

@@ -24,4 +24,4 @@ export function createAssetStorage(
   });
 }
 
-export type { AssetKey, AssetStorage, PutAssetInput, StoredAsset } from "./types";
+export type { AssetKey, AssetStorage, PutAssetFileInput, PutAssetInput, StoredAsset } from "./types";
