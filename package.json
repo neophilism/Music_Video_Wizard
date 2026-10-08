@@ -36,7 +36,8 @@
     "test:motif-typography": "vitest run src/lib/motif/schema.test.ts src/lib/typography-kit/schema.test.ts",
     "test:sequence-map": "vitest run src/lib/sequence-map/schema.test.ts",
     "test:storyboard": "vitest run src/lib/storyboard/schema.test.ts src/lib/storyboard/editor.test.ts",
-    "test:acceptance": "tsx scripts/release-acceptance-smoke.ts"
+    "test:acceptance": "tsx scripts/release-acceptance-smoke.ts",
+    "ops:status": "tsx scripts/ops-status.ts"
   },
   "dependencies": {
     "@prisma/client": "^6.16.2",
