@@ -19,7 +19,7 @@ RUN python3 -m venv /opt/music-video-wizard-venv \
   && /opt/music-video-wizard-venv/bin/pip install --no-cache-dir --upgrade pip \
   && /opt/music-video-wizard-venv/bin/pip install --no-cache-dir -r analysis/requirements.txt
 
-ENV PATH="/opt/music-video-wizard-venv:${PATH}"
+ENV PATH="/opt/music-video-wizard-venv/bin:${PATH}"
 
 COPY . .
 
