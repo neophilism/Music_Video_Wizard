@@ -19,6 +19,8 @@ import {
   isCreativeGrammarModuleKind,
   parseCreativeGrammarDefinitionForKind
 } from "@/lib/creative-grammar/schema";
+import { parseMotifDefinition } from "@/lib/motif/schema";
+import { parseTypographyKitDefinition } from "@/lib/typography-kit/schema";
 
 export class CreativeLibraryError extends Error {}
 
@@ -47,6 +49,20 @@ function normalizeVersionForKind(
     return {
       ...content,
       definition: parseCreativeGrammarDefinitionForKind(kind, content.definition)
+    };
+  }
+
+  if (kind === CreativeModuleKind.MOTIF) {
+    return {
+      ...content,
+      definition: parseMotifDefinition(content.definition)
+    };
+  }
+
+  if (kind === CreativeModuleKind.TYPOGRAPHY_KIT) {
+    return {
+      ...content,
+      definition: parseTypographyKitDefinition(content.definition)
     };
   }
 
