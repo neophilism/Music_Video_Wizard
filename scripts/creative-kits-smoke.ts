@@ -17,6 +17,7 @@ import {
   publishCreativeKitVersion
 } from "../src/lib/creative-kits/service";
 import { EMPTY_VISUAL_AESTHETIC } from "../src/lib/visual-aesthetic/schema";
+import { emptyCreativeGrammar } from "../src/lib/creative-grammar/schema";
 
 async function main() {
   const userId = randomUUID();
@@ -105,7 +106,28 @@ async function main() {
         tags: ["handheld"]
       },
       version: {
-        definition: { movement: "handheld" },
+        definition: {
+          ...emptyCreativeGrammar("MOTION_GRAMMAR"),
+          intent: "Movement should feel predatory but controlled.",
+          scope: "Project default.",
+          rules: [
+            {
+              trigger: "default",
+              directive: "Use controlled pursuit movement only when subject action motivates it.",
+              strength: "MUST",
+              rationale: "Prevents decorative camera drift."
+            }
+          ],
+          controls: {
+            cameraMovement: "Controlled handheld pursuit.",
+            subjectMovement: "Subject initiates the directional vector.",
+            stability: "Readable horizon with restrained instability.",
+            speed: "Slow to medium.",
+            acceleration: "Ease into changes.",
+            motivation: "Subject or musical pressure only.",
+            startStopBehavior: "Land movement before editorial handoff."
+          }
+        },
         positivePrompt: "controlled handheld pursuit",
         negativePrompt: "random shake",
         notes: "",

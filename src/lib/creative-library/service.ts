@@ -15,6 +15,10 @@ import type {
   CreativeVersionContent
 } from "./input";
 import { parseVisualAestheticDefinition } from "@/lib/visual-aesthetic/schema";
+import {
+  isCreativeGrammarModuleKind,
+  parseCreativeGrammarDefinitionForKind
+} from "@/lib/creative-grammar/schema";
 
 export class CreativeLibraryError extends Error {}
 
@@ -22,22 +26,31 @@ function normalizeVersionForKind(
   kind: CreativeModuleKind,
   content: CreativeVersionContent
 ): CreativeVersionContent {
-  if (kind !== CreativeModuleKind.VISUAL_AESTHETIC) return content;
+  if (kind === CreativeModuleKind.VISUAL_AESTHETIC) {
+    const definition = parseVisualAestheticDefinition(content.definition);
+    const referenceAssetVersionIds = [...content.referenceAssetVersionIds];
+    if (
+      definition.previewAssetVersionId &&
+      !referenceAssetVersionIds.includes(definition.previewAssetVersionId)
+    ) {
+      referenceAssetVersionIds.push(definition.previewAssetVersionId);
+    }
 
-  const definition = parseVisualAestheticDefinition(content.definition);
-  const referenceAssetVersionIds = [...content.referenceAssetVersionIds];
-  if (
-    definition.previewAssetVersionId &&
-    !referenceAssetVersionIds.includes(definition.previewAssetVersionId)
-  ) {
-    referenceAssetVersionIds.push(definition.previewAssetVersionId);
+    return {
+      ...content,
+      definition,
+      referenceAssetVersionIds
+    };
   }
 
-  return {
-    ...content,
-    definition,
-    referenceAssetVersionIds
-  };
+  if (isCreativeGrammarModuleKind(kind)) {
+    return {
+      ...content,
+      definition: parseCreativeGrammarDefinitionForKind(kind, content.definition)
+    };
+  }
+
+  return content;
 }
 
 function semanticFingerprint(content: CreativeVersionContent): string {

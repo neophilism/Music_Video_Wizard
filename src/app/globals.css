@@ -2182,3 +2182,29 @@ h1 {
 .aestheticIssues ul{margin:.5rem 0 0;padding-left:1.2rem}
 .aestheticReady{border-color:rgba(126,231,135,.18);color:#bce8c0}
 @media(max-width:820px){.aestheticMeta,.aestheticGrid,.aestheticPromptGrid,.aestheticPreview,.aestheticProviderRow,.aestheticPaletteRow{grid-template-columns:1fr}.aestheticMeta label:nth-child(2),.aestheticMeta label:nth-child(3),.aestheticWide{grid-column:auto}}
+
+
+.creativeGrammarBuilder{display:grid;gap:1rem}
+.grammarPanel,.grammarIdentity,.grammarIssues,.grammarReady{padding:1rem;border:1px solid rgba(255,255,255,.09);border-radius:12px;background:rgba(255,255,255,.02)}
+.grammarMeta,.grammarGrid,.grammarPromptGrid,.grammarRuleGrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:.8rem}
+.grammarMeta label,.grammarGrid label,.grammarPromptGrid label,.grammarRuleGrid label{display:grid;gap:.35rem}
+.grammarMeta label>span,.grammarGrid label>span,.grammarPromptGrid label>span,.grammarRuleGrid label>span,.grammarIdentity span{color:#9aa4b5;font-size:.74rem;font-weight:700;text-transform:uppercase;letter-spacing:.04em}
+.grammarWide{grid-column:1/-1}
+.grammarPanel h3{margin:.2rem 0 .55rem}
+.grammarPanel p{color:#aeb6c5;line-height:1.5}
+.grammarGrid textarea,.grammarPromptGrid textarea,.grammarRuleGrid textarea{min-height:105px}
+.grammarIdentity{display:flex;justify-content:space-between;align-items:center;gap:1rem;border-color:rgba(170,162,255,.22);background:rgba(170,162,255,.045)}
+.grammarIdentity strong{text-transform:capitalize}
+.grammarPanelHeader,.grammarRuleHeader{display:flex;justify-content:space-between;align-items:flex-start;gap:1rem}
+.grammarPanelHeader p{margin:.25rem 0 0}
+.grammarRules,.grammarHints{display:grid;gap:.75rem;margin-top:.8rem}
+.grammarRule{padding:.85rem;border:1px solid rgba(255,255,255,.08);border-radius:10px;background:rgba(0,0,0,.12)}
+.grammarRuleHeader{align-items:center;margin-bottom:.7rem}
+.grammarRuleGrid{grid-template-columns:minmax(0,1fr) minmax(150px,.35fr)}
+.grammarEmpty{margin:0;color:#8f98aa!important}
+.grammarHintRow{display:grid;grid-template-columns:minmax(160px,.45fr) minmax(0,1.4fr) auto;gap:.6rem;align-items:start}
+.grammarHintRow textarea{min-height:72px}
+.grammarIssues{border-color:rgba(216,183,95,.24);background:rgba(216,183,95,.045);color:#c8bfaa}
+.grammarIssues ul{margin:.5rem 0 0;padding-left:1.2rem}
+.grammarReady{border-color:rgba(126,231,135,.18);color:#bce8c0}
+@media(max-width:820px){.grammarMeta,.grammarGrid,.grammarPromptGrid,.grammarRuleGrid,.grammarHintRow{grid-template-columns:1fr}.grammarWide{grid-column:auto}.grammarPanelHeader,.grammarRuleHeader{flex-direction:column}}
