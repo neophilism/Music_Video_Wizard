@@ -10,6 +10,7 @@ import {
   AssetStatus,
   DependencyRelation,
   DomainVersionKind,
+  Prisma,
   TimelineKind,
   VersionLifecycle
 } from "@prisma/client";
@@ -26,6 +27,10 @@ import {
 } from "@/lib/wizard/service";
 import { buildFfmpegRenderCommand } from "./ffmpeg";
 import { queuedMasterRenderSchema } from "./input";
+
+function toJson(value:unknown):Prisma.InputJsonValue{
+  return JSON.parse(JSON.stringify(value)) as Prisma.InputJsonValue;
+}
 
 function extensionFor(contentType:string){
   switch(contentType){
@@ -357,7 +362,7 @@ export async function handleFinalMasterRender(
             height:queued.manifest.output.height,
             durationMs:queued.manifest.durationMs,
             frameRate:queued.manifest.output.frameRate,
-            metadata:{
+            metadata:toJson({
               role:"render-master",
               manifestFingerprint:queued.manifestFingerprint,
               sourceTimelineVersionId:
@@ -372,7 +377,7 @@ export async function handleFinalMasterRender(
               output:queued.manifest.output,
               expectedFrameCount:
                 queued.manifest.expectedFrameCount
-            },
+            }),
             createdByUserId:job.requestedByUserId,
             readyAt:new Date()
           }
@@ -405,7 +410,7 @@ export async function handleFinalMasterRender(
         await completeAutomaticWizardStepInTransaction(tx,{
           projectVersionId:queued.manifest.projectVersionId,
           stepKey:"finish-export",
-          payload:{
+          payload:toJson({
             manifest:queued.manifest,
             manifestFingerprint:queued.manifestFingerprint,
             renderMasterAssetId:queued.renderAssetId,
@@ -413,7 +418,7 @@ export async function handleFinalMasterRender(
             renderMasterNodeId:nodeId,
             checksumSha256,
             renderedAt:new Date().toISOString()
-          },
+          }),
           semanticFingerprint:queued.manifestFingerprint
         });
 
