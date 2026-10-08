@@ -69,22 +69,27 @@ async function runProcess(input:{
     });
     let stderr="";
     let settled=false;
+    let abortError:Error|null=null;
+    let killTimer:ReturnType<typeof setTimeout>|null=null;
 
     const finish=(error?:Error)=>{
       if(settled) return;
       settled=true;
+      if(killTimer) clearTimeout(killTimer);
       input.signal.removeEventListener("abort",onAbort);
       if(error) reject(error);
       else resolve();
     };
 
     const onAbort=()=>{
-      child.kill("SIGTERM");
-      finish(
+      abortError=
         input.signal.reason instanceof Error
           ?input.signal.reason
-          :new Error(input.description+" aborted.")
-      );
+          :new Error(input.description+" aborted.");
+      child.kill("SIGTERM");
+      killTimer=setTimeout(()=>{
+        if(!settled) child.kill("SIGKILL");
+      },5000);
     };
     input.signal.addEventListener("abort",onAbort,{once:true});
 
@@ -99,6 +104,10 @@ async function runProcess(input:{
     });
     child.once("close",code=>{
       if(settled) return;
+      if(abortError){
+        finish(abortError);
+        return;
+      }
       if(code===0){
         finish();
         return;
