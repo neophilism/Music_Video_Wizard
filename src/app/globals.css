@@ -2351,3 +2351,60 @@ h1 {
     grid-template-columns: 1fr;
   }
 }
+
+
+.initialFrameGrid {
+  display: grid;
+  grid-template-columns: repeat(2,minmax(0,1fr));
+  gap: 1rem;
+}
+
+.initialFrameCard {
+  display: grid;
+  grid-template-rows: auto 1fr;
+  overflow: hidden;
+  border: 1px solid var(--border-subtle, rgba(127,127,127,0.22));
+  border-radius: 1rem;
+  background: rgba(127,127,127,0.04);
+}
+
+.initialFrameVisual {
+  aspect-ratio: 16 / 9;
+  background: rgba(127,127,127,0.08);
+  overflow: hidden;
+}
+
+.initialFrameVisual img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  background: #000;
+}
+
+.initialFramePlaceholder {
+  width: 100%;
+  height: 100%;
+  display: grid;
+  place-items: center;
+  min-height: 220px;
+  opacity: 0.65;
+}
+
+.initialFrameBody {
+  display: grid;
+  gap: 0.55rem;
+  align-content: start;
+  padding: 1rem;
+}
+
+.initialFrameBody h3,
+.initialFrameBody p {
+  margin: 0;
+}
+
+@media (max-width: 900px) {
+  .initialFrameGrid {
+    grid-template-columns: 1fr;
+  }
+}
