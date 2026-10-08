@@ -52,7 +52,7 @@ const MODELS:readonly MediaModelDescriptor[]=[
       resolutions:[]
     }
   }
-] as const;
+];
 
 function isPermanentHttpStatus(status:number){
   if(status===408||status===409||status===429) return false;
