@@ -19,7 +19,7 @@ describe("zero-cost production gate", () => {
     });
     expect(result.passed).toBe(false);
     expect(called).toEqual(["infrastructure-preflight", "worker-observation"]);
-    expect(result.checks[1].passed).toBe(false);
+    expect(result.checks[1]!.passed).toBe(false);
   });
   it("does not swallow a failed dependency invocation", async () => {
     await expect(evaluateProductionGate(async () => {
