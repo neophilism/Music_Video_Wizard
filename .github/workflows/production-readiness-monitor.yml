@@ -1,0 +1,46 @@
+name: Production Readiness Monitor
+
+on:
+  schedule:
+    - cron: "*/15 * * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: production-readiness-monitor
+  cancel-in-progress: false
+
+jobs:
+  readiness:
+    runs-on: ubuntu-latest
+    timeout-minutes: 3
+    env:
+      PRODUCTION_URL: ${{ vars.MVW_PRODUCTION_URL }}
+    steps:
+      - name: Check configured deployment
+        shell: bash
+        run: |
+          if [[ -z "$PRODUCTION_URL" ]]; then
+            echo "::error::Set repository variable MVW_PRODUCTION_URL to the approved production HTTPS origin before enabling monitoring."
+            exit 1
+          fi
+          if [[ ! "$PRODUCTION_URL" =~ ^https://[^/]+/?$ ]]; then
+            echo "::error::MVW_PRODUCTION_URL must be a bare HTTPS origin (no path/query/fragment)."
+            exit 1
+          fi
+          origin="${PRODUCTION_URL%/}"
+          response="$(curl --silent --show-error --location --max-redirs 0 --connect-timeout 10 --max-time 25 --output /tmp/mvw-ready.json --write-out '%{http_code}' "$origin/api/ready")"
+          if [[ "$response" != 200 ]]; then
+            echo "::error::Readiness endpoint returned HTTP $response."
+            exit 1
+          fi
+          node -e '
+            const fs = require("node:fs");
+            const value = JSON.parse(fs.readFileSync("/tmp/mvw-ready.json", "utf8"));
+            if (value.status !== "ready" || value.service !== "music-video-wizard" || value.checks?.database !== "ok" || value.checks?.configuration !== "ok") {
+              throw new Error("Unexpected readiness response or failing dependency checks");
+            }
+            console.log("Production web and database readiness verified.");
+          '
