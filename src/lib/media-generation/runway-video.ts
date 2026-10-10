@@ -61,7 +61,7 @@ const MODELS:MediaModelDescriptor[]=[
       referenceImages:false,
       firstFrame:true,
       lastFrame:false,
-      minDurationMs:2000,
+      minDurationMs:5000,
       maxDurationMs:10000,
       aspectRatios:["16:9","9:16"],
       resolutions:["720p"]
@@ -87,11 +87,18 @@ function prompt(request:CompiledGenerationRequest){
     request.negativeConstraints.join("\n- ");
 }
 
-function durationSeconds(request:CompiledGenerationRequest){
-  return Math.min(
-    10,
-    Math.max(2,Math.ceil(request.generationDurationMs/1000))
-  );
+function durationSeconds(
+  request:CompiledGenerationRequest,
+  model:MediaModelDescriptor
+){
+  const desiredSeconds=Math.ceil(request.generationDurationMs/1000);
+  // Gen-4 Turbo accepts only 5- or 10-second generations. Preserve the
+  // exact editorial duration by trimming downstream, never submitting an
+  // unsupported intermediate duration to the paid provider.
+  if(model.modelId==="gen4_turbo"){
+    return desiredSeconds<=5?5:10;
+  }
+  return Math.min(10,Math.max(2,desiredSeconds));
 }
 
 export class RunwayVideoAdapter implements MediaGenerationAdapter{
@@ -161,7 +168,7 @@ export class RunwayVideoAdapter implements MediaGenerationAdapter{
       promptImage,
       promptText:prompt(input.request),
       ratio,
-      duration:durationSeconds(input.request)
+      duration:durationSeconds(input.request,input.model)
     };
 
     let response:Response;
