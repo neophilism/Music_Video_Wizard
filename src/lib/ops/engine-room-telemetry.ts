@@ -74,7 +74,7 @@ export function buildWorkerAvailabilityDelivery(
     records: [{
       kind: "metric" as const,
       externalId: "mvw-worker-" + deliveryKey,
-      metric: "availability-percent" as const,
+      metric: "worker-heartbeat-percent" as const,
       value: workerObserved ? 100 : 0,
       observedAt: checkedAt.toISOString()
     }]
