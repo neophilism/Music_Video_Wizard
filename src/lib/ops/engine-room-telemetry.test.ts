@@ -40,7 +40,7 @@ describe("Engine Room worker telemetry", () => {
     expect(success.records).toEqual([{
       kind: "metric",
       externalId: "mvw-worker-" + id,
-      metric: "availability-percent",
+      metric: "worker-heartbeat-percent",
       value: 100,
       observedAt: observedAt.toISOString()
     }]);
