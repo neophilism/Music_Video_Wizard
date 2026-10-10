@@ -47,6 +47,9 @@ const environmentSchema = z
     if (env.NODE_ENV === "production") {
       try {
         const url = new URL(env.DATABASE_URL);
+        if (!["postgres:", "postgresql:"].includes(url.protocol) || !url.hostname) {
+          throw new Error("Not a PostgreSQL endpoint.");
+        }
         const pooled = /(^|[-.])pooler([-.]|$)/i.test(url.hostname);
         if (pooled) {
           ctx.addIssue({
