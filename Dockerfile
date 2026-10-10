@@ -42,4 +42,4 @@ RUN npm prune --omit=dev
 
 EXPOSE 10000
 
-CMD ["sh","-c","npm start -- -H 0.0.0.0 -p ${PORT:-10000}"]
+CMD ["npm","run","start:production"]
