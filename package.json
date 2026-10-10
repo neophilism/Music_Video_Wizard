@@ -43,7 +43,8 @@
     "test:readiness": "tsx scripts/readiness-smoke.ts",
     "audit:prod": "node scripts/audit-production.mjs",
     "ops:asset-integrity": "tsx scripts/asset-integrity.ts",
-    "ops:health": "tsx scripts/ops-health.ts"
+    "ops:health": "tsx scripts/ops-health.ts",
+    "start:production": "prisma migrate deploy && next start -H 0.0.0.0 -p ${PORT:-10000}"
   },
   "dependencies": {
     "@prisma/client": "^6.16.2",
