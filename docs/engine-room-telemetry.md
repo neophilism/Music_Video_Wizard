@@ -31,7 +31,7 @@ Only the worker needs sender credentials; do not commit them, add them to a publ
 
 ## Observation semantics
 
-Every 60 seconds the worker checks whether any worker process has written a recent heartbeat to shared PostgreSQL (90-second freshness). It sends an HMAC-SHA256 signed canonical `engine-room-v1` envelope containing one `availability-percent` sample: **100 when the instantaneous heartbeat probe succeeds, 0 otherwise**. This is a binary process observation, **not** rolling uptime, error-free generation, GPU/CPU utilization, storage validity, AI API availability or proof that finished videos can render. Engine Room's own completeness checks should continue to show other dimensions as unknown until evidence exists.
+Every 60 seconds the worker checks whether any worker process has written a recent heartbeat to shared PostgreSQL (90-second freshness). It sends an HMAC-SHA256 signed canonical `engine-room-v1` envelope containing one `worker-heartbeat-percent` sample: **100 when the instantaneous heartbeat probe succeeds, 0 otherwise**. This is a binary process observation, **not** rolling uptime, error-free generation, GPU/CPU utilization, storage validity, AI API availability or proof that finished videos can render. Engine Room's own completeness checks should continue to show other dimensions as unknown until evidence exists.
 
 The request includes a unique idempotency delivery ID, Unix millisecond timestamp, source key ID, and signature over `timestamp + "." + exact body bytes`, matching Engine Room's five-minute clock-skew rule. It limits request duration to 10 seconds, rejects redirects, and does not expose tokens in logs. Telemetry failures are noncritical to the video-generation process; they should appear as stale feed freshness in Engine Room and require operational alerting.
 
@@ -45,3 +45,7 @@ The request includes a unique idempotency delivery ID, Unix millisecond timestam
 6. Independently run a low-cost full video-generation-to-export acceptance test before declaring the application production-ready.
 
 **Not yet active merely by merging code:** the sender stays disabled without the real per-project credential and approved deployment.
+
+## Required Engine Room compatibility
+
+Deploy and migrate [Engine Room PR #64](https://github.com/neophilism/Engine-Room/pull/64) before enabling the sender. Its distinct `worker-heartbeat-percent` metric is not used as website HTTP availability, and does not on its own make a project nominal. An older Engine Room instance will reject this metric; keep the sender disabled until the destination supports it.
