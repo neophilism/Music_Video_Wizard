@@ -1,0 +1,24 @@
+project:
+  name: Music_Video_Wizard
+  display_name: Music Video Wizard
+  repository: neophilism/Music_Video_Wizard
+  status: active-development
+
+roadmap:
+  version: 1
+  planned_prs: 63
+  approved: true
+
+milestones:
+  - name: Application foundation and creative libraries
+    prs: 10
+  - name: Music analysis and creative direction
+    prs: 11
+  - name: Storyboarding and media generation
+    prs: 14
+  - name: Automatic editing and final export
+    prs: 7
+  - name: Release acceptance and operations foundation
+    prs: 9
+  - name: Production activation and monitoring
+    prs: 12
