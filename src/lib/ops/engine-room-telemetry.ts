@@ -12,7 +12,7 @@ export type EngineRoomTelemetryConfig = {
 };
 
 export function readEngineRoomTelemetryConfig(
-  source: NodeJS.ProcessEnv = process.env
+  source: Record<string, string | undefined> = process.env
 ): EngineRoomTelemetryConfig | null {
   const url = source.ENGINE_ROOM_TELEMETRY_URL?.trim() ?? "";
   const keyId = source.ENGINE_ROOM_TELEMETRY_KEY_ID?.trim() ?? "";
