@@ -1245,3 +1245,12 @@ model DependencyEdge {
   @@unique([upstreamNodeId, downstreamNodeId, relation])
   @@index([downstreamNodeId])
 }
+
+/** Durable worker-process liveness evidence; does not prove provider readiness. */
+model WorkerHeartbeat {
+  id         String   @id @db.Uuid
+  startedAt  DateTime @default(now())
+  lastSeenAt DateTime @default(now())
+
+  @@index([lastSeenAt])
+}
