@@ -78,6 +78,20 @@ describe("Runway video adapter",()=>{
     expect(body.promptText).toContain("No extra people");
   });
 
+  it("pads Gen-4 Turbo requests to a supported duration without changing edit length",async()=>{
+    const mocked=vi.spyOn(globalThis,"fetch").mockImplementation(async()=>(
+      new Response(JSON.stringify({id:"task-turbo"}),{status:200,headers:{"content-type":"application/json"}})
+    ));
+    const adapter=new RunwayVideoAdapter("secret","https://api.dev.runwayml.com","2024-11-06");
+    const turbo=(await adapter.listModels()).find(item=>item.modelId==="gen4_turbo")!;
+    expect(turbo.capabilities.minDurationMs).toBe(5000);
+    const frame={role:"FIRST_FRAME" as const,url:"https://example.com/frame.png"};
+    await adapter.submit({model:turbo,request:{...request,generationDurationMs:2000},references:[frame]});
+    expect(JSON.parse(String(mocked.mock.calls[0]![1]?.body)).duration).toBe(5);
+    await adapter.submit({model:turbo,request:{...request,generationDurationMs:6000},references:[frame]});
+    expect(JSON.parse(String(mocked.mock.calls[1]![1]?.body)).duration).toBe(10);
+  });
+
   it("maps a successful task to an expiring remote video output",async()=>{
     vi.spyOn(globalThis,"fetch").mockResolvedValue(
       new Response(JSON.stringify({

@@ -53,3 +53,7 @@ Set:
 - optionally `RUNWAY_API_VERSION`.
 
 The default API version header is `2024-11-06`.
+
+## Gen-4 Turbo duration precision
+
+The Gen-4 Turbo API supports only 5- and 10-second generations. The capability descriptor therefore advertises a 5-second minimum. Requested clips with an editorial duration shorter than five seconds are generated at five seconds and trimmed downstream; requests above five but no more than ten generate ten seconds. Gen-4.5 retains its 2–10 second duration capability. These paid API request durations are independent of the immutable exact editorial timeline length.
