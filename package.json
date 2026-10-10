@@ -43,7 +43,8 @@
     "test:readiness": "tsx scripts/readiness-smoke.ts",
     "audit:prod": "node scripts/audit-production.mjs",
     "ops:asset-integrity": "tsx scripts/asset-integrity.ts",
-    "ops:health": "tsx scripts/ops-health.ts"
+    "ops:health": "tsx scripts/ops-health.ts",
+    "ops:production-gate": "tsx scripts/ops-production-gate.ts"
   },
   "dependencies": {
     "@prisma/client": "^6.16.2",
