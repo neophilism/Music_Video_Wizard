@@ -281,3 +281,64 @@ export async function startGenerationWorker() {
       })
   };
 }
+
+
+export async function drainGenerationQueueBatch(
+  limit: number = getEnvironment().JOB_DRAIN_BATCH_SIZE
+): Promise<{ fetched: number; completed: number; retried: number }> {
+  const env = getEnvironment();
+  const boss = await getJobQueue();
+  const jobs = await boss.fetch<GenerationQueuePayload>(GENERATION_QUEUE, {
+    batchSize: limit,
+    includeMetadata: true
+  });
+
+  let completed = 0;
+  let retried = 0;
+
+  for (const fetched of jobs) {
+    const controller = new AbortController();
+    const queueJob = {
+      ...fetched,
+      signal: controller.signal
+    } as Job<GenerationQueuePayload>;
+
+    const heartbeat = setInterval(() => {
+      void boss.touch(GENERATION_QUEUE, fetched).catch((error) => {
+        console.error("Bounded queue heartbeat failed", error);
+        controller.abort(error);
+      });
+    }, Math.max(1000, Math.floor(env.JOB_HEARTBEAT_SECONDS * 500)));
+
+    try {
+      const result = await processGenerationQueueJob(queueJob);
+
+      if (
+        result &&
+        typeof result === "object" &&
+        "cancelled" in result &&
+        result.cancelled === true
+      ) {
+        continue;
+      }
+
+      await boss.complete(
+        GENERATION_QUEUE,
+        fetched,
+        result && typeof result === "object"
+          ? result as Record<string, unknown>
+          : { result }
+      );
+      completed += 1;
+    } catch (error) {
+      await boss.fail(GENERATION_QUEUE, fetched, {
+        message: errorMessage(error)
+      });
+      retried += 1;
+    } finally {
+      clearInterval(heartbeat);
+    }
+  }
+
+  return { fetched: jobs.length, completed, retried };
+}
