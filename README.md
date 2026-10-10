@@ -1,5 +1,7 @@
 # Music Video Wizard
 
+**Complete original development plan:** [docs/DEVELOPMENT_PLAN.md](docs/DEVELOPMENT_PLAN.md).
+
 Music Video Wizard is a production web application for taking a creator from finished music through creative direction, storyboard, generated shots, a fully compiled first cut, iterative refinement, and final render.
 
 ## Product rule
