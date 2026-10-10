@@ -56,3 +56,18 @@ The executor additionally requires:
 - `JOB_DRAIN_BATCH_SIZE` — defaults to 2.
 
 The Neon scheduling Function holds the same drain secret and the executor URL.
+
+
+## On-demand wake and free-hour conservation
+
+When a GenerationJob and its pg-boss queue record commit successfully, the web service asynchronously POSTs to the executor drain endpoint. The enqueue response does not wait for a sleeping free executor to finish its cold start.
+
+Configure the web service with:
+
+- `JOB_EXECUTOR_URL=https://music-video-wizard-executor.onrender.com`;
+- the same server-only `JOB_DRAIN_SECRET` as the executor;
+- optional `JOB_WAKE_TIMEOUT_MS` (default 90000).
+
+Concurrent enqueues in the same web process share one in-flight wake request.
+
+The Neon scheduled trigger should be configured as a recovery sweep rather than a continuous keepalive. A 30-minute cadence allows the free executor to spin down after Render's idle window instead of consuming free instance hours continuously.
