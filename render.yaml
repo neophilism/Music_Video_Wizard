@@ -28,7 +28,7 @@ services:
       - key: ASSET_STORAGE_SECRET_ACCESS_KEY
         sync: false
       - key: ASSET_STORAGE_FORCE_PATH_STYLE
-        value: "false"
+        value: "true"
       - key: AUDIO_TRANSCRIPTION_PROVIDER
         value: openai
       - key: AUDIO_TRANSCRIPTION_MODEL
@@ -54,12 +54,13 @@ services:
       - key: AUDIO_ANALYSIS_FFMPEG
         value: ffmpeg
 
-  - type: worker
-    name: music-video-wizard-worker
+  - type: web
+    name: music-video-wizard-executor
     runtime: docker
     dockerfilePath: ./Dockerfile
     dockerContext: .
-    dockerCommand: npm run worker
+    healthCheckPath: /api/health
+    plan: free
     envVars:
       - key: NODE_ENV
         value: production
@@ -82,7 +83,7 @@ services:
       - key: ASSET_STORAGE_SECRET_ACCESS_KEY
         sync: false
       - key: ASSET_STORAGE_FORCE_PATH_STYLE
-        value: "false"
+        value: "true"
       - key: AUDIO_TRANSCRIPTION_PROVIDER
         value: openai
       - key: AUDIO_TRANSCRIPTION_MODEL
@@ -107,7 +108,7 @@ services:
         value: python
       - key: AUDIO_ANALYSIS_FFMPEG
         value: ffmpeg
-      - key: JOB_WORKER_CONCURRENCY
-        value: "4"
-      - key: JOB_WORKSPACE_CONCURRENCY
+      - key: JOB_DRAIN_SECRET
+        sync: false
+      - key: JOB_DRAIN_BATCH_SIZE
         value: "2"

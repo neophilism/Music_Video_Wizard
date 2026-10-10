@@ -26,6 +26,8 @@ const environmentSchema = z
     JOB_HEARTBEAT_SECONDS: z.coerce.number().int().min(10).max(3600).default(30),
     JOB_WORKER_CONCURRENCY: z.coerce.number().int().positive().max(64).default(4),
     JOB_WORKSPACE_CONCURRENCY: z.coerce.number().int().positive().max(32).default(2),
+    JOB_DRAIN_SECRET: z.string().min(32).optional().or(z.literal("")),
+    JOB_DRAIN_BATCH_SIZE: z.coerce.number().int().positive().max(16).default(2),
     AUDIO_ANALYSIS_PYTHON: z.string().min(1).default("python3"),
     AUDIO_ANALYSIS_FFMPEG: z.string().min(1).default("ffmpeg"),
     VIDEO_RENDER_FFMPEG: z.string().min(1).default("ffmpeg"),

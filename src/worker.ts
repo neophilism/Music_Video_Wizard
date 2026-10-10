@@ -2,28 +2,10 @@ import { startGenerationWorker } from "@/lib/jobs/worker";
 import { startWorkerHeartbeat } from "@/lib/ops/worker-heartbeat";
 import { db } from "@/lib/db";
 import { stopJobQueue } from "@/lib/jobs/queue";
-import { registerBuiltInGenerationHandlers } from "@/lib/music-analysis/register";
-import { registerConceptGenerationHandlers } from "@/lib/concepts/register";
-import { registerTreatmentGenerationHandlers } from "@/lib/treatment/register";
-import { registerCreativeLanguageGenerationHandlers } from "@/lib/creative-language/register";
-import { registerSongPicturePlanGenerationHandlers } from "@/lib/song-picture-plan/register";
-import { registerStoryboardGenerationHandlers } from "@/lib/storyboard/register";
-import { registerShotSpecificationsGenerationHandlers } from "@/lib/shot-specifications/register";
-import { registerInitialFrameGenerationHandlers } from "@/lib/initial-frames/register";
-import { registerVideoClipGenerationHandlers } from "@/lib/video-clips/register";
-import { registerFinalMasterRenderHandler } from "@/lib/finish-export/register";
+import { registerAllGenerationHandlers } from "@/lib/jobs/register-all";
 
 async function main() {
-  registerBuiltInGenerationHandlers();
-  registerConceptGenerationHandlers();
-  registerTreatmentGenerationHandlers();
-  registerCreativeLanguageGenerationHandlers();
-  registerSongPicturePlanGenerationHandlers();
-  registerStoryboardGenerationHandlers();
-  registerShotSpecificationsGenerationHandlers();
-  registerInitialFrameGenerationHandlers();
-  registerVideoClipGenerationHandlers();
-  registerFinalMasterRenderHandler();
+  registerAllGenerationHandlers();
   const worker = await startGenerationWorker();
   let stopHeartbeat: () => Promise<void>;
   try {
