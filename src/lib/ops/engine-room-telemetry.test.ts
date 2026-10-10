@@ -44,7 +44,7 @@ describe("Engine Room worker telemetry", () => {
       value: 100,
       observedAt: observedAt.toISOString()
     }]);
-    expect(buildWorkerAvailabilityDelivery(observedAt, id, false).records[0].value).toBe(0);
+    expect(buildWorkerAvailabilityDelivery(observedAt, id, false).records[0]!.value).toBe(0);
     expect(() => buildWorkerAvailabilityDelivery(observedAt, "not-uuid", true)).toThrow();
   });
 });
