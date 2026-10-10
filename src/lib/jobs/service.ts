@@ -9,6 +9,7 @@ import { fromPrisma } from "pg-boss";
 import { db } from "@/lib/db";
 import { getEnvironment } from "@/lib/env";
 import { GENERATION_QUEUE, getJobQueue } from "./queue";
+import { requestGenerationExecutorWake } from "./wake";
 
 export interface GenerationJobInputReference {
   nodeId: string;
@@ -40,7 +41,7 @@ export async function enqueueGenerationJob(input: EnqueueGenerationJobInput) {
   const retryLimit = input.retryLimit ?? env.JOB_RETRY_LIMIT;
   const maxAttempts = retryLimit + 1;
 
-  return db.$transaction(async (tx) => {
+  const created = await db.$transaction(async (tx) => {
     if (input.projectId) {
       const project = await tx.project.findFirst({
         where: {
@@ -109,6 +110,9 @@ export async function enqueueGenerationJob(input: EnqueueGenerationJobInput) {
 
     return created;
   });
+
+  requestGenerationExecutorWake();
+  return created;
 }
 
 export async function cancelGenerationJob(jobId: string): Promise<boolean> {
