@@ -1,5 +1,6 @@
 import { startGenerationWorker } from "@/lib/jobs/worker";
 import { startWorkerHeartbeat } from "@/lib/ops/worker-heartbeat";
+import { startEngineRoomWorkerTelemetry } from "@/lib/ops/engine-room-telemetry";
 import { db } from "@/lib/db";
 import { stopJobQueue } from "@/lib/jobs/queue";
 import { registerAllGenerationHandlers } from "@/lib/jobs/register-all";
@@ -7,10 +8,14 @@ import { registerAllGenerationHandlers } from "@/lib/jobs/register-all";
 async function main() {
   registerAllGenerationHandlers();
   const worker = await startGenerationWorker();
-  let stopHeartbeat: () => Promise<void>;
+  let stopHeartbeat: () => Promise<void> = async () => undefined;
+  let stopTelemetry: () => Promise<void> = async () => undefined;
   try {
     stopHeartbeat = await startWorkerHeartbeat();
+    stopTelemetry = startEngineRoomWorkerTelemetry();
   } catch (error) {
+    await stopTelemetry();
+    await stopHeartbeat();
     await worker.stop();
     await stopJobQueue();
     throw error;
@@ -24,6 +29,7 @@ async function main() {
     console.log(`Received ${signal}; draining generation worker.`);
     try {
       await worker.stop();
+      await stopTelemetry();
       await stopHeartbeat();
       await stopJobQueue();
       await db.$disconnect();
