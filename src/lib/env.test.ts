@@ -17,6 +17,18 @@ describe("getEnvironment", () => {
     expect(env.NODE_ENV).toBe("development");
     expect(env.ASSET_STORAGE_DRIVER).toBe("local");
     expect(env.BETTER_AUTH_URL).toBe("http://localhost:3000");
+    expect(env.JOB_EXECUTOR_URL).toBeUndefined();
+    expect(env.JOB_WAKE_TIMEOUT_MS).toBe(90000);
+  });
+
+  it("accepts an optional executor wake URL", () => {
+    const env = getEnvironment({
+      ...validEnvironment,
+      JOB_EXECUTOR_URL: "https://executor.example.com",
+      JOB_DRAIN_SECRET: "0123456789abcdef0123456789abcdef"
+    });
+
+    expect(env.JOB_EXECUTOR_URL).toBe("https://executor.example.com");
   });
 
   it("rejects a missing database URL", () => {
