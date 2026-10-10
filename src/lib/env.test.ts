@@ -44,4 +44,27 @@ describe("getEnvironment", () => {
       })
     ).toThrow(/BETTER_AUTH_SECRET/);
   });
+
+  it("requires a direct Neon URL in production while migration and pg-boss share DATABASE_URL", () => {
+    const base = {
+      ...validEnvironment,
+      NODE_ENV: "production" as const,
+      BETTER_AUTH_URL: "https://mvw.example.com"
+    };
+    expect(() => getEnvironment({
+      ...base,
+      DATABASE_URL: "postgresql://user:pass@ep-foo-pooler.us-east-2.aws.neon.tech/neondb"
+    })).toThrow(/direct non-pooler/);
+    expect(getEnvironment({
+      ...base,
+      DATABASE_URL: "postgresql://user:pass@ep-foo.us-east-2.aws.neon.tech/neondb"
+    }).NODE_ENV).toBe("production");
+  });
+
+  it("does not incorrectly reject a development pooled connection", () => {
+    expect(getEnvironment({
+      ...validEnvironment,
+      DATABASE_URL: "postgresql://user:pass@ep-foo-pooler.us-east-2.aws.neon.tech/test"
+    }).NODE_ENV).toBe("development");
+  });
 });

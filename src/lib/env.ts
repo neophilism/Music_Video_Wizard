@@ -46,6 +46,31 @@ const environmentSchema = z
     OPENAI_BASE_URL: z.string().url().default("https://api.openai.com")
   })
   .superRefine((env, ctx) => {
+    // The current topology shares DATABASE_URL between Prisma migrations and
+    // pg-boss LISTEN/NOTIFY. A Neon transaction-pooler URL is incompatible.
+    if (env.NODE_ENV === "production") {
+      try {
+        const url = new URL(env.DATABASE_URL);
+        if (!["postgres:", "postgresql:"].includes(url.protocol) || !url.hostname) {
+          throw new Error("Not a PostgreSQL endpoint.");
+        }
+        const pooled = /(^|[-.])pooler([-.]|$)/i.test(url.hostname);
+        if (pooled) {
+          ctx.addIssue({
+            code: "custom",
+            path: ["DATABASE_URL"],
+            message: "Use a direct non-pooler PostgreSQL URL for the current Prisma migration and pg-boss topology."
+          });
+        }
+      } catch {
+        ctx.addIssue({
+          code: "custom",
+          path: ["DATABASE_URL"],
+          message: "Production DATABASE_URL must be a valid PostgreSQL connection URL."
+        });
+      }
+    }
+
     const hasAccessKey = Boolean(env.ASSET_STORAGE_ACCESS_KEY_ID);
     const hasSecretKey = Boolean(env.ASSET_STORAGE_SECRET_ACCESS_KEY);
     if (hasAccessKey !== hasSecretKey) {
