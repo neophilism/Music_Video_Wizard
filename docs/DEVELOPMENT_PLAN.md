@@ -1,3 +1,5 @@
+> **Canonical PR roadmap:** [`registry/roadmap.json`](../registry/roadmap.json). This detailed plan remains intact as the historical scope source; agents must edit the canonical file for PR counts and mapping.
+
 # Music_Video_Wizard: original development plan (complete recovery)
 
 **Source:** ChatGPT Library original `Music_Video_Wizard_and_Development_Plan.docx`. Full extracted text is preserved below. **This is the original planning source**, not a current implementation-completion assertion.
