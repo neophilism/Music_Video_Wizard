@@ -1,0 +1,518 @@
+{
+  "repository": "neophilism/Music_Video_Wizard",
+  "title": "Music_Video_Wizard",
+  "version": 1,
+  "planVerified": true,
+  "plannedPrCount": 63,
+  "sourceFiles": [
+    ".exechub/project.yml",
+    "docs/DEVELOPMENT_PLAN.md",
+    ".exechub/approved-pr-mapping.json"
+  ],
+  "milestones": [
+    {
+      "id": "MVW-001",
+      "title": "Application foundation and creative libraries — approved package 1 of 10",
+      "origin": "original",
+      "pullRequests": [
+        1
+      ]
+    },
+    {
+      "id": "MVW-002",
+      "title": "Application foundation and creative libraries — approved package 2 of 10",
+      "origin": "original",
+      "pullRequests": [
+        2
+      ]
+    },
+    {
+      "id": "MVW-003",
+      "title": "Application foundation and creative libraries — approved package 3 of 10",
+      "origin": "original",
+      "pullRequests": [
+        3
+      ]
+    },
+    {
+      "id": "MVW-004",
+      "title": "Application foundation and creative libraries — approved package 4 of 10",
+      "origin": "original",
+      "pullRequests": [
+        4
+      ]
+    },
+    {
+      "id": "MVW-005",
+      "title": "Application foundation and creative libraries — approved package 5 of 10",
+      "origin": "original",
+      "pullRequests": [
+        5
+      ]
+    },
+    {
+      "id": "MVW-006",
+      "title": "Application foundation and creative libraries — approved package 6 of 10",
+      "origin": "original",
+      "pullRequests": [
+        6
+      ]
+    },
+    {
+      "id": "MVW-007",
+      "title": "Application foundation and creative libraries — approved package 7 of 10",
+      "origin": "original",
+      "pullRequests": [
+        7
+      ]
+    },
+    {
+      "id": "MVW-008",
+      "title": "Application foundation and creative libraries — approved package 8 of 10",
+      "origin": "original",
+      "pullRequests": [
+        8
+      ]
+    },
+    {
+      "id": "MVW-009",
+      "title": "Application foundation and creative libraries — approved package 9 of 10",
+      "origin": "original",
+      "pullRequests": [
+        9
+      ]
+    },
+    {
+      "id": "MVW-010",
+      "title": "Application foundation and creative libraries — approved package 10 of 10",
+      "origin": "original",
+      "pullRequests": [
+        10
+      ]
+    },
+    {
+      "id": "MVW-011",
+      "title": "Music analysis and creative direction — approved package 1 of 11",
+      "origin": "original",
+      "pullRequests": [
+        11
+      ]
+    },
+    {
+      "id": "MVW-012",
+      "title": "Music analysis and creative direction — approved package 2 of 11",
+      "origin": "original",
+      "pullRequests": [
+        12
+      ]
+    },
+    {
+      "id": "MVW-013",
+      "title": "Music analysis and creative direction — approved package 3 of 11",
+      "origin": "original",
+      "pullRequests": [
+        13
+      ]
+    },
+    {
+      "id": "MVW-014",
+      "title": "Music analysis and creative direction — approved package 4 of 11",
+      "origin": "original",
+      "pullRequests": [
+        14
+      ]
+    },
+    {
+      "id": "MVW-015",
+      "title": "Music analysis and creative direction — approved package 5 of 11",
+      "origin": "original",
+      "pullRequests": [
+        15
+      ]
+    },
+    {
+      "id": "MVW-016",
+      "title": "Music analysis and creative direction — approved package 6 of 11",
+      "origin": "original",
+      "pullRequests": [
+        16
+      ]
+    },
+    {
+      "id": "MVW-017",
+      "title": "Music analysis and creative direction — approved package 7 of 11",
+      "origin": "original",
+      "pullRequests": [
+        17
+      ]
+    },
+    {
+      "id": "MVW-018",
+      "title": "Music analysis and creative direction — approved package 8 of 11",
+      "origin": "original",
+      "pullRequests": [
+        18
+      ]
+    },
+    {
+      "id": "MVW-019",
+      "title": "Music analysis and creative direction — approved package 9 of 11",
+      "origin": "original",
+      "pullRequests": [
+        19
+      ]
+    },
+    {
+      "id": "MVW-020",
+      "title": "Music analysis and creative direction — approved package 10 of 11",
+      "origin": "original",
+      "pullRequests": [
+        20
+      ]
+    },
+    {
+      "id": "MVW-021",
+      "title": "Music analysis and creative direction — approved package 11 of 11",
+      "origin": "original",
+      "pullRequests": [
+        21
+      ]
+    },
+    {
+      "id": "MVW-022",
+      "title": "Storyboarding and media generation — approved package 1 of 14",
+      "origin": "original",
+      "pullRequests": [
+        22
+      ]
+    },
+    {
+      "id": "MVW-023",
+      "title": "Storyboarding and media generation — approved package 2 of 14",
+      "origin": "original",
+      "pullRequests": [
+        23
+      ]
+    },
+    {
+      "id": "MVW-024",
+      "title": "Storyboarding and media generation — approved package 3 of 14",
+      "origin": "original",
+      "pullRequests": [
+        24
+      ]
+    },
+    {
+      "id": "MVW-025",
+      "title": "Storyboarding and media generation — approved package 4 of 14",
+      "origin": "original",
+      "pullRequests": [
+        25
+      ]
+    },
+    {
+      "id": "MVW-026",
+      "title": "Storyboarding and media generation — approved package 5 of 14",
+      "origin": "original",
+      "pullRequests": [
+        26
+      ]
+    },
+    {
+      "id": "MVW-027",
+      "title": "Storyboarding and media generation — approved package 6 of 14",
+      "origin": "original",
+      "pullRequests": [
+        27
+      ]
+    },
+    {
+      "id": "MVW-028",
+      "title": "Storyboarding and media generation — approved package 7 of 14",
+      "origin": "original",
+      "pullRequests": [
+        28
+      ]
+    },
+    {
+      "id": "MVW-029",
+      "title": "Storyboarding and media generation — approved package 8 of 14",
+      "origin": "original",
+      "pullRequests": [
+        29
+      ]
+    },
+    {
+      "id": "MVW-030",
+      "title": "Storyboarding and media generation — approved package 9 of 14",
+      "origin": "original",
+      "pullRequests": [
+        30
+      ]
+    },
+    {
+      "id": "MVW-031",
+      "title": "Storyboarding and media generation — approved package 10 of 14",
+      "origin": "original",
+      "pullRequests": [
+        31
+      ]
+    },
+    {
+      "id": "MVW-032",
+      "title": "Storyboarding and media generation — approved package 11 of 14",
+      "origin": "original",
+      "pullRequests": [
+        32
+      ]
+    },
+    {
+      "id": "MVW-033",
+      "title": "Storyboarding and media generation — approved package 12 of 14",
+      "origin": "original",
+      "pullRequests": [
+        33
+      ]
+    },
+    {
+      "id": "MVW-034",
+      "title": "Storyboarding and media generation — approved package 13 of 14",
+      "origin": "original",
+      "pullRequests": [
+        34
+      ]
+    },
+    {
+      "id": "MVW-035",
+      "title": "Storyboarding and media generation — approved package 14 of 14",
+      "origin": "original",
+      "pullRequests": [
+        35
+      ]
+    },
+    {
+      "id": "MVW-036",
+      "title": "Automatic editing and final export — approved package 1 of 7",
+      "origin": "original",
+      "pullRequests": [
+        36
+      ]
+    },
+    {
+      "id": "MVW-037",
+      "title": "Automatic editing and final export — approved package 2 of 7",
+      "origin": "original",
+      "pullRequests": [
+        37
+      ]
+    },
+    {
+      "id": "MVW-038",
+      "title": "Automatic editing and final export — approved package 3 of 7",
+      "origin": "original",
+      "pullRequests": [
+        38
+      ]
+    },
+    {
+      "id": "MVW-039",
+      "title": "Automatic editing and final export — approved package 4 of 7",
+      "origin": "original",
+      "pullRequests": [
+        39
+      ]
+    },
+    {
+      "id": "MVW-040",
+      "title": "Automatic editing and final export — approved package 5 of 7",
+      "origin": "original",
+      "pullRequests": [
+        40
+      ]
+    },
+    {
+      "id": "MVW-041",
+      "title": "Automatic editing and final export — approved package 6 of 7",
+      "origin": "original",
+      "pullRequests": [
+        41
+      ]
+    },
+    {
+      "id": "MVW-042",
+      "title": "Automatic editing and final export — approved package 7 of 7",
+      "origin": "original",
+      "pullRequests": [
+        42
+      ]
+    },
+    {
+      "id": "MVW-043",
+      "title": "Release acceptance and operations foundation — approved package 1 of 9",
+      "origin": "original",
+      "pullRequests": [
+        43
+      ]
+    },
+    {
+      "id": "MVW-044",
+      "title": "Release acceptance and operations foundation — approved package 2 of 9",
+      "origin": "original",
+      "pullRequests": [
+        44
+      ]
+    },
+    {
+      "id": "MVW-045",
+      "title": "Release acceptance and operations foundation — approved package 3 of 9",
+      "origin": "original",
+      "pullRequests": [
+        45
+      ]
+    },
+    {
+      "id": "MVW-046",
+      "title": "Release acceptance and operations foundation — approved package 4 of 9",
+      "origin": "original",
+      "pullRequests": [
+        46
+      ]
+    },
+    {
+      "id": "MVW-047",
+      "title": "Release acceptance and operations foundation — approved package 5 of 9",
+      "origin": "original",
+      "pullRequests": [
+        47
+      ]
+    },
+    {
+      "id": "MVW-048",
+      "title": "Release acceptance and operations foundation — approved package 6 of 9",
+      "origin": "original",
+      "pullRequests": [
+        49
+      ]
+    },
+    {
+      "id": "MVW-049",
+      "title": "Release acceptance and operations foundation — approved package 7 of 9",
+      "origin": "original",
+      "pullRequests": [
+        50
+      ]
+    },
+    {
+      "id": "MVW-050",
+      "title": "Release acceptance and operations foundation — approved package 8 of 9",
+      "origin": "original",
+      "pullRequests": [
+        51
+      ]
+    },
+    {
+      "id": "MVW-051",
+      "title": "Release acceptance and operations foundation — approved package 9 of 9",
+      "origin": "original",
+      "pullRequests": [
+        52
+      ]
+    },
+    {
+      "id": "MVW-052",
+      "title": "Production activation and monitoring — approved package 1 of 12",
+      "origin": "original",
+      "pullRequests": [
+        53
+      ]
+    },
+    {
+      "id": "MVW-053",
+      "title": "Production activation and monitoring — approved package 2 of 12",
+      "origin": "original",
+      "pullRequests": [
+        54
+      ]
+    },
+    {
+      "id": "MVW-054",
+      "title": "Production activation and monitoring — approved package 3 of 12",
+      "origin": "original",
+      "pullRequests": [
+        55
+      ]
+    },
+    {
+      "id": "MVW-055",
+      "title": "Production activation and monitoring — approved package 4 of 12",
+      "origin": "original",
+      "pullRequests": [
+        56
+      ]
+    },
+    {
+      "id": "MVW-056",
+      "title": "Production activation and monitoring — approved package 5 of 12",
+      "origin": "original",
+      "pullRequests": [
+        57
+      ]
+    },
+    {
+      "id": "MVW-057",
+      "title": "Production activation and monitoring — approved package 6 of 12",
+      "origin": "original",
+      "pullRequests": [
+        58
+      ]
+    },
+    {
+      "id": "MVW-058",
+      "title": "Production activation and monitoring — approved package 7 of 12",
+      "origin": "original",
+      "pullRequests": [
+        59
+      ]
+    },
+    {
+      "id": "MVW-059",
+      "title": "Production activation and monitoring — approved package 8 of 12",
+      "origin": "original",
+      "pullRequests": [
+        60
+      ]
+    },
+    {
+      "id": "MVW-060",
+      "title": "Production activation and monitoring — approved package 9 of 12",
+      "origin": "original",
+      "pullRequests": [
+        61
+      ]
+    },
+    {
+      "id": "MVW-061",
+      "title": "Production activation and monitoring — approved package 10 of 12",
+      "origin": "original",
+      "pullRequests": [
+        62
+      ]
+    },
+    {
+      "id": "MVW-062",
+      "title": "Production activation and monitoring — approved package 11 of 12",
+      "origin": "original",
+      "pullRequests": [
+        63
+      ]
+    },
+    {
+      "id": "MVW-063",
+      "title": "Production activation and monitoring — approved package 12 of 12",
+      "origin": "original",
+      "pullRequests": [
+        64
+      ]
+    }
+  ]
+}
