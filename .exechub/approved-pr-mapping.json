@@ -66,5 +66,7 @@
     62,
     63,
     64
-  ]
+  ],
+  "_canonicalRoadmap": "registry/roadmap.json",
+  "_notice": "Historical mapping evidence: new PR changes belong in registry/roadmap.json."
 }
