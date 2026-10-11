@@ -1,0 +1,1461 @@
+{
+  "schemaVersion": 1,
+  "repository": "neophilism/Music_Video_Wizard",
+  "roadmapVersion": 1,
+  "planVerified": true,
+  "plannedPrCount": 63,
+  "observedAt": "2026-10-11T17:38:40.893Z",
+  "units": [
+    {
+      "id": "MVW-001",
+      "title": "Application foundation and creative libraries — approved package 1 of 10",
+      "origin": "original",
+      "prs": [
+        1
+      ]
+    },
+    {
+      "id": "MVW-002",
+      "title": "Application foundation and creative libraries — approved package 2 of 10",
+      "origin": "original",
+      "prs": [
+        2
+      ]
+    },
+    {
+      "id": "MVW-003",
+      "title": "Application foundation and creative libraries — approved package 3 of 10",
+      "origin": "original",
+      "prs": [
+        3
+      ]
+    },
+    {
+      "id": "MVW-004",
+      "title": "Application foundation and creative libraries — approved package 4 of 10",
+      "origin": "original",
+      "prs": [
+        4
+      ]
+    },
+    {
+      "id": "MVW-005",
+      "title": "Application foundation and creative libraries — approved package 5 of 10",
+      "origin": "original",
+      "prs": [
+        5
+      ]
+    },
+    {
+      "id": "MVW-006",
+      "title": "Application foundation and creative libraries — approved package 6 of 10",
+      "origin": "original",
+      "prs": [
+        6
+      ]
+    },
+    {
+      "id": "MVW-007",
+      "title": "Application foundation and creative libraries — approved package 7 of 10",
+      "origin": "original",
+      "prs": [
+        7
+      ]
+    },
+    {
+      "id": "MVW-008",
+      "title": "Application foundation and creative libraries — approved package 8 of 10",
+      "origin": "original",
+      "prs": [
+        8
+      ]
+    },
+    {
+      "id": "MVW-009",
+      "title": "Application foundation and creative libraries — approved package 9 of 10",
+      "origin": "original",
+      "prs": [
+        9
+      ]
+    },
+    {
+      "id": "MVW-010",
+      "title": "Application foundation and creative libraries — approved package 10 of 10",
+      "origin": "original",
+      "prs": [
+        10
+      ]
+    },
+    {
+      "id": "MVW-011",
+      "title": "Music analysis and creative direction — approved package 1 of 11",
+      "origin": "original",
+      "prs": [
+        11
+      ]
+    },
+    {
+      "id": "MVW-012",
+      "title": "Music analysis and creative direction — approved package 2 of 11",
+      "origin": "original",
+      "prs": [
+        12
+      ]
+    },
+    {
+      "id": "MVW-013",
+      "title": "Music analysis and creative direction — approved package 3 of 11",
+      "origin": "original",
+      "prs": [
+        13
+      ]
+    },
+    {
+      "id": "MVW-014",
+      "title": "Music analysis and creative direction — approved package 4 of 11",
+      "origin": "original",
+      "prs": [
+        14
+      ]
+    },
+    {
+      "id": "MVW-015",
+      "title": "Music analysis and creative direction — approved package 5 of 11",
+      "origin": "original",
+      "prs": [
+        15
+      ]
+    },
+    {
+      "id": "MVW-016",
+      "title": "Music analysis and creative direction — approved package 6 of 11",
+      "origin": "original",
+      "prs": [
+        16
+      ]
+    },
+    {
+      "id": "MVW-017",
+      "title": "Music analysis and creative direction — approved package 7 of 11",
+      "origin": "original",
+      "prs": [
+        17
+      ]
+    },
+    {
+      "id": "MVW-018",
+      "title": "Music analysis and creative direction — approved package 8 of 11",
+      "origin": "original",
+      "prs": [
+        18
+      ]
+    },
+    {
+      "id": "MVW-019",
+      "title": "Music analysis and creative direction — approved package 9 of 11",
+      "origin": "original",
+      "prs": [
+        19
+      ]
+    },
+    {
+      "id": "MVW-020",
+      "title": "Music analysis and creative direction — approved package 10 of 11",
+      "origin": "original",
+      "prs": [
+        20
+      ]
+    },
+    {
+      "id": "MVW-021",
+      "title": "Music analysis and creative direction — approved package 11 of 11",
+      "origin": "original",
+      "prs": [
+        21
+      ]
+    },
+    {
+      "id": "MVW-022",
+      "title": "Storyboarding and media generation — approved package 1 of 14",
+      "origin": "original",
+      "prs": [
+        22
+      ]
+    },
+    {
+      "id": "MVW-023",
+      "title": "Storyboarding and media generation — approved package 2 of 14",
+      "origin": "original",
+      "prs": [
+        23
+      ]
+    },
+    {
+      "id": "MVW-024",
+      "title": "Storyboarding and media generation — approved package 3 of 14",
+      "origin": "original",
+      "prs": [
+        24
+      ]
+    },
+    {
+      "id": "MVW-025",
+      "title": "Storyboarding and media generation — approved package 4 of 14",
+      "origin": "original",
+      "prs": [
+        25
+      ]
+    },
+    {
+      "id": "MVW-026",
+      "title": "Storyboarding and media generation — approved package 5 of 14",
+      "origin": "original",
+      "prs": [
+        26
+      ]
+    },
+    {
+      "id": "MVW-027",
+      "title": "Storyboarding and media generation — approved package 6 of 14",
+      "origin": "original",
+      "prs": [
+        27
+      ]
+    },
+    {
+      "id": "MVW-028",
+      "title": "Storyboarding and media generation — approved package 7 of 14",
+      "origin": "original",
+      "prs": [
+        28
+      ]
+    },
+    {
+      "id": "MVW-029",
+      "title": "Storyboarding and media generation — approved package 8 of 14",
+      "origin": "original",
+      "prs": [
+        29
+      ]
+    },
+    {
+      "id": "MVW-030",
+      "title": "Storyboarding and media generation — approved package 9 of 14",
+      "origin": "original",
+      "prs": [
+        30
+      ]
+    },
+    {
+      "id": "MVW-031",
+      "title": "Storyboarding and media generation — approved package 10 of 14",
+      "origin": "original",
+      "prs": [
+        31
+      ]
+    },
+    {
+      "id": "MVW-032",
+      "title": "Storyboarding and media generation — approved package 11 of 14",
+      "origin": "original",
+      "prs": [
+        32
+      ]
+    },
+    {
+      "id": "MVW-033",
+      "title": "Storyboarding and media generation — approved package 12 of 14",
+      "origin": "original",
+      "prs": [
+        33
+      ]
+    },
+    {
+      "id": "MVW-034",
+      "title": "Storyboarding and media generation — approved package 13 of 14",
+      "origin": "original",
+      "prs": [
+        34
+      ]
+    },
+    {
+      "id": "MVW-035",
+      "title": "Storyboarding and media generation — approved package 14 of 14",
+      "origin": "original",
+      "prs": [
+        35
+      ]
+    },
+    {
+      "id": "MVW-036",
+      "title": "Automatic editing and final export — approved package 1 of 7",
+      "origin": "original",
+      "prs": [
+        36
+      ]
+    },
+    {
+      "id": "MVW-037",
+      "title": "Automatic editing and final export — approved package 2 of 7",
+      "origin": "original",
+      "prs": [
+        37
+      ]
+    },
+    {
+      "id": "MVW-038",
+      "title": "Automatic editing and final export — approved package 3 of 7",
+      "origin": "original",
+      "prs": [
+        38
+      ]
+    },
+    {
+      "id": "MVW-039",
+      "title": "Automatic editing and final export — approved package 4 of 7",
+      "origin": "original",
+      "prs": [
+        39
+      ]
+    },
+    {
+      "id": "MVW-040",
+      "title": "Automatic editing and final export — approved package 5 of 7",
+      "origin": "original",
+      "prs": [
+        40
+      ]
+    },
+    {
+      "id": "MVW-041",
+      "title": "Automatic editing and final export — approved package 6 of 7",
+      "origin": "original",
+      "prs": [
+        41
+      ]
+    },
+    {
+      "id": "MVW-042",
+      "title": "Automatic editing and final export — approved package 7 of 7",
+      "origin": "original",
+      "prs": [
+        42
+      ]
+    },
+    {
+      "id": "MVW-043",
+      "title": "Release acceptance and operations foundation — approved package 1 of 9",
+      "origin": "original",
+      "prs": [
+        43
+      ]
+    },
+    {
+      "id": "MVW-044",
+      "title": "Release acceptance and operations foundation — approved package 2 of 9",
+      "origin": "original",
+      "prs": [
+        44
+      ]
+    },
+    {
+      "id": "MVW-045",
+      "title": "Release acceptance and operations foundation — approved package 3 of 9",
+      "origin": "original",
+      "prs": [
+        45
+      ]
+    },
+    {
+      "id": "MVW-046",
+      "title": "Release acceptance and operations foundation — approved package 4 of 9",
+      "origin": "original",
+      "prs": [
+        46
+      ]
+    },
+    {
+      "id": "MVW-047",
+      "title": "Release acceptance and operations foundation — approved package 5 of 9",
+      "origin": "original",
+      "prs": [
+        47
+      ]
+    },
+    {
+      "id": "MVW-048",
+      "title": "Release acceptance and operations foundation — approved package 6 of 9",
+      "origin": "original",
+      "prs": [
+        49
+      ]
+    },
+    {
+      "id": "MVW-049",
+      "title": "Release acceptance and operations foundation — approved package 7 of 9",
+      "origin": "original",
+      "prs": [
+        50
+      ]
+    },
+    {
+      "id": "MVW-050",
+      "title": "Release acceptance and operations foundation — approved package 8 of 9",
+      "origin": "original",
+      "prs": [
+        51
+      ]
+    },
+    {
+      "id": "MVW-051",
+      "title": "Release acceptance and operations foundation — approved package 9 of 9",
+      "origin": "original",
+      "prs": [
+        52
+      ]
+    },
+    {
+      "id": "MVW-052",
+      "title": "Production activation and monitoring — approved package 1 of 12",
+      "origin": "original",
+      "prs": [
+        53
+      ]
+    },
+    {
+      "id": "MVW-053",
+      "title": "Production activation and monitoring — approved package 2 of 12",
+      "origin": "original",
+      "prs": [
+        54
+      ]
+    },
+    {
+      "id": "MVW-054",
+      "title": "Production activation and monitoring — approved package 3 of 12",
+      "origin": "original",
+      "prs": [
+        55
+      ]
+    },
+    {
+      "id": "MVW-055",
+      "title": "Production activation and monitoring — approved package 4 of 12",
+      "origin": "original",
+      "prs": [
+        56
+      ]
+    },
+    {
+      "id": "MVW-056",
+      "title": "Production activation and monitoring — approved package 5 of 12",
+      "origin": "original",
+      "prs": [
+        57
+      ]
+    },
+    {
+      "id": "MVW-057",
+      "title": "Production activation and monitoring — approved package 6 of 12",
+      "origin": "original",
+      "prs": [
+        58
+      ]
+    },
+    {
+      "id": "MVW-058",
+      "title": "Production activation and monitoring — approved package 7 of 12",
+      "origin": "original",
+      "prs": [
+        59
+      ]
+    },
+    {
+      "id": "MVW-059",
+      "title": "Production activation and monitoring — approved package 8 of 12",
+      "origin": "original",
+      "prs": [
+        60
+      ]
+    },
+    {
+      "id": "MVW-060",
+      "title": "Production activation and monitoring — approved package 9 of 12",
+      "origin": "original",
+      "prs": [
+        61
+      ]
+    },
+    {
+      "id": "MVW-061",
+      "title": "Production activation and monitoring — approved package 10 of 12",
+      "origin": "original",
+      "prs": [
+        62
+      ]
+    },
+    {
+      "id": "MVW-062",
+      "title": "Production activation and monitoring — approved package 11 of 12",
+      "origin": "original",
+      "prs": [
+        63
+      ]
+    },
+    {
+      "id": "MVW-063",
+      "title": "Production activation and monitoring — approved package 12 of 12",
+      "origin": "original",
+      "prs": [
+        64
+      ]
+    }
+  ],
+  "pullRequests": [
+    {
+      "id": 4812562155,
+      "number": 63,
+      "title": "PR 57: Consolidated production operations acceptance gate",
+      "url": "https://github.com/neophilism/Music_Video_Wizard/pull/63",
+      "state": "closed",
+      "draft": false,
+      "createdAt": "2026-10-10T16:03:43.000Z",
+      "updatedAt": "2026-10-10T16:11:02.000Z",
+      "closedAt": "2026-10-10T16:11:01.000Z",
+      "mergedAt": "2026-10-10T16:11:01.000Z",
+      "headSha": "47300ad81e52ff70663dcfc234cfc316efe17cf8",
+      "baseRef": "main",
+      "mergeCommitSha": "9db59447915e4dbd8510a5cde6cddfc8563e494c"
+    },
+    {
+      "id": 4811394621,
+      "number": 62,
+      "title": "PR 62: Container-Owned Production Startup",
+      "url": "https://github.com/neophilism/Music_Video_Wizard/pull/62",
+      "state": "closed",
+      "draft": false,
+      "createdAt": "2026-10-10T13:02:39.000Z",
+      "updatedAt": "2026-10-10T13:45:47.000Z",
+      "closedAt": "2026-10-10T13:45:47.000Z",
+      "mergedAt": "2026-10-10T13:45:47.000Z",
+      "headSha": "9daaa1f977736c68a2f2ab837fa06ae34de6a245",
+      "baseRef": "main",
+      "mergeCommitSha": "b29df66a03a061b21ac562a938780e17975bb68a"
+    },
+    {
+      "id": 4811377240,
+      "number": 61,
+      "title": "PR 61: On-Demand Free Executor Wake",
+      "url": "https://github.com/neophilism/Music_Video_Wizard/pull/61",
+      "state": "closed",
+      "draft": false,
+      "createdAt": "2026-10-10T12:59:38.000Z",
+      "updatedAt": "2026-10-10T13:03:47.000Z",
+      "closedAt": "2026-10-10T13:03:47.000Z",
+      "mergedAt": "2026-10-10T13:03:47.000Z",
+      "headSha": "6fca4fac901a4e5d1f1501e6b7fb285ae371ad8f",
+      "baseRef": "main",
+      "mergeCommitSha": "106e0f1feb61c8117d7ba1e6c9b7b41cdaffed5e"
+    },
+    {
+      "id": 4811294393,
+      "number": 60,
+      "title": "PR 56: Neon-Scheduled Free Executor",
+      "url": "https://github.com/neophilism/Music_Video_Wizard/pull/60",
+      "state": "closed",
+      "draft": false,
+      "createdAt": "2026-10-10T12:46:30.000Z",
+      "updatedAt": "2026-10-10T12:49:59.000Z",
+      "closedAt": "2026-10-10T12:49:59.000Z",
+      "mergedAt": "2026-10-10T12:49:59.000Z",
+      "headSha": "a14b0e143dc63f92432cdd3bdb97d4dd650fc954",
+      "baseRef": "main",
+      "mergeCommitSha": "00fd859d18d389114d94fe4fb15e4c7039b0fb6b"
+    },
+    {
+      "id": 4807496660,
+      "number": 59,
+      "title": "PR 59: Prevent unsupported Runway Gen-4 Turbo clip durations",
+      "url": "https://github.com/neophilism/Music_Video_Wizard/pull/59",
+      "state": "closed",
+      "draft": false,
+      "createdAt": "2026-10-10T00:58:04.000Z",
+      "updatedAt": "2026-10-10T16:15:24.000Z",
+      "closedAt": "2026-10-10T16:15:24.000Z",
+      "mergedAt": "2026-10-10T16:15:24.000Z",
+      "headSha": "5148a1af17e1557d81749690c7102fcc11bf5e4b",
+      "baseRef": "main",
+      "mergeCommitSha": "f9e9777f3e04704aadc5342bc498f65fa1d93dd4"
+    },
+    {
+      "id": 4807463508,
+      "number": 58,
+      "title": "PR 58: Guard production Neon connections for migrations and pg-boss",
+      "url": "https://github.com/neophilism/Music_Video_Wizard/pull/58",
+      "state": "closed",
+      "draft": false,
+      "createdAt": "2026-10-10T00:52:59.000Z",
+      "updatedAt": "2026-10-10T16:07:58.000Z",
+      "closedAt": "2026-10-10T16:07:58.000Z",
+      "mergedAt": "2026-10-10T16:07:58.000Z",
+      "headSha": "a603c9f9bcc26da08be2ad0b7d96984b1723c0a1",
+      "baseRef": "main",
+      "mergeCommitSha": "4857c308e0a585925f93e193966ba9f2fa8ad2b0"
+    },
+    {
+      "id": 4807454806,
+      "number": 57,
+      "title": "PR 57: Consolidated production operations acceptance gate",
+      "url": "https://github.com/neophilism/Music_Video_Wizard/pull/57",
+      "state": "closed",
+      "draft": false,
+      "createdAt": "2026-10-10T00:51:24.000Z",
+      "updatedAt": "2026-10-10T16:03:52.000Z",
+      "closedAt": "2026-10-10T16:03:52.000Z",
+      "mergedAt": null,
+      "headSha": "d04eb86d0eb64d12ee1fd59f9f90e5e6328ae830",
+      "baseRef": "main",
+      "mergeCommitSha": null
+    },
+    {
+      "id": 4807440842,
+      "number": 56,
+      "title": "PR 56: Signed minute-level worker telemetry for Engine Room",
+      "url": "https://github.com/neophilism/Music_Video_Wizard/pull/56",
+      "state": "closed",
+      "draft": false,
+      "createdAt": "2026-10-10T00:49:01.000Z",
+      "updatedAt": "2026-10-10T15:57:22.000Z",
+      "closedAt": "2026-10-10T15:57:22.000Z",
+      "mergedAt": "2026-10-10T15:57:22.000Z",
+      "headSha": "f6bdcb7103a0f260ef6bac3413bfa4ca7f3fcc2f",
+      "baseRef": "main",
+      "mergeCommitSha": "3610d335f8c24405ad5f444fd5ce52c08ed75885"
+    },
+    {
+      "id": 4807428196,
+      "number": 55,
+      "title": "PR 55: Durable worker heartbeats and queue health evidence",
+      "url": "https://github.com/neophilism/Music_Video_Wizard/pull/55",
+      "state": "closed",
+      "draft": false,
+      "createdAt": "2026-10-10T00:46:49.000Z",
+      "updatedAt": "2026-10-10T00:51:37.000Z",
+      "closedAt": "2026-10-10T00:51:37.000Z",
+      "mergedAt": "2026-10-10T00:51:37.000Z",
+      "headSha": "2d17a785e5bc5e4d3171a74a040a1f8782da103b",
+      "baseRef": "main",
+      "mergeCommitSha": "a652fc99ce51e871e479a3a7313b9f95a39eaa31"
+    },
+    {
+      "id": 4807412241,
+      "number": 54,
+      "title": "PR 54: Register measured Music Video Wizard roadmap in Engine Room",
+      "url": "https://github.com/neophilism/Music_Video_Wizard/pull/54",
+      "state": "closed",
+      "draft": false,
+      "createdAt": "2026-10-10T00:43:59.000Z",
+      "updatedAt": "2026-10-10T00:47:55.000Z",
+      "closedAt": "2026-10-10T00:47:55.000Z",
+      "mergedAt": "2026-10-10T00:47:55.000Z",
+      "headSha": "a7d8b7a37f21ce697bb14761ac24f1221261cfd7",
+      "baseRef": "main",
+      "mergeCommitSha": "358537028289c21c42572f57dd4768a0c92e7a3e"
+    },
+    {
+      "id": 4807395141,
+      "number": 53,
+      "title": "PR 53: Scheduled production readiness monitoring",
+      "url": "https://github.com/neophilism/Music_Video_Wizard/pull/53",
+      "state": "closed",
+      "draft": false,
+      "createdAt": "2026-10-10T00:40:56.000Z",
+      "updatedAt": "2026-10-10T00:45:10.000Z",
+      "closedAt": "2026-10-10T00:45:10.000Z",
+      "mergedAt": "2026-10-10T00:45:10.000Z",
+      "headSha": "cef72e9698f5d720eeab9bc1e51a0f0af1888aca",
+      "baseRef": "main",
+      "mergeCommitSha": "eda9d38fbb496963ab33fe3a62d88258cad42bff"
+    },
+    {
+      "id": 4782718978,
+      "number": 52,
+      "title": "PR 52: Asset Storage Integrity Audit",
+      "url": "https://github.com/neophilism/Music_Video_Wizard/pull/52",
+      "state": "closed",
+      "draft": false,
+      "createdAt": "2026-10-08T06:22:36.000Z",
+      "updatedAt": "2026-10-08T13:26:41.000Z",
+      "closedAt": "2026-10-08T13:26:41.000Z",
+      "mergedAt": "2026-10-08T13:26:41.000Z",
+      "headSha": "2f01477f0ddd1b9b576244e26fef078dce1f88de",
+      "baseRef": "main",
+      "mergeCommitSha": "c58fd622440bfc5a1f60c89c52d5c3a8e224cab5"
+    },
+    {
+      "id": 4782704757,
+      "number": 51,
+      "title": "PR 51: Targeted Dependency Security Remediation",
+      "url": "https://github.com/neophilism/Music_Video_Wizard/pull/51",
+      "state": "closed",
+      "draft": false,
+      "createdAt": "2026-10-08T06:21:04.000Z",
+      "updatedAt": "2026-10-08T12:52:41.000Z",
+      "closedAt": "2026-10-08T12:52:40.000Z",
+      "mergedAt": "2026-10-08T12:52:40.000Z",
+      "headSha": "5bfefd6cde8868e8d9952d51aabb417814ca3064",
+      "baseRef": "main",
+      "mergeCommitSha": "af64941c55e663d1b6df60f3cdefa76b52c4dfdf"
+    },
+    {
+      "id": 4782650460,
+      "number": 50,
+      "title": "PR 50: Browser End-to-End Acceptance",
+      "url": "https://github.com/neophilism/Music_Video_Wizard/pull/50",
+      "state": "closed",
+      "draft": false,
+      "createdAt": "2026-10-08T06:14:54.000Z",
+      "updatedAt": "2026-10-08T07:28:39.000Z",
+      "closedAt": "2026-10-08T07:28:39.000Z",
+      "mergedAt": "2026-10-08T07:28:38.000Z",
+      "headSha": "289ba5c95efcbd9b2366b58f37287e9b98587eb6",
+      "baseRef": "main",
+      "mergeCommitSha": "20d110e3d7845ea174a83e19444c0570f307ad31"
+    },
+    {
+      "id": 4782617019,
+      "number": 49,
+      "title": "PR 49: Production Operator Job Status",
+      "url": "https://github.com/neophilism/Music_Video_Wizard/pull/49",
+      "state": "closed",
+      "draft": false,
+      "createdAt": "2026-10-08T06:11:10.000Z",
+      "updatedAt": "2026-10-08T07:09:15.000Z",
+      "closedAt": "2026-10-08T07:09:15.000Z",
+      "mergedAt": "2026-10-08T07:09:15.000Z",
+      "headSha": "10add35303988ae27e898120400b143c4b077beb",
+      "baseRef": "main",
+      "mergeCommitSha": "c3365252b1e3508b603f80efa46e8b784da05bd3"
+    },
+    {
+      "id": 4782603369,
+      "number": 48,
+      "title": "PR 48: Production Dependency Security Gate",
+      "url": "https://github.com/neophilism/Music_Video_Wizard/pull/48",
+      "state": "closed",
+      "draft": false,
+      "createdAt": "2026-10-08T06:09:34.000Z",
+      "updatedAt": "2026-10-08T12:53:42.000Z",
+      "closedAt": "2026-10-08T12:53:42.000Z",
+      "mergedAt": null,
+      "headSha": "09988d483a038f77904853df82017fe6b91d82a4",
+      "baseRef": "main",
+      "mergeCommitSha": null
+    },
+    {
+      "id": 4782595470,
+      "number": 47,
+      "title": "PR 47: Global HTTP Security Headers",
+      "url": "https://github.com/neophilism/Music_Video_Wizard/pull/47",
+      "state": "closed",
+      "draft": false,
+      "createdAt": "2026-10-08T06:08:38.000Z",
+      "updatedAt": "2026-10-08T07:08:54.000Z",
+      "closedAt": "2026-10-08T07:08:54.000Z",
+      "mergedAt": "2026-10-08T07:08:54.000Z",
+      "headSha": "e7004d48fb38805c74884ad317ad43a4d280eb64",
+      "baseRef": "main",
+      "mergeCommitSha": "bec1115cc3dc7241017f5ba5641b494d763a3d10"
+    },
+    {
+      "id": 4782575445,
+      "number": 46,
+      "title": "PR 46: Production Readiness Health Check",
+      "url": "https://github.com/neophilism/Music_Video_Wizard/pull/46",
+      "state": "closed",
+      "draft": false,
+      "createdAt": "2026-10-08T06:06:22.000Z",
+      "updatedAt": "2026-10-08T07:33:17.000Z",
+      "closedAt": "2026-10-08T07:33:17.000Z",
+      "mergedAt": "2026-10-08T07:33:17.000Z",
+      "headSha": "990fa443733e9b13128b4f9a76a40799586ea0a2",
+      "baseRef": "main",
+      "mergeCommitSha": "f467505117fd3252856f6505f7232087209337d6"
+    },
+    {
+      "id": 4782561670,
+      "number": 45,
+      "title": "PR 45: Production Infrastructure Preflight",
+      "url": "https://github.com/neophilism/Music_Video_Wizard/pull/45",
+      "state": "closed",
+      "draft": false,
+      "createdAt": "2026-10-08T06:04:47.000Z",
+      "updatedAt": "2026-10-08T07:20:05.000Z",
+      "closedAt": "2026-10-08T07:20:04.000Z",
+      "mergedAt": "2026-10-08T07:20:04.000Z",
+      "headSha": "1c0e8ee66354820fef6eb01025a1535a365d7123",
+      "baseRef": "main",
+      "mergeCommitSha": "4c1208e475ca7c4433149252fb97aba781a5f93c"
+    },
+    {
+      "id": 4782552954,
+      "number": 44,
+      "title": "PR 44: Production Docker and Render Deployment",
+      "url": "https://github.com/neophilism/Music_Video_Wizard/pull/44",
+      "state": "closed",
+      "draft": false,
+      "createdAt": "2026-10-08T06:03:45.000Z",
+      "updatedAt": "2026-10-08T07:06:54.000Z",
+      "closedAt": "2026-10-08T07:06:54.000Z",
+      "mergedAt": "2026-10-08T07:06:54.000Z",
+      "headSha": "0b543c4c672670146b4adcd4dc676bae05236d7c",
+      "baseRef": "main",
+      "mergeCommitSha": "b186667be356aa562873f2493b4675ed7199d808"
+    },
+    {
+      "id": 4782531432,
+      "number": 43,
+      "title": "PR 43: Release Acceptance Gate",
+      "url": "https://github.com/neophilism/Music_Video_Wizard/pull/43",
+      "state": "closed",
+      "draft": false,
+      "createdAt": "2026-10-08T06:01:09.000Z",
+      "updatedAt": "2026-10-08T06:06:07.000Z",
+      "closedAt": "2026-10-08T06:06:07.000Z",
+      "mergedAt": "2026-10-08T06:06:07.000Z",
+      "headSha": "9cfb188b18d9d9dcecc9c94b163d71e881d021cf",
+      "baseRef": "main",
+      "mergeCommitSha": "58257e06df9cd1b6eae08be030a54429afe15e56"
+    },
+    {
+      "id": 4782011198,
+      "number": 42,
+      "title": "PR 42: Finish & Export Delivery UI",
+      "url": "https://github.com/neophilism/Music_Video_Wizard/pull/42",
+      "state": "closed",
+      "draft": false,
+      "createdAt": "2026-10-08T04:57:11.000Z",
+      "updatedAt": "2026-10-08T05:03:14.000Z",
+      "closedAt": "2026-10-08T05:03:13.000Z",
+      "mergedAt": "2026-10-08T05:03:13.000Z",
+      "headSha": "f2674389d9480d1bbc891bedacd7fe9fec1e109c",
+      "baseRef": "main",
+      "mergeCommitSha": "a87a9d292b418b87450439c58f3f14c5713ca019"
+    },
+    {
+      "id": 4781986987,
+      "number": 41,
+      "title": "PR 41: Durable FFmpeg Final Master Renderer",
+      "url": "https://github.com/neophilism/Music_Video_Wizard/pull/41",
+      "state": "closed",
+      "draft": false,
+      "createdAt": "2026-10-08T04:54:08.000Z",
+      "updatedAt": "2026-10-08T04:59:44.000Z",
+      "closedAt": "2026-10-08T04:59:44.000Z",
+      "mergedAt": "2026-10-08T04:59:44.000Z",
+      "headSha": "29f729805abd15de9a01f7f52f1aea47f8790372",
+      "baseRef": "main",
+      "mergeCommitSha": "d37425dd69d94ddd5a2d7700b2e5e7721fdfc53a"
+    },
+    {
+      "id": 4781917601,
+      "number": 40,
+      "title": "PR 40: Finish & Export Render Manifest",
+      "url": "https://github.com/neophilism/Music_Video_Wizard/pull/40",
+      "state": "closed",
+      "draft": false,
+      "createdAt": "2026-10-08T04:45:21.000Z",
+      "updatedAt": "2026-10-08T04:54:47.000Z",
+      "closedAt": "2026-10-08T04:54:47.000Z",
+      "mergedAt": "2026-10-08T04:54:47.000Z",
+      "headSha": "398015738c7b26a8df8350b47cd8614591a88e52",
+      "baseRef": "main",
+      "mergeCommitSha": "a3a953bd19a1427651785beb9fcc60a2c85a5a22"
+    },
+    {
+      "id": 4781886127,
+      "number": 39,
+      "title": "PR 39: Refinement Editor UI",
+      "url": "https://github.com/neophilism/Music_Video_Wizard/pull/39",
+      "state": "closed",
+      "draft": false,
+      "createdAt": "2026-10-08T04:41:23.000Z",
+      "updatedAt": "2026-10-08T04:47:40.000Z",
+      "closedAt": "2026-10-08T04:47:40.000Z",
+      "mergedAt": "2026-10-08T04:47:40.000Z",
+      "headSha": "ad7c979c1f58915fc4a9807f57c5f2e6081f73a9",
+      "baseRef": "main",
+      "mergeCommitSha": "0109ccbbcfdce9264e1e354cc872d6f238c20d57"
+    },
+    {
+      "id": 4781872152,
+      "number": 38,
+      "title": "PR 38: Non-Destructive Refinement Runtime",
+      "url": "https://github.com/neophilism/Music_Video_Wizard/pull/38",
+      "state": "closed",
+      "draft": false,
+      "createdAt": "2026-10-08T04:39:42.000Z",
+      "updatedAt": "2026-10-08T04:47:28.000Z",
+      "closedAt": "2026-10-08T04:47:28.000Z",
+      "mergedAt": "2026-10-08T04:47:28.000Z",
+      "headSha": "8ab283541e8283f653b3cbf446509e7fc4b31de2",
+      "baseRef": "main",
+      "mergeCommitSha": "b7bce7919e39a355cffa2722dc1a75b854ec7537"
+    },
+    {
+      "id": 4781834756,
+      "number": 37,
+      "title": "PR 37: Automatic First Cut Review UI",
+      "url": "https://github.com/neophilism/Music_Video_Wizard/pull/37",
+      "state": "closed",
+      "draft": false,
+      "createdAt": "2026-10-08T04:35:02.000Z",
+      "updatedAt": "2026-10-08T04:47:18.000Z",
+      "closedAt": "2026-10-08T04:47:18.000Z",
+      "mergedAt": "2026-10-08T04:47:18.000Z",
+      "headSha": "4f2e8b069149614b1a4d46e8ef518d888e82c392",
+      "baseRef": "main",
+      "mergeCommitSha": "ee153008948430bcb57ac95be7202dcda0b6e8bb"
+    },
+    {
+      "id": 4781820494,
+      "number": 36,
+      "title": "PR 36: Automatic First Cut Runtime",
+      "url": "https://github.com/neophilism/Music_Video_Wizard/pull/36",
+      "state": "closed",
+      "draft": false,
+      "createdAt": "2026-10-08T04:33:14.000Z",
+      "updatedAt": "2026-10-08T04:47:07.000Z",
+      "closedAt": "2026-10-08T04:47:07.000Z",
+      "mergedAt": "2026-10-08T04:47:07.000Z",
+      "headSha": "646ef04c343230080e8983ddc8b02f5878f60f94",
+      "baseRef": "main",
+      "mergeCommitSha": "86c6b62a650573b428c6724c27675c4ca8fb75e8"
+    },
+    {
+      "id": 4781788516,
+      "number": 35,
+      "title": "PR 35: Video Clips Wizard UI",
+      "url": "https://github.com/neophilism/Music_Video_Wizard/pull/35",
+      "state": "closed",
+      "draft": false,
+      "createdAt": "2026-10-08T04:29:15.000Z",
+      "updatedAt": "2026-10-08T04:41:22.000Z",
+      "closedAt": "2026-10-08T04:41:21.000Z",
+      "mergedAt": "2026-10-08T04:41:21.000Z",
+      "headSha": "fe017b15694a42f203663ffa632cafab3706224c",
+      "baseRef": "main",
+      "mergeCommitSha": "034f16e12ff7e2540b888370e48d8e0ca7c87f0a"
+    },
+    {
+      "id": 4781579460,
+      "number": 34,
+      "title": "PR 34: Video Clips Runtime",
+      "url": "https://github.com/neophilism/Music_Video_Wizard/pull/34",
+      "state": "closed",
+      "draft": false,
+      "createdAt": "2026-10-08T04:01:56.000Z",
+      "updatedAt": "2026-10-08T04:07:43.000Z",
+      "closedAt": "2026-10-08T04:07:43.000Z",
+      "mergedAt": "2026-10-08T04:07:43.000Z",
+      "headSha": "d0687dab9503fbdfc5097bea4ec2ce6df7550ad9",
+      "baseRef": "main",
+      "mergeCommitSha": "c1904d60dae93e26cb8572bba5ffcc19c3174c64"
+    },
+    {
+      "id": 4781555982,
+      "number": 33,
+      "title": "PR 33: Mainline Catch-Up through Runway Adapter",
+      "url": "https://github.com/neophilism/Music_Video_Wizard/pull/33",
+      "state": "closed",
+      "draft": false,
+      "createdAt": "2026-10-08T03:58:45.000Z",
+      "updatedAt": "2026-10-08T04:07:29.000Z",
+      "closedAt": "2026-10-08T04:07:29.000Z",
+      "mergedAt": "2026-10-08T04:07:29.000Z",
+      "headSha": "658835b9e06d887d98c84161aba0c5ec632577f0",
+      "baseRef": "main",
+      "mergeCommitSha": "9a58f927b272bc5cc3e492ecd2c1c94b3d09cc43"
+    },
+    {
+      "id": 4781529043,
+      "number": 32,
+      "title": "PR 32: Runway Video Generation Adapter",
+      "url": "https://github.com/neophilism/Music_Video_Wizard/pull/32",
+      "state": "closed",
+      "draft": false,
+      "createdAt": "2026-10-08T03:55:03.000Z",
+      "updatedAt": "2026-10-08T04:00:59.000Z",
+      "closedAt": "2026-10-08T04:00:59.000Z",
+      "mergedAt": "2026-10-08T04:00:59.000Z",
+      "headSha": "920574f08b80e3e8537699618364bc960584f469",
+      "baseRef": "feature/pr31-initial-frames-ui",
+      "mergeCommitSha": "d795f799ab6f39f521c40e92e107086d56ad3391"
+    },
+    {
+      "id": 4781509085,
+      "number": 31,
+      "title": "PR 31: Initial Frames Wizard UI",
+      "url": "https://github.com/neophilism/Music_Video_Wizard/pull/31",
+      "state": "closed",
+      "draft": false,
+      "createdAt": "2026-10-08T03:51:55.000Z",
+      "updatedAt": "2026-10-08T03:58:04.000Z",
+      "closedAt": "2026-10-08T03:58:04.000Z",
+      "mergedAt": "2026-10-08T03:58:04.000Z",
+      "headSha": "3ff0f3082b01ac82104d7b21867fafa2a2ee9fe0",
+      "baseRef": "feature/pr30-initial-frames-runtime",
+      "mergeCommitSha": "0572d0ffb4ac8381348b6791a320fd96903098ce"
+    },
+    {
+      "id": 4781500976,
+      "number": 30,
+      "title": "PR 30: Initial Frames Runtime",
+      "url": "https://github.com/neophilism/Music_Video_Wizard/pull/30",
+      "state": "closed",
+      "draft": false,
+      "createdAt": "2026-10-08T03:50:37.000Z",
+      "updatedAt": "2026-10-08T03:57:49.000Z",
+      "closedAt": "2026-10-08T03:57:48.000Z",
+      "mergedAt": "2026-10-08T03:57:48.000Z",
+      "headSha": "6c4939737d86d32d0afee790f6b18ddf59e9f8fd",
+      "baseRef": "feature/pr29-shot-specifications-ui",
+      "mergeCommitSha": "8835cab7f77dc8ed72ab97d3c18ce9946ee98136"
+    },
+    {
+      "id": 4781471811,
+      "number": 29,
+      "title": "PR 29: Shot Specifications Wizard UI",
+      "url": "https://github.com/neophilism/Music_Video_Wizard/pull/29",
+      "state": "closed",
+      "draft": false,
+      "createdAt": "2026-10-08T03:45:58.000Z",
+      "updatedAt": "2026-10-08T03:53:24.000Z",
+      "closedAt": "2026-10-08T03:53:24.000Z",
+      "mergedAt": "2026-10-08T03:53:24.000Z",
+      "headSha": "f89949441cf9a705c6e27c75810ca1b2783fce0a",
+      "baseRef": "feature/pr28-shot-specifications-runtime",
+      "mergeCommitSha": "5c09b2fbb8b7914d2fc51ed3114b6cbf96f11c5e"
+    },
+    {
+      "id": 4781386117,
+      "number": 28,
+      "title": "PR 28: Shot Specifications Runtime",
+      "url": "https://github.com/neophilism/Music_Video_Wizard/pull/28",
+      "state": "closed",
+      "draft": false,
+      "createdAt": "2026-10-08T03:32:50.000Z",
+      "updatedAt": "2026-10-08T03:53:09.000Z",
+      "closedAt": "2026-10-08T03:53:09.000Z",
+      "mergedAt": "2026-10-08T03:53:09.000Z",
+      "headSha": "9965303f76e30562592269df113ad7ffed4e5b1e",
+      "baseRef": "main",
+      "mergeCommitSha": "e1cb746b8337dc49c711e0f534895dd14e40269c"
+    },
+    {
+      "id": 4781312938,
+      "number": 27,
+      "title": "PR 27: OpenAI Image Generation Adapter",
+      "url": "https://github.com/neophilism/Music_Video_Wizard/pull/27",
+      "state": "closed",
+      "draft": false,
+      "createdAt": "2026-10-08T03:21:36.000Z",
+      "updatedAt": "2026-10-08T03:25:53.000Z",
+      "closedAt": "2026-10-08T03:25:53.000Z",
+      "mergedAt": "2026-10-08T03:25:53.000Z",
+      "headSha": "b277e251266ac2c5d84dbfb125163b81934aa23e",
+      "baseRef": "feature/pr26-provider-selection",
+      "mergeCommitSha": "6f3fb0fd85f7150d5d74acc16fa0a389fbac7723"
+    },
+    {
+      "id": 4781116851,
+      "number": 26,
+      "title": "PR 26: Capability-Driven Media Provider Selection",
+      "url": "https://github.com/neophilism/Music_Video_Wizard/pull/26",
+      "state": "closed",
+      "draft": false,
+      "createdAt": "2026-10-08T02:51:50.000Z",
+      "updatedAt": "2026-10-08T03:25:43.000Z",
+      "closedAt": "2026-10-08T03:25:43.000Z",
+      "mergedAt": "2026-10-08T03:25:43.000Z",
+      "headSha": "d42ecb03047e04c835fcc77cc8ba0a3285f5760d",
+      "baseRef": "feature/pr25-prompt-compiler",
+      "mergeCommitSha": "8ba50485931eb0c26a3c5645897a3c63d03392f5"
+    },
+    {
+      "id": 4781108712,
+      "number": 25,
+      "title": "PR 25: Provider-Neutral Prompt Compiler",
+      "url": "https://github.com/neophilism/Music_Video_Wizard/pull/25",
+      "state": "closed",
+      "draft": false,
+      "createdAt": "2026-10-08T02:50:35.000Z",
+      "updatedAt": "2026-10-08T03:25:34.000Z",
+      "closedAt": "2026-10-08T03:25:34.000Z",
+      "mergedAt": "2026-10-08T03:25:34.000Z",
+      "headSha": "654e69835931b5b04e468860f99f76f1078a5749",
+      "baseRef": "feature/pr24-shot-specifications",
+      "mergeCommitSha": "e3bf667104008bc5466b52f750954399e7644ae9"
+    },
+    {
+      "id": 4781090197,
+      "number": 24,
+      "title": "PR 24: Shot Specifications",
+      "url": "https://github.com/neophilism/Music_Video_Wizard/pull/24",
+      "state": "closed",
+      "draft": false,
+      "createdAt": "2026-10-08T02:47:47.000Z",
+      "updatedAt": "2026-10-08T03:25:26.000Z",
+      "closedAt": "2026-10-08T03:25:25.000Z",
+      "mergedAt": "2026-10-08T03:25:25.000Z",
+      "headSha": "2809ecf7dd5219a84ed9101eea3cda4197c32b48",
+      "baseRef": "main",
+      "mergeCommitSha": "39aff0caa345c1e9bc4f429e58fd85678ed6761f"
+    },
+    {
+      "id": 4780480662,
+      "number": 23,
+      "title": "PR 23: Storyboard Editor",
+      "url": "https://github.com/neophilism/Music_Video_Wizard/pull/23",
+      "state": "closed",
+      "draft": false,
+      "createdAt": "2026-10-08T01:20:25.000Z",
+      "updatedAt": "2026-10-08T01:53:32.000Z",
+      "closedAt": "2026-10-08T01:53:32.000Z",
+      "mergedAt": "2026-10-08T01:53:32.000Z",
+      "headSha": "76751c56188f297378c1386917be6faaa002372f",
+      "baseRef": "feature/pr22-storyboard-engine",
+      "mergeCommitSha": "019c9b706027559409006b6d50982b99c601eef7"
+    },
+    {
+      "id": 4780362329,
+      "number": 22,
+      "title": "PR 22: Storyboard Engine",
+      "url": "https://github.com/neophilism/Music_Video_Wizard/pull/22",
+      "state": "closed",
+      "draft": false,
+      "createdAt": "2026-10-08T01:02:52.000Z",
+      "updatedAt": "2026-10-08T01:53:23.000Z",
+      "closedAt": "2026-10-08T01:53:23.000Z",
+      "mergedAt": "2026-10-08T01:53:22.000Z",
+      "headSha": "32bda86e0ca555f4f5d1daa9d919ae3d6a5fc26e",
+      "baseRef": "main",
+      "mergeCommitSha": "ab00baeb2eb45c0f927d0da40b3917a6bacb4d1c"
+    },
+    {
+      "id": 4780290229,
+      "number": 21,
+      "title": "PR 21: Sequence Map",
+      "url": "https://github.com/neophilism/Music_Video_Wizard/pull/21",
+      "state": "closed",
+      "draft": false,
+      "createdAt": "2026-10-08T00:51:58.000Z",
+      "updatedAt": "2026-10-08T01:05:52.000Z",
+      "closedAt": "2026-10-08T01:05:52.000Z",
+      "mergedAt": "2026-10-08T01:05:52.000Z",
+      "headSha": "8abe000d3f2475f9358075fb6527536c3a009166",
+      "baseRef": "main",
+      "mergeCommitSha": "648b9181faa61a1bb9f024f0b1e1335efa955859"
+    },
+    {
+      "id": 4780178298,
+      "number": 20,
+      "title": "PR 20: Motif + Typography Systems",
+      "url": "https://github.com/neophilism/Music_Video_Wizard/pull/20",
+      "state": "closed",
+      "draft": false,
+      "createdAt": "2026-10-08T00:34:59.000Z",
+      "updatedAt": "2026-10-08T00:49:21.000Z",
+      "closedAt": "2026-10-08T00:49:21.000Z",
+      "mergedAt": "2026-10-08T00:49:21.000Z",
+      "headSha": "cc20892b87d799eab4a4818083b195c0fae83214",
+      "baseRef": "main",
+      "mergeCommitSha": "8c7a5572da2dcff4f5ca731b16f943a27dba2b04"
+    },
+    {
+      "id": 4780100272,
+      "number": 19,
+      "title": "PR 19: Creative Grammars",
+      "url": "https://github.com/neophilism/Music_Video_Wizard/pull/19",
+      "state": "closed",
+      "draft": false,
+      "createdAt": "2026-10-08T00:23:53.000Z",
+      "updatedAt": "2026-10-08T00:42:35.000Z",
+      "closedAt": "2026-10-08T00:42:34.000Z",
+      "mergedAt": "2026-10-08T00:42:34.000Z",
+      "headSha": "57a70d506d5cf8259eda3b9771e88a1bf8dc1f68",
+      "baseRef": "main",
+      "mergeCommitSha": "fc66e200f0dbe3e4eed399fde01498d5a3851458"
+    },
+    {
+      "id": 4779520223,
+      "number": 18,
+      "title": "PR 18: Visual Aesthetic Builder",
+      "url": "https://github.com/neophilism/Music_Video_Wizard/pull/18",
+      "state": "closed",
+      "draft": false,
+      "createdAt": "2026-10-07T23:01:56.000Z",
+      "updatedAt": "2026-10-08T00:02:23.000Z",
+      "closedAt": "2026-10-08T00:02:23.000Z",
+      "mergedAt": "2026-10-08T00:02:23.000Z",
+      "headSha": "eaf68ae311f15907b5f188f6635c364ae686dc36",
+      "baseRef": "main",
+      "mergeCommitSha": "ed5da187d28d2593404b03dc6c1f9e78bed82b0e"
+    },
+    {
+      "id": 4778912885,
+      "number": 17,
+      "title": "PR 17: Song-to-Picture Plan",
+      "url": "https://github.com/neophilism/Music_Video_Wizard/pull/17",
+      "state": "closed",
+      "draft": false,
+      "createdAt": "2026-10-07T21:50:36.000Z",
+      "updatedAt": "2026-10-07T22:39:05.000Z",
+      "closedAt": "2026-10-07T22:39:05.000Z",
+      "mergedAt": "2026-10-07T22:39:05.000Z",
+      "headSha": "0f9c4b86bb45890378403c500090615f93da0c3a",
+      "baseRef": "main",
+      "mergeCommitSha": "8c8a2ed8afd51c665456892a48b3eb864d60ab70"
+    },
+    {
+      "id": 4778510305,
+      "number": 16,
+      "title": "PR 16: Creative Language",
+      "url": "https://github.com/neophilism/Music_Video_Wizard/pull/16",
+      "state": "closed",
+      "draft": false,
+      "createdAt": "2026-10-07T21:08:47.000Z",
+      "updatedAt": "2026-10-07T21:35:43.000Z",
+      "closedAt": "2026-10-07T21:35:43.000Z",
+      "mergedAt": "2026-10-07T21:35:43.000Z",
+      "headSha": "d53dc26696cb52d723bacc76b382f7cb1592f3f4",
+      "baseRef": "main",
+      "mergeCommitSha": "bd8fa4a0fb0336c7796bcc264ad95f14a6896fd8"
+    },
+    {
+      "id": 4777340009,
+      "number": 15,
+      "title": "PR 15: Treatment",
+      "url": "https://github.com/neophilism/Music_Video_Wizard/pull/15",
+      "state": "closed",
+      "draft": false,
+      "createdAt": "2026-10-07T19:18:15.000Z",
+      "updatedAt": "2026-10-07T20:47:42.000Z",
+      "closedAt": "2026-10-07T20:47:42.000Z",
+      "mergedAt": "2026-10-07T20:47:42.000Z",
+      "headSha": "eb6473951ef71ee4c29dde87a70040986534710c",
+      "baseRef": "main",
+      "mergeCommitSha": "86e98194f003b9f2b61d344111d19f167a7f7642"
+    },
+    {
+      "id": 4765481880,
+      "number": 14,
+      "title": "PR 14: Concept Development",
+      "url": "https://github.com/neophilism/Music_Video_Wizard/pull/14",
+      "state": "closed",
+      "draft": false,
+      "createdAt": "2026-10-06T22:46:03.000Z",
+      "updatedAt": "2026-10-07T14:58:54.000Z",
+      "closedAt": "2026-10-07T14:58:54.000Z",
+      "mergedAt": "2026-10-07T14:58:54.000Z",
+      "headSha": "2082955b97311b15575e424578998785dc110805",
+      "baseRef": "main",
+      "mergeCommitSha": "900b67b6b0007bf205221f379b1e98dc0da49a9f"
+    },
+    {
+      "id": 4765240354,
+      "number": 13,
+      "title": "PR 13: Versioned Creative Brief",
+      "url": "https://github.com/neophilism/Music_Video_Wizard/pull/13",
+      "state": "closed",
+      "draft": false,
+      "createdAt": "2026-10-06T22:14:25.000Z",
+      "updatedAt": "2026-10-06T22:33:54.000Z",
+      "closedAt": "2026-10-06T22:33:54.000Z",
+      "mergedAt": "2026-10-06T22:33:54.000Z",
+      "headSha": "117f0f9c4a4316c070dfb60a00d52df72cdac03e",
+      "baseRef": "main",
+      "mergeCommitSha": "e24106db216a1bac54e4a390dd3b9d173ba7935d"
+    },
+    {
+      "id": 4763883743,
+      "number": 12,
+      "title": "PR 12: Curated Music Map",
+      "url": "https://github.com/neophilism/Music_Video_Wizard/pull/12",
+      "state": "closed",
+      "draft": false,
+      "createdAt": "2026-10-06T19:50:44.000Z",
+      "updatedAt": "2026-10-06T20:26:02.000Z",
+      "closedAt": "2026-10-06T20:26:02.000Z",
+      "mergedAt": "2026-10-06T20:26:01.000Z",
+      "headSha": "70b9249fdc65cfc79a1fbbd3b04e66e6cc0fb310",
+      "baseRef": "main",
+      "mergeCommitSha": "41e22a5888ad2d439134e51110db7309d90ae92b"
+    },
+    {
+      "id": 4762904134,
+      "number": 11,
+      "title": "PR 11: Real Music Analysis",
+      "url": "https://github.com/neophilism/Music_Video_Wizard/pull/11",
+      "state": "closed",
+      "draft": false,
+      "createdAt": "2026-10-06T18:19:04.000Z",
+      "updatedAt": "2026-10-06T19:38:24.000Z",
+      "closedAt": "2026-10-06T19:38:24.000Z",
+      "mergedAt": "2026-10-06T19:38:24.000Z",
+      "headSha": "27c3ce5883f08c519bd867a267c7e98590bfd5f5",
+      "baseRef": "main",
+      "mergeCommitSha": "558e9c88f950a85ffd46448bb95a3512c504b2a9"
+    },
+    {
+      "id": 4762554907,
+      "number": 10,
+      "title": "PR 10: Persistent Wizard Shell",
+      "url": "https://github.com/neophilism/Music_Video_Wizard/pull/10",
+      "state": "closed",
+      "draft": false,
+      "createdAt": "2026-10-06T17:46:48.000Z",
+      "updatedAt": "2026-10-06T17:59:07.000Z",
+      "closedAt": "2026-10-06T17:59:07.000Z",
+      "mergedAt": "2026-10-06T17:59:07.000Z",
+      "headSha": "d67d3f25645766296f3463aa37dc48f77c7c1a33",
+      "baseRef": "main",
+      "mergeCommitSha": "2773529440a58460876cbd006ba4fff900299de7"
+    },
+    {
+      "id": 4762269429,
+      "number": 9,
+      "title": "PR 9: Creative Kits",
+      "url": "https://github.com/neophilism/Music_Video_Wizard/pull/9",
+      "state": "closed",
+      "draft": false,
+      "createdAt": "2026-10-06T17:20:40.000Z",
+      "updatedAt": "2026-10-06T17:29:28.000Z",
+      "closedAt": "2026-10-06T17:29:28.000Z",
+      "mergedAt": "2026-10-06T17:29:28.000Z",
+      "headSha": "3813907773817c6af74fe17544841d392c8e148c",
+      "baseRef": "main",
+      "mergeCommitSha": "7880c7f7522072859b24df8ac64cc3c5c8d594b3"
+    },
+    {
+      "id": 4761847695,
+      "number": 8,
+      "title": "PR 8: Creative Library",
+      "url": "https://github.com/neophilism/Music_Video_Wizard/pull/8",
+      "state": "closed",
+      "draft": false,
+      "createdAt": "2026-10-06T16:42:29.000Z",
+      "updatedAt": "2026-10-06T17:11:06.000Z",
+      "closedAt": "2026-10-06T17:11:06.000Z",
+      "mergedAt": "2026-10-06T17:11:06.000Z",
+      "headSha": "9701d4e56f3922cbcba4dbdbb0571182bbd66672",
+      "baseRef": "main",
+      "mergeCommitSha": "d07b64a5bf06bd91900ffb595c73ecf720c5c752"
+    },
+    {
+      "id": 4761376651,
+      "number": 7,
+      "title": "PR 7: Creative inheritance engine",
+      "url": "https://github.com/neophilism/Music_Video_Wizard/pull/7",
+      "state": "closed",
+      "draft": false,
+      "createdAt": "2026-10-06T16:00:53.000Z",
+      "updatedAt": "2026-10-06T16:13:34.000Z",
+      "closedAt": "2026-10-06T16:13:34.000Z",
+      "mergedAt": "2026-10-06T16:13:34.000Z",
+      "headSha": "59d9f5f86f25edca7fc78f60189aac176ee9db04",
+      "baseRef": "main",
+      "mergeCommitSha": "e183c3806709334d5d378eefd502bbb65d5eb427"
+    },
+    {
+      "id": 4760612516,
+      "number": 6,
+      "title": "PR 6: Creative decision graph and impact engine",
+      "url": "https://github.com/neophilism/Music_Video_Wizard/pull/6",
+      "state": "closed",
+      "draft": false,
+      "createdAt": "2026-10-06T15:00:36.000Z",
+      "updatedAt": "2026-10-06T15:22:06.000Z",
+      "closedAt": "2026-10-06T15:22:06.000Z",
+      "mergedAt": "2026-10-06T15:22:06.000Z",
+      "headSha": "2960b1cb67dd0e60bebdb2fdf4be45dbf4b85780",
+      "baseRef": "main",
+      "mergeCommitSha": "8bd83d5060735fce572152937575624bd87e5cd0"
+    },
+    {
+      "id": 4760218408,
+      "number": 5,
+      "title": "PR 5: Durable generation and render job infrastructure",
+      "url": "https://github.com/neophilism/Music_Video_Wizard/pull/5",
+      "state": "closed",
+      "draft": false,
+      "createdAt": "2026-10-06T14:30:22.000Z",
+      "updatedAt": "2026-10-06T14:50:22.000Z",
+      "closedAt": "2026-10-06T14:50:22.000Z",
+      "mergedAt": "2026-10-06T14:50:22.000Z",
+      "headSha": "ed4444d1d47674ac2b1bd7ad73aa11ee01064dc4",
+      "baseRef": "main",
+      "mergeCommitSha": "5c4b88d126a0b0f95a16b4187f359dd7cfaaa724"
+    },
+    {
+      "id": 4759921950,
+      "number": 4,
+      "title": "PR 4: Project creation and media storage",
+      "url": "https://github.com/neophilism/Music_Video_Wizard/pull/4",
+      "state": "closed",
+      "draft": false,
+      "createdAt": "2026-10-06T14:08:00.000Z",
+      "updatedAt": "2026-10-06T14:14:47.000Z",
+      "closedAt": "2026-10-06T14:14:47.000Z",
+      "mergedAt": "2026-10-06T14:14:46.000Z",
+      "headSha": "1dcde72638696be4ff09c6779ed50f84f77b4f4f",
+      "baseRef": "main",
+      "mergeCommitSha": "ca37679d0f4ffe4bd6b9eb0deda96aef05ec029e"
+    },
+    {
+      "id": 4759737551,
+      "number": 3,
+      "title": "PR 3: Accounts and authentication",
+      "url": "https://github.com/neophilism/Music_Video_Wizard/pull/3",
+      "state": "closed",
+      "draft": false,
+      "createdAt": "2026-10-06T13:54:00.000Z",
+      "updatedAt": "2026-10-06T13:57:24.000Z",
+      "closedAt": "2026-10-06T13:57:24.000Z",
+      "mergedAt": "2026-10-06T13:57:24.000Z",
+      "headSha": "cde4bd8751c37eda9cf5dd54e0a5ec88e4402c10",
+      "baseRef": "main",
+      "mergeCommitSha": "b2c8234029c4523ce8a919c50456d09e4a86a5b2"
+    },
+    {
+      "id": 4759519426,
+      "number": 2,
+      "title": "PR 2: Versioned core domain model",
+      "url": "https://github.com/neophilism/Music_Video_Wizard/pull/2",
+      "state": "closed",
+      "draft": false,
+      "createdAt": "2026-10-06T13:36:17.000Z",
+      "updatedAt": "2026-10-06T13:41:25.000Z",
+      "closedAt": "2026-10-06T13:41:25.000Z",
+      "mergedAt": "2026-10-06T13:41:25.000Z",
+      "headSha": "14da14e290d6c4efe266e32e04981b3e140caa9a",
+      "baseRef": "main",
+      "mergeCommitSha": "37e956272d81880c6dc89650684dff982506607b"
+    },
+    {
+      "id": 4759212690,
+      "number": 1,
+      "title": "PR 1: Production application foundation",
+      "url": "https://github.com/neophilism/Music_Video_Wizard/pull/1",
+      "state": "closed",
+      "draft": false,
+      "createdAt": "2026-10-06T13:11:21.000Z",
+      "updatedAt": "2026-10-06T13:26:34.000Z",
+      "closedAt": "2026-10-06T13:26:34.000Z",
+      "mergedAt": "2026-10-06T13:26:34.000Z",
+      "headSha": "93802d90f0e4b76d10f175fd408c71d601fc41d7",
+      "baseRef": "main",
+      "mergeCommitSha": "58642ae7f8660898bd2f1e8b9bcc570898989bd7"
+    }
+  ]
+}
