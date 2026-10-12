@@ -44,6 +44,8 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 22.13.0
+      - name: Use the verified npm toolchain
+        run: npm install --global npm@11.9.0
       - run: npm install
       - run: npm run db:generate
       - run: npm run db:deploy
