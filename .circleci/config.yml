@@ -1,0 +1,201 @@
+version: 2.1
+
+# Complete replacement candidate for four GitHub Actions workflows:
+# ci.yml, e2e.yml, container.yml and dependency-audit.yml.
+# These jobs MUST all pass before calling CI restored.
+jobs:
+  full-validation:
+    docker:
+      - image: cimg/node:22.13.0-browsers
+      - image: cimg/postgres:17.11
+        environment:
+          POSTGRES_DB: music_video_wizard_ci
+          POSTGRES_USER: ci
+          POSTGRES_PASSWORD: ci
+    resource_class: large
+    environment:
+      CI: "true"
+      DATABASE_URL: postgresql://ci:ci@127.0.0.1:5432/music_video_wizard_ci
+      BETTER_AUTH_SECRET: 0123456789abcdef0123456789abcdef
+      BETTER_AUTH_URL: http://127.0.0.1:3000
+      ASSET_STORAGE_DRIVER: local
+      ASSET_STORAGE_BUCKET: ci-assets
+      JOB_QUEUE_SCHEMA: pgboss
+      JOB_RETRY_LIMIT: "3"
+      JOB_RETRY_DELAY_SECONDS: "1"
+      JOB_RETRY_DELAY_MAX_SECONDS: "5"
+      JOB_EXPIRE_SECONDS: "600"
+      JOB_HEARTBEAT_SECONDS: "10"
+      JOB_WORKER_CONCURRENCY: "2"
+      JOB_WORKSPACE_CONCURRENCY: "1"
+      AUDIO_ANALYSIS_PYTHON: python
+      AUDIO_TRANSCRIPTION_PROVIDER: none
+    steps:
+      - checkout
+      - run:
+          name: Python 3.12 analysis runtime and FFmpeg
+          command: |
+            sudo apt-get update
+            sudo apt-get install -y python3-venv python3-pip ffmpeg
+            python3 --version
+            python3 -m venv .ci-venv
+            .ci-venv/bin/pip install --disable-pip-version-check -r analysis/requirements.txt imageio-ffmpeg
+            echo 'export PATH="$PWD/.ci-venv/bin:$PATH"' >> "$BASH_ENV"
+            echo "export AUDIO_ANALYSIS_FFMPEG=$(.ci-venv/bin/python -c 'import imageio_ffmpeg; print(imageio_ffmpeg.get_ffmpeg_exe())')" >> "$BASH_ENV"
+      - run:
+          name: Install application dependencies
+          command: npm install
+      - run:
+          name: Validate Prisma schema
+          command: npm run db:validate
+      - run:
+          name: Generate Prisma client
+          command: npm run db:generate
+      - run:
+          name: Run database migrations
+          command: npm run db:deploy
+      - run:
+          name: Typecheck
+          command: npm run typecheck
+      - run:
+          name: Lint
+          command: npm run lint
+      - run:
+          name: Full unit test suite
+          command: npm test
+      - run:
+          name: graph behavioral/regression tests
+          command: npm run test:graph
+      - run:
+          name: inheritance behavioral/regression tests
+          command: npm run test:inheritance
+      - run:
+          name: library behavioral/regression tests
+          command: npm run test:library
+      - run:
+          name: kits behavioral/regression tests
+          command: npm run test:kits
+      - run:
+          name: wizard behavioral/regression tests
+          command: npm run test:wizard
+      - run:
+          name: analysis behavioral/regression tests
+          command: npm run test:analysis
+      - run:
+          name: map behavioral/regression tests
+          command: npm run test:map
+      - run:
+          name: brief behavioral/regression tests
+          command: npm run test:brief
+      - run:
+          name: concepts behavioral/regression tests
+          command: npm run test:concepts
+      - run:
+          name: treatment behavioral/regression tests
+          command: npm run test:treatment
+      - run:
+          name: creative-language behavioral/regression tests
+          command: npm run test:creative-language
+      - run:
+          name: song-picture-plan behavioral/regression tests
+          command: npm run test:song-picture-plan
+      - run:
+          name: visual-aesthetic behavioral/regression tests
+          command: npm run test:visual-aesthetic
+      - run:
+          name: creative-grammar behavioral/regression tests
+          command: npm run test:creative-grammar
+      - run:
+          name: motif-typography behavioral/regression tests
+          command: npm run test:motif-typography
+      - run:
+          name: sequence-map behavioral/regression tests
+          command: npm run test:sequence-map
+      - run:
+          name: storyboard behavioral/regression tests
+          command: npm run test:storyboard
+      - run:
+          name: queue behavioral/regression tests
+          command: npm run test:queue
+      - run:
+          name: acceptance behavioral/regression tests
+          command: npm run test:acceptance
+      - run:
+          name: Production build
+          command: npm run build
+      - store_artifacts:
+          path: test-results
+
+  browser-e2e:
+    docker:
+      - image: cimg/node:22.13.0-browsers
+      - image: cimg/postgres:17.11
+        environment:
+          POSTGRES_DB: music_video_wizard_e2e
+          POSTGRES_USER: e2e
+          POSTGRES_PASSWORD: e2e
+    resource_class: large
+    environment:
+      CI: "true"
+      DATABASE_URL: postgresql://e2e:e2e@127.0.0.1:5432/music_video_wizard_e2e
+      BETTER_AUTH_SECRET: 0123456789abcdef0123456789abcdef
+      BETTER_AUTH_URL: http://127.0.0.1:3000
+      ASSET_STORAGE_DRIVER: local
+      ASSET_STORAGE_BUCKET: e2e-assets
+      ASSET_STORAGE_LOCAL_ROOT: .data/e2e-assets
+      AUDIO_TRANSCRIPTION_PROVIDER: none
+      TEXT_GENERATION_PROVIDER: none
+      IMAGE_GENERATION_PROVIDER: none
+      VIDEO_GENERATION_PROVIDER: none
+      PLAYWRIGHT_BASE_URL: http://127.0.0.1:3000
+    steps:
+      - checkout
+      - run:
+          name: Install application
+          command: npm install
+      - run:
+          name: Generate Prisma client
+          command: npm run db:generate
+      - run:
+          name: Deploy PostgreSQL migrations
+          command: npm run db:deploy
+      - run:
+          name: Install browser dependencies
+          command: npx playwright install --with-deps chromium
+      - run:
+          name: Real Playwright browser E2E
+          command: npm run test:e2e
+      - store_artifacts:
+          path: test-results
+
+  container-build:
+    docker:
+      - image: cimg/base:stable
+    resource_class: medium
+    steps:
+      - checkout
+      - setup_remote_docker
+      - run:
+          name: Build actual production Dockerfile
+          command: docker build --tag music-video-wizard:ci .
+
+  dependency-audit:
+    docker:
+      - image: cimg/node:22.13.0
+    resource_class: small
+    steps:
+      - checkout
+      - run:
+          name: Install production dependencies
+          command: npm install --omit=dev
+      - run:
+          name: Production dependency audit
+          command: npm run audit:prod
+
+workflows:
+  full-ci:
+    jobs:
+      - full-validation
+      - browser-e2e
+      - container-build
+      - dependency-audit
