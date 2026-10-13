@@ -12,7 +12,9 @@ RUN apt-get update \
 WORKDIR /app
 
 COPY package.json ./
-RUN npm install
+# npm 10 Arborist can crash in peer-set resolution before a lockfile exists.
+# Pin a release with the upstream detached-parent guard; do not disable peer checks.
+RUN npm install --global npm@11.19.1 && npm install
 
 COPY analysis/requirements.txt ./analysis/requirements.txt
 RUN python3 -m venv /opt/music-video-wizard-venv \
