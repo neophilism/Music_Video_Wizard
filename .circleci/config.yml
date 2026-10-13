@@ -44,7 +44,7 @@ jobs:
             echo "export AUDIO_ANALYSIS_FFMPEG=$(.ci-venv/bin/python -c 'import imageio_ffmpeg; print(imageio_ffmpeg.get_ffmpeg_exe())')" >> "$BASH_ENV"
       - run:
           name: Install application dependencies
-          command: npm install
+          command: npm install --global npm@11.19.1 && npm install
       - run:
           name: Validate Prisma schema
           command: npm run db:validate
@@ -152,7 +152,7 @@ jobs:
       - checkout
       - run:
           name: Install application
-          command: npm install
+          command: npm install --global npm@11.19.1 && npm install
       - run:
           name: Generate Prisma client
           command: npm run db:generate
@@ -187,7 +187,7 @@ jobs:
       - checkout
       - run:
           name: Install production dependencies
-          command: npm install --omit=dev
+          command: npm install --global npm@11.19.1 && npm install --omit=dev
       - run:
           name: Production dependency audit
           command: npm run audit:prod
