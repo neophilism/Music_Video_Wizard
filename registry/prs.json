@@ -1,9 +1,15 @@
 {
-  "schemaVersion": 1,
   "repository": "neophilism/Music_Video_Wizard",
-  "roadmapVersion": 1,
+  "title": "Music_Video_Wizard",
   "planVerified": true,
   "plannedPrCount": 63,
+  "sourceFiles": [
+    ".exechub/project.yml",
+    "docs/DEVELOPMENT_PLAN.md",
+    ".exechub/approved-pr-mapping.json"
+  ],
+  "schemaVersion": 1,
+  "roadmapVersion": 1,
   "observedAt": "2026-10-11T17:38:40.893Z",
   "units": [
     {
@@ -12,7 +18,10 @@
       "origin": "original",
       "prs": [
         1
-      ]
+      ],
+      "dependsOn": [],
+      "externalDependencies": [],
+      "externalPrerequisites": []
     },
     {
       "id": "MVW-002",
@@ -20,7 +29,10 @@
       "origin": "original",
       "prs": [
         2
-      ]
+      ],
+      "dependsOn": [],
+      "externalDependencies": [],
+      "externalPrerequisites": []
     },
     {
       "id": "MVW-003",
@@ -28,7 +40,10 @@
       "origin": "original",
       "prs": [
         3
-      ]
+      ],
+      "dependsOn": [],
+      "externalDependencies": [],
+      "externalPrerequisites": []
     },
     {
       "id": "MVW-004",
@@ -36,7 +51,10 @@
       "origin": "original",
       "prs": [
         4
-      ]
+      ],
+      "dependsOn": [],
+      "externalDependencies": [],
+      "externalPrerequisites": []
     },
     {
       "id": "MVW-005",
@@ -44,7 +62,10 @@
       "origin": "original",
       "prs": [
         5
-      ]
+      ],
+      "dependsOn": [],
+      "externalDependencies": [],
+      "externalPrerequisites": []
     },
     {
       "id": "MVW-006",
@@ -52,7 +73,10 @@
       "origin": "original",
       "prs": [
         6
-      ]
+      ],
+      "dependsOn": [],
+      "externalDependencies": [],
+      "externalPrerequisites": []
     },
     {
       "id": "MVW-007",
@@ -60,7 +84,10 @@
       "origin": "original",
       "prs": [
         7
-      ]
+      ],
+      "dependsOn": [],
+      "externalDependencies": [],
+      "externalPrerequisites": []
     },
     {
       "id": "MVW-008",
@@ -68,7 +95,10 @@
       "origin": "original",
       "prs": [
         8
-      ]
+      ],
+      "dependsOn": [],
+      "externalDependencies": [],
+      "externalPrerequisites": []
     },
     {
       "id": "MVW-009",
@@ -76,7 +106,10 @@
       "origin": "original",
       "prs": [
         9
-      ]
+      ],
+      "dependsOn": [],
+      "externalDependencies": [],
+      "externalPrerequisites": []
     },
     {
       "id": "MVW-010",
@@ -84,7 +117,10 @@
       "origin": "original",
       "prs": [
         10
-      ]
+      ],
+      "dependsOn": [],
+      "externalDependencies": [],
+      "externalPrerequisites": []
     },
     {
       "id": "MVW-011",
@@ -92,7 +128,10 @@
       "origin": "original",
       "prs": [
         11
-      ]
+      ],
+      "dependsOn": [],
+      "externalDependencies": [],
+      "externalPrerequisites": []
     },
     {
       "id": "MVW-012",
@@ -100,7 +139,10 @@
       "origin": "original",
       "prs": [
         12
-      ]
+      ],
+      "dependsOn": [],
+      "externalDependencies": [],
+      "externalPrerequisites": []
     },
     {
       "id": "MVW-013",
@@ -108,7 +150,10 @@
       "origin": "original",
       "prs": [
         13
-      ]
+      ],
+      "dependsOn": [],
+      "externalDependencies": [],
+      "externalPrerequisites": []
     },
     {
       "id": "MVW-014",
@@ -116,7 +161,10 @@
       "origin": "original",
       "prs": [
         14
-      ]
+      ],
+      "dependsOn": [],
+      "externalDependencies": [],
+      "externalPrerequisites": []
     },
     {
       "id": "MVW-015",
@@ -124,7 +172,10 @@
       "origin": "original",
       "prs": [
         15
-      ]
+      ],
+      "dependsOn": [],
+      "externalDependencies": [],
+      "externalPrerequisites": []
     },
     {
       "id": "MVW-016",
@@ -132,7 +183,10 @@
       "origin": "original",
       "prs": [
         16
-      ]
+      ],
+      "dependsOn": [],
+      "externalDependencies": [],
+      "externalPrerequisites": []
     },
     {
       "id": "MVW-017",
@@ -140,7 +194,10 @@
       "origin": "original",
       "prs": [
         17
-      ]
+      ],
+      "dependsOn": [],
+      "externalDependencies": [],
+      "externalPrerequisites": []
     },
     {
       "id": "MVW-018",
@@ -148,7 +205,10 @@
       "origin": "original",
       "prs": [
         18
-      ]
+      ],
+      "dependsOn": [],
+      "externalDependencies": [],
+      "externalPrerequisites": []
     },
     {
       "id": "MVW-019",
@@ -156,7 +216,10 @@
       "origin": "original",
       "prs": [
         19
-      ]
+      ],
+      "dependsOn": [],
+      "externalDependencies": [],
+      "externalPrerequisites": []
     },
     {
       "id": "MVW-020",
@@ -164,7 +227,10 @@
       "origin": "original",
       "prs": [
         20
-      ]
+      ],
+      "dependsOn": [],
+      "externalDependencies": [],
+      "externalPrerequisites": []
     },
     {
       "id": "MVW-021",
@@ -172,7 +238,10 @@
       "origin": "original",
       "prs": [
         21
-      ]
+      ],
+      "dependsOn": [],
+      "externalDependencies": [],
+      "externalPrerequisites": []
     },
     {
       "id": "MVW-022",
@@ -180,7 +249,10 @@
       "origin": "original",
       "prs": [
         22
-      ]
+      ],
+      "dependsOn": [],
+      "externalDependencies": [],
+      "externalPrerequisites": []
     },
     {
       "id": "MVW-023",
@@ -188,7 +260,10 @@
       "origin": "original",
       "prs": [
         23
-      ]
+      ],
+      "dependsOn": [],
+      "externalDependencies": [],
+      "externalPrerequisites": []
     },
     {
       "id": "MVW-024",
@@ -196,7 +271,10 @@
       "origin": "original",
       "prs": [
         24
-      ]
+      ],
+      "dependsOn": [],
+      "externalDependencies": [],
+      "externalPrerequisites": []
     },
     {
       "id": "MVW-025",
@@ -204,7 +282,10 @@
       "origin": "original",
       "prs": [
         25
-      ]
+      ],
+      "dependsOn": [],
+      "externalDependencies": [],
+      "externalPrerequisites": []
     },
     {
       "id": "MVW-026",
@@ -212,7 +293,10 @@
       "origin": "original",
       "prs": [
         26
-      ]
+      ],
+      "dependsOn": [],
+      "externalDependencies": [],
+      "externalPrerequisites": []
     },
     {
       "id": "MVW-027",
@@ -220,7 +304,10 @@
       "origin": "original",
       "prs": [
         27
-      ]
+      ],
+      "dependsOn": [],
+      "externalDependencies": [],
+      "externalPrerequisites": []
     },
     {
       "id": "MVW-028",
@@ -228,7 +315,10 @@
       "origin": "original",
       "prs": [
         28
-      ]
+      ],
+      "dependsOn": [],
+      "externalDependencies": [],
+      "externalPrerequisites": []
     },
     {
       "id": "MVW-029",
@@ -236,7 +326,10 @@
       "origin": "original",
       "prs": [
         29
-      ]
+      ],
+      "dependsOn": [],
+      "externalDependencies": [],
+      "externalPrerequisites": []
     },
     {
       "id": "MVW-030",
@@ -244,7 +337,10 @@
       "origin": "original",
       "prs": [
         30
-      ]
+      ],
+      "dependsOn": [],
+      "externalDependencies": [],
+      "externalPrerequisites": []
     },
     {
       "id": "MVW-031",
@@ -252,7 +348,10 @@
       "origin": "original",
       "prs": [
         31
-      ]
+      ],
+      "dependsOn": [],
+      "externalDependencies": [],
+      "externalPrerequisites": []
     },
     {
       "id": "MVW-032",
@@ -260,7 +359,10 @@
       "origin": "original",
       "prs": [
         32
-      ]
+      ],
+      "dependsOn": [],
+      "externalDependencies": [],
+      "externalPrerequisites": []
     },
     {
       "id": "MVW-033",
@@ -268,7 +370,10 @@
       "origin": "original",
       "prs": [
         33
-      ]
+      ],
+      "dependsOn": [],
+      "externalDependencies": [],
+      "externalPrerequisites": []
     },
     {
       "id": "MVW-034",
@@ -276,7 +381,10 @@
       "origin": "original",
       "prs": [
         34
-      ]
+      ],
+      "dependsOn": [],
+      "externalDependencies": [],
+      "externalPrerequisites": []
     },
     {
       "id": "MVW-035",
@@ -284,7 +392,10 @@
       "origin": "original",
       "prs": [
         35
-      ]
+      ],
+      "dependsOn": [],
+      "externalDependencies": [],
+      "externalPrerequisites": []
     },
     {
       "id": "MVW-036",
@@ -292,7 +403,10 @@
       "origin": "original",
       "prs": [
         36
-      ]
+      ],
+      "dependsOn": [],
+      "externalDependencies": [],
+      "externalPrerequisites": []
     },
     {
       "id": "MVW-037",
@@ -300,7 +414,10 @@
       "origin": "original",
       "prs": [
         37
-      ]
+      ],
+      "dependsOn": [],
+      "externalDependencies": [],
+      "externalPrerequisites": []
     },
     {
       "id": "MVW-038",
@@ -308,7 +425,10 @@
       "origin": "original",
       "prs": [
         38
-      ]
+      ],
+      "dependsOn": [],
+      "externalDependencies": [],
+      "externalPrerequisites": []
     },
     {
       "id": "MVW-039",
@@ -316,7 +436,10 @@
       "origin": "original",
       "prs": [
         39
-      ]
+      ],
+      "dependsOn": [],
+      "externalDependencies": [],
+      "externalPrerequisites": []
     },
     {
       "id": "MVW-040",
@@ -324,7 +447,10 @@
       "origin": "original",
       "prs": [
         40
-      ]
+      ],
+      "dependsOn": [],
+      "externalDependencies": [],
+      "externalPrerequisites": []
     },
     {
       "id": "MVW-041",
@@ -332,7 +458,10 @@
       "origin": "original",
       "prs": [
         41
-      ]
+      ],
+      "dependsOn": [],
+      "externalDependencies": [],
+      "externalPrerequisites": []
     },
     {
       "id": "MVW-042",
@@ -340,7 +469,10 @@
       "origin": "original",
       "prs": [
         42
-      ]
+      ],
+      "dependsOn": [],
+      "externalDependencies": [],
+      "externalPrerequisites": []
     },
     {
       "id": "MVW-043",
@@ -348,7 +480,10 @@
       "origin": "original",
       "prs": [
         43
-      ]
+      ],
+      "dependsOn": [],
+      "externalDependencies": [],
+      "externalPrerequisites": []
     },
     {
       "id": "MVW-044",
@@ -356,7 +491,10 @@
       "origin": "original",
       "prs": [
         44
-      ]
+      ],
+      "dependsOn": [],
+      "externalDependencies": [],
+      "externalPrerequisites": []
     },
     {
       "id": "MVW-045",
@@ -364,7 +502,10 @@
       "origin": "original",
       "prs": [
         45
-      ]
+      ],
+      "dependsOn": [],
+      "externalDependencies": [],
+      "externalPrerequisites": []
     },
     {
       "id": "MVW-046",
@@ -372,7 +513,10 @@
       "origin": "original",
       "prs": [
         46
-      ]
+      ],
+      "dependsOn": [],
+      "externalDependencies": [],
+      "externalPrerequisites": []
     },
     {
       "id": "MVW-047",
@@ -380,7 +524,10 @@
       "origin": "original",
       "prs": [
         47
-      ]
+      ],
+      "dependsOn": [],
+      "externalDependencies": [],
+      "externalPrerequisites": []
     },
     {
       "id": "MVW-048",
@@ -388,7 +535,10 @@
       "origin": "original",
       "prs": [
         49
-      ]
+      ],
+      "dependsOn": [],
+      "externalDependencies": [],
+      "externalPrerequisites": []
     },
     {
       "id": "MVW-049",
@@ -396,7 +546,10 @@
       "origin": "original",
       "prs": [
         50
-      ]
+      ],
+      "dependsOn": [],
+      "externalDependencies": [],
+      "externalPrerequisites": []
     },
     {
       "id": "MVW-050",
@@ -404,7 +557,10 @@
       "origin": "original",
       "prs": [
         51
-      ]
+      ],
+      "dependsOn": [],
+      "externalDependencies": [],
+      "externalPrerequisites": []
     },
     {
       "id": "MVW-051",
@@ -412,7 +568,10 @@
       "origin": "original",
       "prs": [
         52
-      ]
+      ],
+      "dependsOn": [],
+      "externalDependencies": [],
+      "externalPrerequisites": []
     },
     {
       "id": "MVW-052",
@@ -420,7 +579,10 @@
       "origin": "original",
       "prs": [
         53
-      ]
+      ],
+      "dependsOn": [],
+      "externalDependencies": [],
+      "externalPrerequisites": []
     },
     {
       "id": "MVW-053",
@@ -428,7 +590,10 @@
       "origin": "original",
       "prs": [
         54
-      ]
+      ],
+      "dependsOn": [],
+      "externalDependencies": [],
+      "externalPrerequisites": []
     },
     {
       "id": "MVW-054",
@@ -436,7 +601,10 @@
       "origin": "original",
       "prs": [
         55
-      ]
+      ],
+      "dependsOn": [],
+      "externalDependencies": [],
+      "externalPrerequisites": []
     },
     {
       "id": "MVW-055",
@@ -444,7 +612,10 @@
       "origin": "original",
       "prs": [
         56
-      ]
+      ],
+      "dependsOn": [],
+      "externalDependencies": [],
+      "externalPrerequisites": []
     },
     {
       "id": "MVW-056",
@@ -452,7 +623,10 @@
       "origin": "original",
       "prs": [
         57
-      ]
+      ],
+      "dependsOn": [],
+      "externalDependencies": [],
+      "externalPrerequisites": []
     },
     {
       "id": "MVW-057",
@@ -460,7 +634,10 @@
       "origin": "original",
       "prs": [
         58
-      ]
+      ],
+      "dependsOn": [],
+      "externalDependencies": [],
+      "externalPrerequisites": []
     },
     {
       "id": "MVW-058",
@@ -468,7 +645,10 @@
       "origin": "original",
       "prs": [
         59
-      ]
+      ],
+      "dependsOn": [],
+      "externalDependencies": [],
+      "externalPrerequisites": []
     },
     {
       "id": "MVW-059",
@@ -476,7 +656,10 @@
       "origin": "original",
       "prs": [
         60
-      ]
+      ],
+      "dependsOn": [],
+      "externalDependencies": [],
+      "externalPrerequisites": []
     },
     {
       "id": "MVW-060",
@@ -484,7 +667,10 @@
       "origin": "original",
       "prs": [
         61
-      ]
+      ],
+      "dependsOn": [],
+      "externalDependencies": [],
+      "externalPrerequisites": []
     },
     {
       "id": "MVW-061",
@@ -492,7 +678,10 @@
       "origin": "original",
       "prs": [
         62
-      ]
+      ],
+      "dependsOn": [],
+      "externalDependencies": [],
+      "externalPrerequisites": []
     },
     {
       "id": "MVW-062",
@@ -500,7 +689,10 @@
       "origin": "original",
       "prs": [
         63
-      ]
+      ],
+      "dependsOn": [],
+      "externalDependencies": [],
+      "externalPrerequisites": []
     },
     {
       "id": "MVW-063",
@@ -508,7 +700,10 @@
       "origin": "original",
       "prs": [
         64
-      ]
+      ],
+      "dependsOn": [],
+      "externalDependencies": [],
+      "externalPrerequisites": []
     }
   ],
   "pullRequests": [
